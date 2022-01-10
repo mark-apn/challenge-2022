@@ -1,5 +1,4 @@
 import 'package:flutter_challenge/models/models.dart';
-import 'package:flutter_challenge/models/tile.dart';
 import 'package:flutter_challenge/state/providers.dart';
 import 'package:flutter_challenge/state/puzzle_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
