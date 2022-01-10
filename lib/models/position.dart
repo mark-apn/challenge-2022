@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 /// {@template position}
 /// 2-dimensional position model.
@@ -34,4 +35,11 @@ class Position extends Equatable implements Comparable<Position> {
       }
     }
   }
+
+  Rect getRect({required double tileSize}) => Rect.fromLTWH(
+        (x-1) * tileSize,
+        (y-1) * tileSize,
+        tileSize,
+        tileSize,
+      );
 }

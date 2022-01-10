@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_challenge/models/tile.dart';
+import 'package:flutter_challenge/models/models.dart';
 import 'package:flutter_challenge/state/providers.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -19,17 +20,15 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: Column(
-          children: const [
-            SizedBox(height: 20),
-            Text('Flutter Challenge'),
+          children: [
+            const SizedBox(height: 20),
+            const Text('Flutter Challenge'),
             Expanded(
-              child: Center(
-                child: FractionallySizedBox(
-                  widthFactor: 0.8,
-                  heightFactor: 0.8,
-                  child: Center(child: _PuzzleView()),
-                ),
-              ),
+              child: LayoutBuilder(builder: (_, constraints) {
+                final maxBoardSize =
+                    constraints.maxWidth < constraints.maxHeight ? constraints.maxWidth : constraints.maxHeight;
+                return _PuzzleView(boardSize: maxBoardSize);
+              }),
             ),
           ],
         ),
@@ -39,51 +38,90 @@ class MyApp extends StatelessWidget {
 }
 
 class _PuzzleView extends ConsumerWidget {
-  const _PuzzleView({Key? key}) : super(key: key);
+  const _PuzzleView({Key? key, required this.boardSize}) : super(key: key);
+
+  final double boardSize;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final puzzleState = ref.watch(puzzleProvider);
-    return GridView.count(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: puzzleState.puzzle.getDimension(),
-      mainAxisSpacing: 10,
-      crossAxisSpacing: 10,
-      children: puzzleState.puzzle.tiles.map((e) => _Tile(e)).toList(),
+    // * Only listen to num dimensions, not the board or tiles itself
+    final numDimensions = ref.watch(puzzleProvider.select((value) => value.puzzle.getDimension()));
+    final tileSize = (boardSize - 64) / numDimensions;
+
+    return Center(
+      child: Container(
+        constraints: BoxConstraints(maxWidth: boardSize, maxHeight: boardSize),
+        margin: const EdgeInsets.all(32.0),
+        child: Stack(
+          fit: StackFit.expand,
+          children: List.generate(numDimensions * numDimensions, (index) => _Tile(index, tileSize)),
+        ),
+      ),
     );
   }
 }
 
-class _Tile extends StatelessWidget {
-  const _Tile(this.tile, {Key? key}) : super(key: key);
+class _Tile extends ConsumerWidget {
+  const _Tile(this.tileIndex, this.size);
 
-  final Tile tile;
-
-  @override
-  Widget build(BuildContext context) {
-    return tile.isWhitespace ? const SizedBox.shrink() : _TappableTile(tile);
-  }
-}
-
-class _TappableTile extends ConsumerWidget {
-  const _TappableTile(this.tile, {Key? key}) : super(key: key);
-
-  final Tile tile;
+  final int tileIndex;
+  final double size;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return GestureDetector(
-      onTap: () => ref.read(puzzleViewModel).tileTapped(tile),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.orange,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Center(
-          child: Text("${tile.value}"),
-        ),
+    final tile = ref.watch(puzzleProvider.select((value) => value.puzzle.tiles.elementAt(tileIndex)));
+    return tile.isWhitespace ? const SizedBox.shrink() : _TappableTile(tile, size);
+  }
+}
+
+class _TappableTile extends HookConsumerWidget {
+  const _TappableTile(this.tile, this.size, {Key? key}) : super(key: key);
+
+  final Tile tile;
+  final double size;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = useAnimationController(duration: const Duration(milliseconds: 200));
+    final animation = useAnimation(controller);
+
+    useEffect(
+      () {
+        controller.forward();
+      },
+      [tile.currentPosition],
+    );
+
+    return Positioned.fromRect(
+      rect: _animateRect(animation),
+      child: GestureDetector(
+        onTap: () => ref.read(puzzleViewModel).tileTapped(tile),
+        child: _BaseTile(value: tile.value),
+      ),
+    );
+  }
+
+  Rect _animateRect(double animation) {
+    final previousRect = tile.previousPosition?.getRect(tileSize: size);
+    final currentRect = tile.currentPosition.getRect(tileSize: size);
+    return Rect.lerp(previousRect, currentRect, animation) ?? currentRect;
+  }
+}
+
+class _BaseTile extends StatelessWidget {
+  const _BaseTile({Key? key, required this.value}) : super(key: key);
+
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.orange,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child: Text("$value"),
       ),
     );
   }
