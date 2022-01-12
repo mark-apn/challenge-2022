@@ -14,6 +14,9 @@ function deployFunction () {
     # Up one folder
     cd ..
 
+    echo "appwrite health get"
+    appwrite health get
+
     echo "appwrite functions createTag  --functionId=\"$functionId\"  --command=\"dart main.dart\"  --code=\"$folderName\" | grep \$id"
 
     echo "List files test"
@@ -23,7 +26,7 @@ function deployFunction () {
     appwrite functions createTag  --functionId=$functionId  --command=\"dart main.dart\"  --code=\"$folderName\"
 
     # Execute the following commands and save result in variable 'result'
-    RESULT="$(appwrite functions createTag  --functionId=\"$functionId\"  --command=\"dart main.dart\"  --code=\"$folderName\" | grep \$id)"
+    #RESULT="$(appwrite functions createTag  --functionId=\"$functionId\"  --command=\"dart main.dart\"  --code=\"$folderName\" | grep \$id)"
 
     # Strip ID from result
     #ID=${RESULT/\$id : /}
