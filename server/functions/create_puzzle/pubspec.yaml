@@ -1,0 +1,8 @@
+name: create_puzzle
+description: This function should trigger on `database.documents.update` event and fill `updatedAt` attribute with the current time, if this rule for updatedAt is configured on a specific collection.
+
+environment:
+  sdk: '>=2.14.0 <3.0.0'
+
+dependencies:
+  dart_appwrite: ^3.0.2
