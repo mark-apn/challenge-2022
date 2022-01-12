@@ -16,7 +16,11 @@ function deployFunction () {
 
     echo "appwrite functions createTag  --functionId=\"$functionId\"  --command=\"dart main.dart\"  --code=\"$folderName\" | grep \$id"
 
-    appwrite functions createTag  --functionId=\"$functionId\"  --command=\"dart main.dart\"  --code=\"$folderName\"
+    echo "List files test"
+    appwrite storage listFiles
+
+    echo "createTag"
+    appwrite functions createTag  --functionId=$functionId  --command=\"dart main.dart\"  --code=\"$folderName\"
 
     # Execute the following commands and save result in variable 'result'
     #RESULT="$(appwrite functions createTag  --functionId=\"$functionId\"  --command=\"dart main.dart\"  --code=\"$folderName\" | grep \$id)"
