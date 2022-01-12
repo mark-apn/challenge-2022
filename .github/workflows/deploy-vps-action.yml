@@ -1,52 +1,52 @@
 name: Build
 on: [push]
 jobs:
-  # Deploy:
-  #   runs-on: ubuntu-latest
-  #   steps:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
 
-  #     # Check out the code
-  #     - name: Check out repository code
-  #       uses: actions/checkout@v2
-  #     - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-  #     - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-  #     - name: List files in the repository
-  #       run: |
-  #         ls ${{ github.workspace }}
+      # Check out the code
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
 
-  #     # Copy and fill in .env file placeholders with secrets in github
-  #     - run: cp server/.env.production server/.env
-  #     - run: sed -ie "s/\$OPENSSL_KEY/${{ secrets.OPENSSL_KEY }}/g" ./server/.env
-  #     - run: sed -ie "s/\$DOMAIN_TARGET/${{ secrets.DOMAIN_TARGET }}/g" ./server/.env
-  #     - run: sed -ie "s/\$EMAIL_ADDRESS/${{ secrets.EMAIL_ADDRESS }}/g" ./server/.env
-  #     - run: sed -ie "s/\$DB_PASS/${{ secrets.DB_PASS }}/g" ./server/.env
-  #     - run: sed -ie "s/\$DB_ROOT_PASS/${{ secrets.DB_ROOT_PASS }}/g" ./server/.env
-  #     - run: sed -ie "s/\$SMTP_USERNAME/${{ secrets.SMTP_USERNAME }}/g" ./server/.env
-  #     - run: sed -ie "s/\$SMTP_PASSWORD/${{ secrets.SMTP_PASSWORD }}/g" ./server/.env
+      # Copy and fill in .env file placeholders with secrets in github
+      - run: cp server/.env.production server/.env
+      - run: sed -ie "s/\$OPENSSL_KEY/${{ secrets.OPENSSL_KEY }}/g" ./server/.env
+      - run: sed -ie "s/\$DOMAIN_TARGET/${{ secrets.DOMAIN_TARGET }}/g" ./server/.env
+      - run: sed -ie "s/\$EMAIL_ADDRESS/${{ secrets.EMAIL_ADDRESS }}/g" ./server/.env
+      - run: sed -ie "s/\$DB_PASS/${{ secrets.DB_PASS }}/g" ./server/.env
+      - run: sed -ie "s/\$DB_ROOT_PASS/${{ secrets.DB_ROOT_PASS }}/g" ./server/.env
+      - run: sed -ie "s/\$SMTP_USERNAME/${{ secrets.SMTP_USERNAME }}/g" ./server/.env
+      - run: sed -ie "s/\$SMTP_PASSWORD/${{ secrets.SMTP_PASSWORD }}/g" ./server/.env
 
-  #     # Copy to server
-  #     - name: Copy code to remote server
-  #       uses: appleboy/scp-action@master
-  #       with:
-  #         host: ${{ secrets.VPS_HOST }}
-  #         username: ${{ secrets.VPS_USERNAME }}
-  #         password: ${{ secrets.VPS_PASSWORD }}
-  #         port: ${{ secrets.VPS_PORT }}
-  #         source: "server/"
-  #         target: "/var/docker_projects/${{ github.repository }}"
+      # Copy to server
+      - name: Copy code to remote server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_PORT }}
+          source: "server/"
+          target: "/var/docker_projects/${{ github.repository }}"
 
-  #     # Bring AppWrite instance online
-  #     - name: Run post deploy scripts
-  #       uses: cross-the-world/ssh-pipeline@master
-  #       with:
-  #         host: ${{ secrets.VPS_HOST }}
-  #         user: ${{ secrets.VPS_USERNAME }}
-  #         pass: ${{ secrets.VPS_PASSWORD }}
-  #         port: ${{ secrets.VPS_PORT }}
-  #         connect_timeout: 10s
-  #         script: |
-  #           cd "/var/docker_projects/${{ github.repository }}/server"
-  #           docker-compose up -d --remove-orphans
+      # Bring AppWrite instance online
+      - name: Run post deploy scripts
+        uses: cross-the-world/ssh-pipeline@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          user: ${{ secrets.VPS_USERNAME }}
+          pass: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_PORT }}
+          connect_timeout: 10s
+          script: |
+            cd "/var/docker_projects/${{ github.repository }}/server"
+            docker-compose up -d --remove-orphans
 
   Update-functions:
     runs-on: ubuntu-latest
