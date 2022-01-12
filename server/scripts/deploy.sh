@@ -14,7 +14,7 @@ function deployFunction () {
     # Up one folder
     cd ..
 
-    curl https://appwrite.flutterdev.com/v1/locale/continents
+    curl https://appwrite.flutterdev.com/v1/locale/continents --verbose
 
     echo "appwrite health get"
     appwrite health get

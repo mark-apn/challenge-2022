@@ -1,5 +1,5 @@
 name: Build
-on: repository_dispatch
+on: [push]
 jobs:
   Deploy:
     runs-on: ubuntu-latest
@@ -47,3 +47,15 @@ jobs:
           script: |
             cd "/var/docker_projects/${{ github.repository }}/server"
             docker-compose up -d --remove-orphans
+
+      # Deploy functions
+      - uses: appwrite/setup-for-actions@v1
+        with:
+          endpoint: '${{ secrets.APPWRITE_ENDPOINT }}'
+          project: '${{ secrets.APPWRITE_PROJECT }}'
+          key: '${{ secrets.APPWRITE_API_KEY }}'
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 2.14.0
+      - name: Deploy all cloud functions
+        run: ./server/scripts/deploy.sh
