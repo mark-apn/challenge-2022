@@ -14,32 +14,19 @@ function deployFunction () {
     # Up one folder
     cd ..
 
-    curl https://appwrite.flutterdev.com/v1/locale/continents --verbose
-
-    echo "appwrite health get"
-    appwrite health get
-
-    echo "appwrite functions createTag  --functionId=\"$functionId\"  --command=\"dart main.dart\"  --code=\"$folderName\" | grep \$id"
-
-    echo "List files test"
-    appwrite storage listFiles
-
-    echo "createTag"
-    appwrite functions createTag  --functionId=$functionId  --command=\"dart main.dart\"  --code=\"$folderName\"
-
     # Execute the following commands and save result in variable 'result'
-    #RESULT="$(appwrite functions createTag  --functionId=\"$functionId\"  --command=\"dart main.dart\"  --code=\"$folderName\" | grep \$id)"
+    RESULT="$(appwrite functions createTag  --functionId=\"$functionId\"  --command=\"dart main.dart\"  --code=\"$folderName\" | grep \$id)"
 
     # Strip ID from result
-    #ID=${RESULT/\$id : /}
+    ID=${RESULT/\$id : /}
 
     # Activate the new tag
-    #appwrite functions updateTag \
-    #    --functionId="$functionId" \
-    #    --tag=$ID
+    appwrite functions updateTag \
+       --functionId="$functionId" \
+       --tag=$ID
 
     # Return to root folder
-    #cd ../../../
+    cd ../../../
 }
 
 # Change pubcache to be inside the function folder, so all dependencies are packaged together
