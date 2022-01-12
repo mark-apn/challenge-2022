@@ -15,7 +15,7 @@ function deployFunction () {
     cd ../../../
 
     # Execute the following commands and save result in variable 'result'
-    RESULT="$(appwrite functions createTag  --functionId=$functionId  --command=\"dart main.dart\"  --code=\"server/functions/$folderName\" | grep \$id)"
+    RESULT="$(appwrite functions createTag  --functionId=$functionId  --command="dart main.dart"  --code="server/functions/$folderName" | grep \$id)"
 
     # Strip ID from result
     ID=${RESULT/\$id : /}
