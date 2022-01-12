@@ -54,7 +54,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: appwrite/setup-for-actions@v1
         with:
-          endpoint: 'https://${{ secrets.DOMAIN_TARGET }}/v1'
+          endpoint: '${{ secrets.DOMAIN_TARGET }}'
           project: '${{ secrets.APPWRITE_PROJECT }}'
           key: '${{ secrets.APPWRITE_API_KEY }}'
       - uses: dart-lang/setup-dart@v1
