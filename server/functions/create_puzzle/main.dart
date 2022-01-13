@@ -1,24 +1,22 @@
 import 'dart:io';
 
-import 'package:dart_appwrite/dart_appwrite.dart';
 import 'package:uuid/uuid.dart';
+
+import 'client.dart';
 
 void main(List<String> args) async {
   final envVars = Platform.environment;
 
-  final client = Client()
+  final client = ClientIO()
       .setEndpoint(envVars['ENDPOINT']!)
       .setProject(envVars['APPWRITE_FUNCTION_PROJECT_ID'])
       .setKey(envVars['API_KEY']);
 
-  final database = Database(client);
+  final String path = '/database/collections/61e04362224a95ee814b/documents';
 
-  final documentId = Uuid().v4();
-  final result = await database.createDocument(
-    collectionId: '61e04362224a95ee814b',
-    documentId: documentId,
-    read: ["role:all"],
-    data: {
+  final Map<String, dynamic> params = {
+    'documentId': Uuid().v4(),
+    'data': {
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'status': 'incomplete',
       'tile_order': [3, 4, 5, 0, 1, 2, 6, 7, 8],
@@ -26,7 +24,29 @@ void main(List<String> args) async {
       'num_moves': 0,
       'num_votes': 0,
     },
+    'read': ["role:all"],
+    'write': null,
+  };
+
+  final Map<String, String> headers = {
+    'content-type': 'application/json',
+  };
+
+  final res = await client.call(
+    HttpMethod.post,
+    path: path,
+    params: params,
+    headers: headers,
   );
 
-  print(result.toMap());
+  print(res);
+
+  // final result = await database.createDocument(
+  //   collectionId: '61e04362224a95ee814b',
+  //   documentId: documentId,
+  //   read: ,
+  //   data: ,
+  // );
+
+  // print(result.toMap());
 }
