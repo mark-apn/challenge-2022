@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 
 void main(List<String> args) async {
   final envVars = Platform.environment;
+
   final client = Client()
       .setEndpoint(envVars['ENDPOINT']!)
       .setProject(envVars['APPWRITE_FUNCTION_PROJECT_ID'])
@@ -14,17 +15,18 @@ void main(List<String> args) async {
 
   final documentId = Uuid().v4();
   final result = await database.createDocument(
-    collectionId: '[COLLECTION_ID]',
+    collectionId: '61e04362224a95ee814b',
     documentId: documentId,
-    read: ["*"],
+    read: ["role:all"],
     data: {
-      'created_at': DateTime.now().toIso8601String(),
+      'created_at': DateTime.now().millisecondsSinceEpoch,
       'status': 'incomplete',
-      'tiles': [],
-      'num_correct': 0,
+      'tile_order': [3, 4, 5, 0, 1, 2, 6, 7, 8],
+      'num_tiles': 9,
       'num_moves': 0,
+      'num_votes': 0,
     },
   );
 
-  print(result);
+  print(result.toMap());
 }
