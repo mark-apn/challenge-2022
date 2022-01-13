@@ -11,7 +11,6 @@ class PuzzleState extends Equatable {
   const PuzzleState({
     this.puzzle = const Puzzle(tiles: []),
     this.puzzleStatus = PuzzleStatus.incomplete,
-    this.tileMovementStatus = TileMovementStatus.nothingTapped,
     this.numberOfCorrectTiles = 0,
     this.numberOfMoves = 0,
     this.lastTappedTile,
@@ -30,9 +29,6 @@ class PuzzleState extends Equatable {
 
   /// Status indicating the current state of the puzzle.
   final PuzzleStatus puzzleStatus;
-
-  /// Status indicating if a [Tile] was moved or why a [Tile] was not moved.
-  final TileMovementStatus tileMovementStatus;
 
   /// Represents the last tapped tile of the puzzle.
   ///
@@ -64,7 +60,6 @@ class PuzzleState extends Equatable {
     return PuzzleState(
       puzzle: puzzle ?? this.puzzle,
       puzzleStatus: puzzleStatus ?? this.puzzleStatus,
-      tileMovementStatus: tileMovementStatus ?? this.tileMovementStatus,
       numberOfCorrectTiles: numberOfCorrectTiles ?? this.numberOfCorrectTiles,
       numberOfMoves: numberOfMoves ?? this.numberOfMoves,
       lastTappedTile: lastTappedTile ?? this.lastTappedTile,
@@ -75,7 +70,6 @@ class PuzzleState extends Equatable {
   List<Object?> get props => [
         puzzle,
         puzzleStatus,
-        tileMovementStatus,
         numberOfCorrectTiles,
         numberOfMoves,
         lastTappedTile,
