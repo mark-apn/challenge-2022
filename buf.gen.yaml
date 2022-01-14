@@ -1,0 +1,8 @@
+version: v1
+plugins:
+  - name: dart
+    out: app/lib/generated
+    opt: grpc
+  - name: dart
+    out: server/src/generated
+    opt: grpc

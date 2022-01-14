@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package puzzle.v1;
+
+service PuzzleV1Service {
+    rpc SubscribeToPuzzle (SubscribeToPuzzleRequest) returns (stream SubscribeToPuzzleResponse);
+    rpc VoteForTile (VoteForTileRequest) returns (VoteForTileResponse);
+}
+
+message SubscribeToPuzzleRequest {
+    string user_id = 1;
+}
+
+message SubscribeToPuzzleResponse {
+    Puzzle puzzle = 1;
+}
+
+message Puzzle {
+    string puzzle = 1;
+    repeated int32 solution_tiles = 2;
+    repeated string voters = 3;
+    int64 last_updated = 4;
+}
+
+message VoteForTileRequest {
+    string user_id = 1;
+    string puzzle_id = 2;
+    int32 tile_index = 3;
+}
+
+message VoteForTileResponse {}

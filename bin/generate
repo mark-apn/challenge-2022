@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Generating gRPC client and server from proto contract via buf (https://docs.buf.build/installation)..."
+buf generate protos

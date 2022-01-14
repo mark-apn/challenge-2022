@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/models/tile.dart';
 import 'package:flutter_challenge/state/providers.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -27,13 +27,28 @@ class MyApp extends StatelessWidget {
                 child: FractionallySizedBox(
                   widthFactor: 0.8,
                   heightFactor: 0.8,
-                  child: Center(child: _PuzzleView()),
+                  child: Center(child: _RemotePuzzle()),
                 ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _RemotePuzzle extends HookConsumerWidget {
+  const _RemotePuzzle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stream = ref.watch(remotePuzzleProvider);
+
+    return stream.map(
+      data: (data) => Text(data.value.toString()),
+      error: (error) => Text(error.error.toString()),
+      loading: (_) => const CircularProgressIndicator(),
     );
   }
 }
