@@ -9,7 +9,7 @@ COPY ./server/pubspec.* ./
 RUN dart pub get
 
 # Copy server dir over to the container
-COPY ./server .
+COPY ./server ./
 RUN pub get --offline
 
 
