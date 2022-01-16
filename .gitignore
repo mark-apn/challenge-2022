@@ -1,4 +1,3 @@
-**/generated/**/*.dart
 data/*
 !**/.gitkeep
 server/bin/server
