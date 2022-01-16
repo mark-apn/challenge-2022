@@ -4,5 +4,12 @@ environment:
   sdk: ">=2.15.1 <3.0.0"
 
 dependencies:
+  args: ^2.3.0
   grpc: ^3.0.2
   protobuf: ^2.0.1
+  rethink_db_ns:
+    git: git://github.com/mark-apn/rethink_db.git
+  uuid: ^3.0.5
+  shared:
+    path: ../shared
+  intl: ^0.17.0

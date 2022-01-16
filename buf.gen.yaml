@@ -4,5 +4,5 @@ plugins:
     out: app/lib/generated
     opt: grpc
   - name: dart
-    out: server/src/generated
+    out: server/lib/generated
     opt: grpc

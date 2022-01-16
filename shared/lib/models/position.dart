@@ -34,4 +34,24 @@ class Position extends Equatable implements Comparable<Position> {
       }
     }
   }
+
+  Map<String, dynamic> toMap() => {
+        'x': x,
+        'y': y,
+      };
+
+  factory Position.fromMap(Map<String, dynamic> map) => Position(
+        x: map['x']?.toInt() ?? 0,
+        y: map['y']?.toInt() ?? 0,
+      );
+
+  Position copyWith({
+    int? x,
+    int? y,
+  }) {
+    return Position(
+      x: x ?? this.x,
+      y: y ?? this.y,
+    );
+  }
 }

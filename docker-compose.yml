@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  server_worker1:
+    container_name: puzzle_server_worker1
+    build:
+      context: ./
+      dockerfile: ./server/Dockerfile
+    restart: always
+    ports:
+      - "50001:80"
+
+  server_worker2:
+    container_name: puzzle_server_worker2
+    build:
+      context: ./
+      dockerfile: ./server/Dockerfile
+    restart: always
+    ports:
+      - "50002:80"
+
+  server_worker3:
+    container_name: puzzle_server_worker3
+    build:
+      context: ./
+      dockerfile: ./server/Dockerfile
+    restart: always
+    ports:
+      - "50003:80"
+
+  rethinkdb:
+    container_name: puzzle_rethinkdb
+    image: rethinkdb:2.4
+    ports:
+      - 8081:8080
+      - 28015:28015
+    volumes:
+      - ./data/db:/data

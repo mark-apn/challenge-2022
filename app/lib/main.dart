@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_challenge/models/tile.dart';
 import 'package:flutter_challenge/state/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared/shared.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
                 child: FractionallySizedBox(
                   widthFactor: 0.8,
                   heightFactor: 0.8,
-                  child: Center(child: _RemotePuzzle()),
+                  child: Center(child: _PuzzleView()),
                 ),
               ),
             ),
@@ -38,27 +38,21 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class _RemotePuzzle extends HookConsumerWidget {
-  const _RemotePuzzle({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final stream = ref.watch(remotePuzzleProvider);
-
-    return stream.map(
-      data: (data) => Text(data.value.toString()),
-      error: (error) => Text(error.error.toString()),
-      loading: (_) => const CircularProgressIndicator(),
-    );
-  }
-}
-
 class _PuzzleView extends ConsumerWidget {
   const _PuzzleView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final puzzleState = ref.watch(puzzleProvider);
+
+    if (puzzleState.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (puzzleState.isError) {
+      return const Center(child: Text('Error'));
+    }
+
     return GridView.count(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
@@ -90,14 +84,17 @@ class _TappableTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => ref.read(puzzleViewModel).tileTapped(tile),
+      onTap: () => ref.read(puzzleVM).tileTapped(tile),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.orange,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
-          child: Text("${tile.value}"),
+          child: Column(children: [
+            Text("${tile.value}"),
+            Text("${tile.numVotes} votes"),
+          ]),
         ),
       ),
     );

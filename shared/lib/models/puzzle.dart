@@ -1,8 +1,12 @@
 import 'dart:math';
 
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
 import 'models.dart';
+
+const PUZZLE_STATUS_INCOMPLETE = 1;
+const PUZZLE_STATUS_COMPLETE = 2;
 
 // A 3x3 puzzle board visualization:
 //
@@ -34,10 +38,46 @@ import 'models.dart';
 /// {@endtemplate}
 class Puzzle extends Equatable {
   /// {@macro puzzle}
-  const Puzzle({required this.tiles});
+  const Puzzle({
+    required this.id,
+    required this.tiles,
+    required this.createdAt,
+    required this.updatedAt,
+    this.status = PUZZLE_STATUS_INCOMPLETE,
+    this.num_moves = 0,
+  });
+
+  factory Puzzle.fromTiles(List<Tile> tiles) => Puzzle(
+        id: Uuid().v4(),
+        tiles: tiles,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+
+  factory Puzzle.empty() => Puzzle(
+        id: Uuid().v4(),
+        tiles: [],
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+
+  /// The UUID of the puzzle.
+  final String id;
 
   /// List of [Tile]s representing the puzzle's current arrangement.
   final List<Tile> tiles;
+
+  /// The date this puzzle was created.
+  final DateTime createdAt;
+
+  /// The date this puzzle was last updated.
+  final DateTime updatedAt;
+
+  /// The current status of the puzzle.
+  final int status;
+
+  /// The number of moves made to solve the puzzle.
+  final int num_moves;
 
   /// Get the dimension of a puzzle given its tile arrangement.
   ///
@@ -84,6 +124,54 @@ class Puzzle extends Equatable {
       return false;
     }
     return true;
+  }
+
+  /// Shifts one or many tiles in a row/column with the whitespace and returns
+  /// the modified puzzle.
+  ///
+  // Recursively stores a list of all tiles that need to be moved and passes the
+  // list to _swapTiles to individually swap them.
+  Puzzle moveTiles(Tile tile, List<Tile> tilesToSwap) {
+    final whitespaceTile = getWhitespaceTile();
+    final deltaX = whitespaceTile.currentPosition.x - tile.currentPosition.x;
+    final deltaY = whitespaceTile.currentPosition.y - tile.currentPosition.y;
+
+    if ((deltaX.abs() + deltaY.abs()) > 1) {
+      final shiftPointX = tile.currentPosition.x + deltaX.sign;
+      final shiftPointY = tile.currentPosition.y + deltaY.sign;
+      final tileToSwapWith = tiles.singleWhere(
+        (tile) => tile.currentPosition.x == shiftPointX && tile.currentPosition.y == shiftPointY,
+      );
+      tilesToSwap.add(tile);
+      return moveTiles(tileToSwapWith, tilesToSwap);
+    } else {
+      tilesToSwap.add(tile);
+      return _swapTiles(tilesToSwap);
+    }
+  }
+
+  /// Returns puzzle with new tile arrangement after individually swapping each
+  /// tile in tilesToSwap with the whitespace.
+  Puzzle _swapTiles(List<Tile> tilesToSwap) {
+    for (final tileToSwap in tilesToSwap.reversed) {
+      final tileIndex = tiles.indexWhere((tile) => tile.value == tileToSwap.value);
+      final tile = tiles[tileIndex];
+      final whitespaceTile = getWhitespaceTile();
+      final whitespaceTileIndex = tiles.indexOf(whitespaceTile);
+
+      // Swap current board positions of the moving tile and the whitespace.
+      tiles[tileIndex] = tile.copyWith(
+        currentPosition: whitespaceTile.currentPosition,
+      );
+      tiles[whitespaceTileIndex] = whitespaceTile.copyWith(
+        currentPosition: tile.currentPosition,
+      );
+    }
+
+    return copyWith(
+      tiles: tiles,
+      num_moves: num_moves + 1,
+    );
   }
 
   /// Determines if the puzzle is solvable.
@@ -144,62 +232,60 @@ class Puzzle extends Equatable {
     return false;
   }
 
-  /// Shifts one or many tiles in a row/column with the whitespace and returns
-  /// the modified puzzle.
-  ///
-  // Recursively stores a list of all tiles that need to be moved and passes the
-  // list to _swapTiles to individually swap them.
-  Puzzle moveTiles(Tile tile, List<Tile> tilesToSwap) {
-    final whitespaceTile = getWhitespaceTile();
-    final deltaX = whitespaceTile.currentPosition.x - tile.currentPosition.x;
-    final deltaY = whitespaceTile.currentPosition.y - tile.currentPosition.y;
-
-    if ((deltaX.abs() + deltaY.abs()) > 1) {
-      final shiftPointX = tile.currentPosition.x + deltaX.sign;
-      final shiftPointY = tile.currentPosition.y + deltaY.sign;
-      final tileToSwapWith = tiles.singleWhere(
-        (tile) =>
-            tile.currentPosition.x == shiftPointX &&
-            tile.currentPosition.y == shiftPointY,
-      );
-      tilesToSwap.add(tile);
-      return moveTiles(tileToSwapWith, tilesToSwap);
-    } else {
-      tilesToSwap.add(tile);
-      return _swapTiles(tilesToSwap);
-    }
-  }
-
-  /// Returns puzzle with new tile arrangement after individually swapping each
-  /// tile in tilesToSwap with the whitespace.
-  Puzzle _swapTiles(List<Tile> tilesToSwap) {
-    for (final tileToSwap in tilesToSwap.reversed) {
-      final tileIndex = tiles.indexOf(tileToSwap);
-      final tile = tiles[tileIndex];
-      final whitespaceTile = getWhitespaceTile();
-      final whitespaceTileIndex = tiles.indexOf(whitespaceTile);
-
-      // Swap current board positions of the moving tile and the whitespace.
-      tiles[tileIndex] = tile.copyWith(
-        currentPosition: whitespaceTile.currentPosition,
-      );
-      tiles[whitespaceTileIndex] = whitespaceTile.copyWith(
-        currentPosition: tile.currentPosition,
-      );
-    }
-
-    return Puzzle(tiles: tiles);
-  }
-
   /// Sorts puzzle tiles so they are in order of their current position.
   Puzzle sort() {
     final sortedTiles = tiles.toList()
       ..sort((tileA, tileB) {
         return tileA.currentPosition.compareTo(tileB.currentPosition);
       });
-    return Puzzle(tiles: sortedTiles);
+    return Puzzle.fromTiles(sortedTiles);
   }
 
   @override
-  List<Object> get props => [tiles];
+  List<Object> get props => [
+        id,
+        createdAt,
+        updatedAt,
+        tiles,
+        status,
+        num_moves,
+      ];
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'created_at': createdAt.millisecondsSinceEpoch,
+      'updated_at': updatedAt.millisecondsSinceEpoch,
+      'tiles': tiles.map((x) => x.toMap()).toList(),
+      'status': status,
+      'num_moves': num_moves,
+    };
+  }
+
+  factory Puzzle.fromMap(Map<String, dynamic> map) {
+    return Puzzle(
+      id: map['id']!,
+      createdAt: map['created_at'] != null ? DateTime.fromMillisecondsSinceEpoch(map['created_at']) : DateTime.now(),
+      updatedAt: map['updated_at'] != null ? DateTime.fromMillisecondsSinceEpoch(map['updated_at']) : DateTime.now(),
+      tiles: List<Tile>.from(map['tiles']?.map((x) => Tile.fromMap(x))),
+      status: map['status']?.toInt() ?? 0,
+      num_moves: map['num_moves']?.toInt() ?? 0,
+    );
+  }
+
+  Puzzle copyWith({
+    List<Tile>? tiles,
+    DateTime? createdAt,
+    int? status,
+    int? num_moves,
+  }) {
+    return Puzzle(
+      id: this.id,
+      tiles: tiles ?? this.tiles,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: DateTime.now(),
+      status: status ?? this.status,
+      num_moves: num_moves ?? this.num_moves,
+    );
+  }
 }

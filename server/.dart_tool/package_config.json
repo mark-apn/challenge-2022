@@ -8,6 +8,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "args",
+      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/args-2.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "async",
       "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/async-2.8.2",
       "packageUri": "lib/",
@@ -20,14 +26,32 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "clock",
+      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "collection",
       "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
+      "name": "convert",
+      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/convert-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "crypto",
       "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "equatable",
+      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/equatable-2.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -68,6 +92,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "meta",
       "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0",
       "packageUri": "lib/",
@@ -80,10 +110,28 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "pbkdf2ns",
+      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/pbkdf2ns-0.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "protobuf",
       "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/protobuf-2.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "rethink_db_ns",
+      "rootUri": "file:///Users/mark/.pub-cache/git/rethink_db-99286101c654278d4393d0a7105ab31c0925c871/",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "shared",
+      "rootUri": "../../shared",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "source_span",
@@ -110,13 +158,19 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "uuid",
+      "rootUri": "file:///Users/mark/.pub-cache/hosted/pub.dartlang.org/uuid-3.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_challenge_server",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     }
   ],
-  "generated": "2022-01-14T08:03:50.885192Z",
+  "generated": "2022-01-16T12:13:11.949187Z",
   "generator": "pub",
   "generatorVersion": "2.15.1"
 }
