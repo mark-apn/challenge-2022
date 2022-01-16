@@ -23,10 +23,15 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
         }
       });
 
-      final streamSubscription = feed.listen((updated) {
-        final data = (updated as Map)['new_val'] as Map<String, dynamic>;
-        final newPuzzle = Puzzle.fromMap(data);
-        streamController.sink.add(newPuzzle);
+      StreamSubscription? streamSubscription;
+      streamSubscription = feed.listen((updated) {
+        if (call.isCanceled) {
+          streamSubscription?.cancel();
+        } else {
+          final data = (updated as Map)['new_val'] as Map<String, dynamic>;
+          final newPuzzle = Puzzle.fromMap(data);
+          streamController.sink.add(newPuzzle);
+        }
       });
     });
 
