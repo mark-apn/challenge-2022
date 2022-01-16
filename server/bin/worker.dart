@@ -13,7 +13,7 @@ Future<void> main(List<String> args) async {
   listener = stream.listen(commandParser);
 
   // * Schedule worker tasks
-  schedule(Duration(seconds: 10), UpdatePuzzle());
+  schedule(Duration(seconds: 5), UpdatePuzzle());
 }
 
 void schedule(Duration duration, Task task) {

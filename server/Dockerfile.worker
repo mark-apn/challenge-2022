@@ -1,0 +1,26 @@
+FROM dart:2.15.1 AS build
+
+WORKDIR /server
+
+# Copy pubspec and lock files (and local path dependency)
+COPY ./shared ./../shared
+COPY ./server/pubspec.* .
+
+RUN dart pub get
+
+# Copy server dir over to the container
+COPY ./server .
+RUN pub get --offline
+
+
+# Compile server
+RUN dart compile exe bin/worker.dart -o bin/worker
+
+# Build minimal serving image from AOT-compiled `server` and required system
+# libraries and configuration files stored in `/runtime/` from the build stage.
+FROM scratch
+COPY --from=build /runtime/ /
+COPY --from=build /server/bin/worker /server/bin/
+
+# Start server.
+CMD ["/server/bin/worker"]

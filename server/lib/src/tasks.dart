@@ -13,18 +13,24 @@ class UpdatePuzzle extends Task {
 
     if (puzzle == null) {
       log('Create new puzzle');
-      // * Create a new puzzle if there is no puzzle
 
+      // * Create a new puzzle if there is no puzzle
+      puzzleRepo.createNewPuzzle();
     } else if (puzzle.status == PUZZLE_STATUS_INCOMPLETE) {
       log('Checking for votes');
 
       // * Get tiles with most votes and is movable (sort and get first)
       puzzle.tiles.sort((a, b) => b.numVotes.compareTo(a.numVotes));
-      final tile = puzzle.tiles.where((tile) => puzzle.isTileMovable(tile)).first;
-      log('Tile with most votes: ${tile.value} (${tile.numVotes} votes)');
+      final tilesWithVotes = puzzle.tiles.where((tile) => tile.numVotes > 0 && puzzle.isTileMovable(tile));
 
-      // * If vote count is greater than 0, move the tile
-      if (tile.numVotes > 0) {
+      if (tilesWithVotes.isEmpty) {
+        log('No tiles with votes');
+      } else {
+        final tile = tilesWithVotes.first;
+        log('Tile with most votes: ${tile.value} (${tile.numVotes} votes)');
+
+        // * If vote count is greater than 0, move the tile
+
         log('Moving tile');
         final result = await puzzleRepo.moveTile(puzzle, tile);
         log('Move tile result: ${result ? 'success' : 'failure'}');
@@ -39,13 +45,10 @@ class UpdatePuzzle extends Task {
       // * save to DB
     }
   }
-
-  @override
-  String get name => runtimeType.toString();
 }
 
 abstract class Task {
-  String get name;
+  String get name => runtimeType.toString();
 
   void execute() {
     log('Executing');

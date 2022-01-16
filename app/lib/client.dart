@@ -10,7 +10,7 @@ class GrpcClient {
 
   final channel = ClientChannel(
     '127.0.0.1',
-    port: 100,
+    port: 50001,
     options: const ChannelOptions(
       credentials: ChannelCredentials.insecure(),
     ),

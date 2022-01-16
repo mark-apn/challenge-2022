@@ -6,7 +6,7 @@ services:
     container_name: puzzle_task_worker
     build:
       context: ./
-      dockerfile: ./server/Dockerfile
+      dockerfile: ./server/Dockerfile.worker
     restart: always
 
   # 3 separate (load balanced) services that handle gRPC requests
@@ -14,7 +14,7 @@ services:
     container_name: puzzle_server_worker1
     build:
       context: ./
-      dockerfile: ./server/Dockerfile
+      dockerfile: ./server/Dockerfile.server
     restart: always
     ports:
       - "50001:80"
@@ -23,7 +23,7 @@ services:
     container_name: puzzle_server_worker2
     build:
       context: ./
-      dockerfile: ./server/Dockerfile
+      dockerfile: ./server/Dockerfile.server
     restart: always
     ports:
       - "50002:80"
@@ -32,7 +32,7 @@ services:
     container_name: puzzle_server_worker3
     build:
       context: ./
-      dockerfile: ./server/Dockerfile
+      dockerfile: ./server/Dockerfile.server
     restart: always
     ports:
       - "50003:80"

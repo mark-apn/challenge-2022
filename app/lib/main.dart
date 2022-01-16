@@ -63,24 +63,6 @@ class _ImagePuzzle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final puzzleState = ref.watch(puzzleProvider);
-    return GridView.count(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: puzzleState.puzzle.getDimension(),
-      mainAxisSpacing: 2,
-      crossAxisSpacing: 2,
-      children: puzzleState.puzzle.tiles.map((e) => _Tile(e, image: images[e.value - 1])).toList(),
-    );
-  }
-}
-
-class _PuzzleView extends ConsumerWidget {
-  const _PuzzleView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final puzzleState = ref.watch(puzzleProvider);
 
     if (puzzleState.isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -95,9 +77,9 @@ class _PuzzleView extends ConsumerWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: puzzleState.puzzle.getDimension(),
-      mainAxisSpacing: 10,
-      crossAxisSpacing: 10,
-      children: puzzleState.puzzle.tiles.map((e) => _Tile(e)).toList(),
+      mainAxisSpacing: 2,
+      crossAxisSpacing: 2,
+      children: puzzleState.puzzle.tiles.map((e) => _Tile(e, image: images[e.value - 1])).toList(),
     );
   }
 }

@@ -123,7 +123,7 @@
     },
     {
       "name": "rethink_db_ns",
-      "rootUri": "file:///Users/mark/.pub-cache/git/rethink_db-99286101c654278d4393d0a7105ab31c0925c871/",
+      "rootUri": "file:///Users/mark/.pub-cache/git/rethink_db-294bd07029386d823d5ecb70266feaf794123963/",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -170,7 +170,7 @@
       "languageVersion": "2.15"
     }
   ],
-  "generated": "2022-01-16T12:13:11.949187Z",
+  "generated": "2022-01-16T18:15:18.464589Z",
   "generator": "pub",
   "generatorVersion": "2.15.1"
 }
