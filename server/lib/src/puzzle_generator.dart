@@ -52,7 +52,7 @@ class PuzzleGenerator {
       puzzle = Puzzle.fromTiles(tiles);
     }
 
-    return puzzle;
+    return puzzle.sorted();
   }
 
   /// Build a list of tiles - giving each tile their correct position and a

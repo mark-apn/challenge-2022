@@ -233,12 +233,12 @@ class Puzzle extends Equatable {
   }
 
   /// Sorts puzzle tiles so they are in order of their current position.
-  Puzzle sort() {
+  Puzzle sorted() {
     final sortedTiles = tiles.toList()
       ..sort((tileA, tileB) {
         return tileA.currentPosition.compareTo(tileB.currentPosition);
       });
-    return Puzzle.fromTiles(sortedTiles);
+    return copyWith(tiles: sortedTiles);
   }
 
   @override

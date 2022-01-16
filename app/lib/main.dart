@@ -72,7 +72,7 @@ class _Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return tile.isWhitespace ? const SizedBox.shrink() : _TappableTile(tile);
+    return tile.isWhitespace ? Center(child: Text(tile.currentPosition.toString())) : _TappableTile(tile);
   }
 }
 
@@ -94,6 +94,7 @@ class _TappableTile extends ConsumerWidget {
           child: Column(children: [
             Text("${tile.value}"),
             Text("${tile.numVotes} votes"),
+            Text(tile.currentPosition.toString()),
           ]),
         ),
       ),

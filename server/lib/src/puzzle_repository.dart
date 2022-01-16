@@ -52,7 +52,7 @@ class PuzzleRepository {
   Future<bool> moveTile(Puzzle puzzle, Tile tile) async {
     if (puzzle.isTileMovable(tile)) {
       // * Update tiles
-      Puzzle updated = puzzle.moveTiles(tile, [...puzzle.tiles]);
+      Puzzle updated = puzzle.moveTiles(tile, []);
 
       // * Set completed if needed
       if (updated.isComplete()) {
@@ -65,7 +65,7 @@ class PuzzleRepository {
       );
 
       // * Save to DB
-      final result = await dao.update(puzzle.id, updated.toMap());
+      final result = await dao.update(puzzle.id, updated.sorted().toMap());
 
       return result['replaced'] == 1;
     } else {

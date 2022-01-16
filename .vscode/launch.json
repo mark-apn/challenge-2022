@@ -1,23 +1,29 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Test listener",
-            "cwd": "server",
-            "request": "launch",
-            "program": "bin/test.dart",
-            "type": "dart"
-        },
-        {
-            "name": "Run Flutter app",
-            "cwd": "app",
-            "type": "dart",
-            "request": "launch",
-            "program": "lib/main.dart"
-        }
-
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run local gRPC server",
+      "cwd": "server",
+      "request": "launch",
+      "program": "bin/test.dart",
+      "type": "dart"
+    },
+    {
+      "name": "Run worker",
+      "cwd": "server",
+      "request": "launch",
+      "program": "bin/worker.dart",
+      "type": "dart"
+    },
+    {
+      "name": "Run Flutter app",
+      "cwd": "app",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart"
+    }
+  ]
 }
