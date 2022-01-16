@@ -4,7 +4,7 @@ WORKDIR /server
 
 # Copy pubspec and lock files (and local path dependency)
 COPY ./shared ./../shared
-COPY ./server/pubspec.* .
+COPY ./server/pubspec.* ./
 
 RUN dart pub get
 
