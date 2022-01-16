@@ -2,3 +2,6 @@
 data/*
 !**/.gitkeep
 server/bin/server
+.packages
+.dart_tool/
+.DS_Store
