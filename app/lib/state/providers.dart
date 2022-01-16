@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_challenge/client.dart';
 import 'package:flutter_challenge/state/puzzle_state.dart';
-import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
+import 'package:flutter_challenge/utils/image_tiler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared/shared.dart';
 
@@ -31,18 +32,37 @@ final puzzleProvider = StateProvider.autoDispose((ref) {
     );
   }
 
-  return ref.watch(remotePuzzleProvider).map(
+  return ref.watch(_remotePuzzleProvider).map(
         data: _mapData,
         error: _mapError,
         loading: (_) => _mapLoading(),
       );
 });
 
-// Provides the viewmodel that is in charge of changing the puzzle state
-final puzzleVM = Provider((ref) => PuzzleViewModel(ref.read));
+final tiledImagesProvider = FutureProvider.autoDispose((ref) async {
+  final dimensions = ref.watch(puzzleProvider.select((state) => state.puzzle.getDimension()));
+  final completer = Completer<List<Image>>();
+
+  final uiImage = Image.asset('assets/img/dashing_dashes.png');
+  final imageTiler = ImageTiler(dimensions, dimensions);
+
+  final config = uiImage.image.resolve(const ImageConfiguration());
+  config.addListener(ImageStreamListener(
+    (ImageInfo info, __) {
+      imageTiler.image = info.image;
+
+      imageTiler.getTiles().then((tiles) {
+        completer.complete(tiles);
+      });
+    },
+    onError: completer.completeError,
+  ));
+
+  return completer.future;
+});
 
 // Call the server and get updates on the current active puzzle
-final remotePuzzleProvider = StreamProvider.autoDispose((ref) {
+final _remotePuzzleProvider = StreamProvider.autoDispose((ref) {
   final client = GrpcClient.instance;
 
   // * Send keep alive every 5 seconds

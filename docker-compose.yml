@@ -1,6 +1,15 @@
 version: "3.9"
 
 services:
+  # The background service that run scheduled tasks
+  task_worker:
+    container_name: puzzle_task_worker
+    build:
+      context: ./
+      dockerfile: ./server/Dockerfile
+    restart: always
+
+  # 3 separate (load balanced) services that handle gRPC requests
   server_worker1:
     container_name: puzzle_server_worker1
     build:
@@ -28,6 +37,7 @@ services:
     ports:
       - "50003:80"
 
+  # The database that saves the puzzles
   rethinkdb:
     container_name: puzzle_rethinkdb
     image: rethinkdb:2.4

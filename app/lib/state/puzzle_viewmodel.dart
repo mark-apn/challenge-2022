@@ -1,14 +1,13 @@
 import 'package:flutter_challenge/client.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared/shared.dart';
 
-class PuzzleViewModel {
-  final Reader read;
+class PuzzleVm {
+  static final PuzzleVm instance = PuzzleVm._internal();
 
-  PuzzleViewModel(this.read);
+  PuzzleVm._internal();
 
-  void tileTapped(Tile tappedTile) {
-    // * Send vote to server via client
-    GrpcClient.instance.voteOnTile(tappedTile.value);
+  // * Send vote to server via client
+  Future<void> tileTapped(Tile tappedTile) async {
+    await GrpcClient.instance.voteOnTile(tappedTile.value);
   }
 }

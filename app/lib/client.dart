@@ -31,8 +31,8 @@ class GrpcClient {
     client.keepAlive(KeepAliveRequest(userId: userId));
   }
 
-  void voteOnTile(int tileValue) {
-    client.voteForTile(VoteForTileRequest(userId: userId, tileValue: tileValue));
+  Future<void> voteOnTile(int tileValue) {
+    return client.voteForTile(VoteForTileRequest(userId: userId, tileValue: tileValue));
   }
 
   void close() {
