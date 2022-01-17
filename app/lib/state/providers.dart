@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_challenge/client.dart';
+import 'package:flutter_challenge/grpc/client.dart';
 import 'package:flutter_challenge/state/puzzle_state.dart';
 import 'package:flutter_challenge/utils/image_tiler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

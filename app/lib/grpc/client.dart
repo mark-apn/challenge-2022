@@ -3,14 +3,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/generated/puzzle/v1/puzzle.pbgrpc.dart';
-import 'package:grpc/grpc.dart';
+import 'package:flutter_challenge/grpc/channel.dart';
 import 'package:grpc/grpc_connection_interface.dart';
-import 'package:grpc/grpc_web.dart';
 import 'package:shared/shared.dart';
 import 'package:uuid/uuid.dart';
-
-const _grpcHost = 'grpc.flutterdev.com';
-const _grpcPort = 80;
 
 class GrpcClient {
   static final GrpcClient instance = GrpcClient._internal();
@@ -20,20 +16,17 @@ class GrpcClient {
   final _puzzleStreamController = StreamController<Puzzle>();
 
   ClientChannelBase? _cachedChannel;
-  ClientChannelBase get _newChannel {
-    if (kIsWeb) {
-      return GrpcWebClientChannel.xhr(Uri.parse('http://$_grpcHost:$_grpcPort'));
-    }
-    return ClientChannel(
-      _grpcHost,
-      port: _grpcPort,
-      options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
-      ),
-    );
-  }
+  ClientChannelBase get _newChannel => GrpcChannelBuilder().build;
 
   ClientChannelBase get _channel => _cachedChannel ??= _newChannel;
+  CallOptions get _defaultOptions {
+    return CallOptions(
+      metadata: {
+        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Eexpose-Headers": "Grpc-Status,Grpc-Message",
+      },
+    );
+  }
 
   final userId = const Uuid().v4();
 
@@ -47,9 +40,16 @@ class GrpcClient {
   }
 
   void _reconnectToPuzzle() {
-    client.subscribeToPuzzle(SubscribeToPuzzleRequest(userId: userId)).listen((event) {
-      _puzzleStreamController.sink.add(toPuzzle(event.puzzle));
-    }).onError((error, stackTrace) {
+    client
+        .subscribeToPuzzle(
+      SubscribeToPuzzleRequest(userId: userId),
+      options: _defaultOptions,
+    )
+        .listen(
+      (event) {
+        _puzzleStreamController.sink.add(toPuzzle(event.puzzle));
+      },
+    ).onError((error, stackTrace) {
       if (error is GrpcError) {
         // Delete previous channel, and reconnect when stream was terminated
         // We check the error message because the error code = 2 (UNKNOWN)
@@ -68,7 +68,10 @@ class GrpcClient {
   }
 
   Future<void> voteOnTile(int tileValue) {
-    return client.voteForTile(VoteForTileRequest(userId: userId, tileValue: tileValue));
+    return client.voteForTile(
+      VoteForTileRequest(userId: userId, tileValue: tileValue),
+      options: _defaultOptions,
+    );
   }
 }
 

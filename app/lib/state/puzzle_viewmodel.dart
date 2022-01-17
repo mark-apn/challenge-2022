@@ -1,4 +1,4 @@
-import 'package:flutter_challenge/client.dart';
+import 'package:flutter_challenge/grpc/client.dart';
 import 'package:shared/shared.dart';
 
 class PuzzleVm {
