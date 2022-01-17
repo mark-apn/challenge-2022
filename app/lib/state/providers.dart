@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared/shared.dart';
 
 // Inital puzzle state
-final AutoDisposeStateProvider<PuzzleState> puzzleProvider = StateProvider.autoDispose((ref) {
+final puzzleProvider = StateProvider.autoDispose((ref) {
   // * Convert data to state
   PuzzleState _mapData(AsyncData<Puzzle> puzzle) {
     return PuzzleState(
