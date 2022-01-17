@@ -42,6 +42,7 @@ class GrpcClient {
 
       if (error is GrpcError) {
         // Delete previous channel, and reconnect when stream was terminated
+        // We check the error message because the error code = 2 (UNKNOWN)
         if (error.message?.contains('Stream was terminated') ?? false) {
           _cachedChannel = null;
           _reconnectToPuzzle();
