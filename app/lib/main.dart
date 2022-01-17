@@ -69,7 +69,6 @@ class _ImagePuzzle extends ConsumerWidget {
     }
 
     if (puzzleState.isError) {
-      print(puzzleState.error);
       return Center(
         child: TextButton(
           child: const Text('Reconnect'),

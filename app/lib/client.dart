@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_challenge/generated/puzzle/v1/puzzle.pbgrpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:shared/shared.dart';
@@ -38,7 +39,7 @@ class GrpcClient {
     client.subscribeToPuzzle(SubscribeToPuzzleRequest(userId: userId)).listen((event) {
       _puzzleStreamController.sink.add(toPuzzle(event.puzzle));
     }).onError((error, stackTrace) {
-      print('Error: $error');
+
 
       if (error is GrpcError) {
         // Delete previous channel, and reconnect when stream was terminated
@@ -47,6 +48,8 @@ class GrpcClient {
           _cachedChannel = null;
           _reconnectToPuzzle();
         }
+      } else {
+        debugPrint('Error: $error');
       }
     });
   }
