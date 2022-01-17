@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared/shared.dart';
 
 // Inital puzzle state
-final puzzleProvider = StateProvider.autoDispose((ref) {
+final AutoDisposeStateProvider<PuzzleState> puzzleProvider = StateProvider.autoDispose((ref) {
   // * Convert data to state
   PuzzleState _mapData(AsyncData<Puzzle> puzzle) {
     return PuzzleState(
@@ -63,18 +63,5 @@ final tiledImagesProvider = FutureProvider.autoDispose((ref) async {
 
 // Call the server and get updates on the current active puzzle
 final _remotePuzzleProvider = StreamProvider.autoDispose((ref) {
-  final client = GrpcClient.instance;
-
-  // * Send keep alive every 5 seconds
-  final timer = Timer.periodic(
-    const Duration(seconds: 5),
-    (_) => client.sendKeepAliveSignal(),
-  );
-
-  ref.onDispose(() {
-    timer.cancel();
-    client.close();
-  });
-
-  return client.subscribeToPuzzle();
+  return GrpcClient.instance.subscribeToPuzzle();
 });

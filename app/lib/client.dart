@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_challenge/generated/puzzle/v1/puzzle.pbgrpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:shared/shared.dart';
@@ -8,21 +10,44 @@ class GrpcClient {
 
   GrpcClient._internal();
 
-  final channel = ClientChannel(
-    'grpc.flutterdev.com',
-    port: 80,
-    options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
-  );
+  final _puzzleStreamController = StreamController<Puzzle>();
+
+  ClientChannel? _cachedChannel;
+  ClientChannel get _newChannel => ClientChannel(
+        'grpc.flutterdev.com',
+        port: 80,
+        options: const ChannelOptions(
+          credentials: ChannelCredentials.insecure(),
+        ),
+      );
+
+  ClientChannel get _channel => _cachedChannel ??= _newChannel;
 
   final userId = const Uuid().v4();
 
   PuzzleV1ServiceClient get client {
-    return PuzzleV1ServiceClient(channel);
+    return PuzzleV1ServiceClient(_channel);
   }
 
   Stream<Puzzle> subscribeToPuzzle() {
-    final call = client.subscribeToPuzzle(SubscribeToPuzzleRequest(userId: userId));
-    return call.map((event) => toPuzzle(event.puzzle));
+    _reconnectToPuzzle();
+    return _puzzleStreamController.stream;
+  }
+
+  void _reconnectToPuzzle() {
+    client.subscribeToPuzzle(SubscribeToPuzzleRequest(userId: userId)).listen((event) {
+      _puzzleStreamController.sink.add(toPuzzle(event.puzzle));
+    }).onError((error, stackTrace) {
+      print('Error: $error');
+
+      if (error is GrpcError) {
+        // Delete previous channel, and reconnect when stream was terminated
+        if (error.message?.contains('Stream was terminated') ?? false) {
+          _cachedChannel = null;
+          _reconnectToPuzzle();
+        }
+      }
+    });
   }
 
   void sendKeepAliveSignal() {
@@ -31,10 +56,6 @@ class GrpcClient {
 
   Future<void> voteOnTile(int tileValue) {
     return client.voteForTile(VoteForTileRequest(userId: userId, tileValue: tileValue));
-  }
-
-  void close() {
-    channel.shutdown();
   }
 }
 

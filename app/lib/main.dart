@@ -69,7 +69,13 @@ class _ImagePuzzle extends ConsumerWidget {
     }
 
     if (puzzleState.isError) {
-      return const Center(child: Text('Error'));
+      print(puzzleState.error);
+      return Center(
+        child: TextButton(
+          child: const Text('Reconnect'),
+          onPressed: () => ref.refresh(puzzleProvider),
+        ),
+      );
     }
 
     return GridView.count(
