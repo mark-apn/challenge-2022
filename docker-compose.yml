@@ -1,12 +1,26 @@
 version: '3'
 
 services:
+
+  # The nginx instance that routes external traffic to the gRPC application server workers
+  # If 1 process crashes, the gRPC application server will be restarted and the other workers
+  # will pick up the slack
+  nginx:
+    container_name: puzzle_nginx
+    build:
+      context: ./
+      dockerfile: ./server/build/Dockerfile.nginx
+    volumes:
+      - ./data/nginx:/var/log/nginx
+    ports:
+      - "50000:8080"
+
   # The background service that run scheduled tasks
   task_worker:
     container_name: puzzle_task_worker
     build:
       context: ./
-      dockerfile: ./server/Dockerfile.worker
+      dockerfile: ./server/build/Dockerfile.worker
     restart: always
 
   # 3 separate (load balanced) services that handle gRPC requests
@@ -14,35 +28,28 @@ services:
     container_name: puzzle_server_worker1
     build:
       context: ./
-      dockerfile: ./server/Dockerfile.server
+      dockerfile: ./server/build/Dockerfile.server
     restart: always
-    ports:
-      - "50001:80"
 
   server_worker2:
     container_name: puzzle_server_worker2
     build:
       context: ./
-      dockerfile: ./server/Dockerfile.server
+      dockerfile: ./server/build/Dockerfile.server
     restart: always
-    ports:
-      - "50002:80"
 
   server_worker3:
     container_name: puzzle_server_worker3
     build:
       context: ./
-      dockerfile: ./server/Dockerfile.server
+      dockerfile: ./server/build/Dockerfile.server
     restart: always
-    ports:
-      - "50003:80"
 
   # The database that saves the puzzles
   rethinkdb:
     container_name: puzzle_rethinkdb
     image: rethinkdb:2.4
-    ports:
-      - 8081:8080
-      - 28015:28015
     volumes:
       - ./data/db:/data
+    ports:
+      - "50001:8080"
