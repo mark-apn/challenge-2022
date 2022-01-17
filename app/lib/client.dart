@@ -9,11 +9,9 @@ class GrpcClient {
   GrpcClient._internal();
 
   final channel = ClientChannel(
-    '127.0.0.1',
-    port: 50000,
-    options: const ChannelOptions(
-      credentials: ChannelCredentials.insecure(),
-    ),
+    'grpc.flutterdev.com',
+    port: 80,
+    options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
   );
 
   final userId = const Uuid().v4();
