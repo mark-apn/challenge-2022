@@ -4,10 +4,9 @@ import 'channel/channel_stub.dart'
     if (dart.library.html) 'channel/channel_html.dart'
     if (dart.library.io) 'channel/channel_io.dart';
 
-const _grpcHost = 'grpc.flutterdev.com';
-const _grpcPort = 80;
 // const _grpcHost = 'localhost';
-// const _grpcPort = 50000;
+const _grpcHost = 'app.flutterdev.com';
+const _grpcPort = 5000;
 
 class GrpcChannelBuilder {
   ClientChannelBase get build => createNewGrpcChannel(_grpcHost, _grpcPort);
