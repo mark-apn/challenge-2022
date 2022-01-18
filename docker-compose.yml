@@ -2,6 +2,14 @@ version: '3'
 
 services:
 
+  web:
+    container_name: puzzle_web
+    build:
+      context: ./
+      dockerfile: ./build/Dockerfile.web
+    ports:
+      - "50002:80"
+
   # The nginx instance that routes external traffic to the gRPC application server workers
   # If 1 process crashes, the gRPC application server will be restarted and the other workers
   # will pick up the slack
@@ -9,7 +17,7 @@ services:
     container_name: puzzle_nginx
     build:
       context: ./
-      dockerfile: ./server/build/Dockerfile.nginx
+      dockerfile: ./build/Dockerfile.nginx
     volumes:
       - ./data/nginx:/var/log/nginx
     ports:
@@ -20,7 +28,7 @@ services:
     container_name: puzzle_task_worker
     build:
       context: ./
-      dockerfile: ./server/build/Dockerfile.worker
+      dockerfile: ./build/Dockerfile.worker
     restart: always
 
   # 3 separate (load balanced) services that handle gRPC requests
@@ -28,21 +36,21 @@ services:
     container_name: puzzle_server_worker1
     build:
       context: ./
-      dockerfile: ./server/build/Dockerfile.server
+      dockerfile: ./build/Dockerfile.server
     restart: always
 
   server_worker2:
     container_name: puzzle_server_worker2
     build:
       context: ./
-      dockerfile: ./server/build/Dockerfile.server
+      dockerfile: ./build/Dockerfile.server
     restart: always
 
   server_worker3:
     container_name: puzzle_server_worker3
     build:
       context: ./
-      dockerfile: ./server/build/Dockerfile.server
+      dockerfile: ./build/Dockerfile.server
     restart: always
 
   # The database that saves the puzzles

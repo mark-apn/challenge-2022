@@ -1,0 +1,23 @@
+FROM cirrusci/flutter:2.8.1 AS build
+
+WORKDIR /app
+
+# Copy pubspec and lock files (and local path dependency)
+COPY ./shared ./../shared
+COPY ./app/pubspec.* ./
+
+RUN flutter pub get
+
+# Copy app dir over to the container
+COPY ./app ./
+RUN flutter pub get --offline
+
+RUN flutter build web
+
+FROM nginx:alpine
+
+COPY --from=build ./app/build/web /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

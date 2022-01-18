@@ -20,12 +20,7 @@ class GrpcClient {
 
   ClientChannelBase get _channel => _cachedChannel ??= _newChannel;
   CallOptions get _defaultOptions {
-    return CallOptions(
-      metadata: {
-        'Access-Control-Allow-Origin': '*',
-        "Access-Control-Eexpose-Headers": "Grpc-Status,Grpc-Message",
-      },
-    );
+    return CallOptions();
   }
 
   final userId = const Uuid().v4();
