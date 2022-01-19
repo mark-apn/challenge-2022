@@ -39,8 +39,10 @@ class UpdatePuzzle extends Task {
       log('Puzzle is complete! Checking if it is time to create a new puzzle');
 
       // * Check last updated time (keep last completed puzzle active for a while)
+      /// TODO(mark): add solvedAt field to puzzle and add delay after puzzle is solved
 
       // * If last updated time is greater than a certain time, create a new puzzle
+      await puzzleRepo.createNewPuzzle();
 
       // * save to DB
     }
