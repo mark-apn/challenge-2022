@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:flutter_challenge_server/main.dart';
@@ -16,24 +15,19 @@ Future<void> main(List<String> args) async {
     [PuzzleV1Service()],
     const <Interceptor>[logInterceptor],
     CodecRegistry(codecs: const [
-      GzipCodec(),
-      IdentityCodec(),
+      GzipCodec()
     ]),
   );
 
   // * Serve
   await server.serve(
     port: int.parse(arguments['port']),
-    security: ServerTlsCredentials(
-      certificate: File('../certs/server.crt').readAsBytesSync(),
-      privateKey: File('../certs/server.key').readAsBytesSync(),
-    ),
   );
 
   print('Server listening on port ${server.port}...');
 }
 
 FutureOr<GrpcError?> logInterceptor(ServiceCall call, ServiceMethod method) {
-  print('${call.clientMetadata}');
+  print('Intercepted: ${call.clientMetadata}');
   return null;
 }

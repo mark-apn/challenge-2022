@@ -14,6 +14,7 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
 
   @override
   Stream<SubscribeToPuzzleResponse> subscribeToPuzzle(ServiceCall call, SubscribeToPuzzleRequest request) {
+    print('Recieved subscribe to puzzle request');
     puzzleRepo.subscribeToLatestPuzzle().then((feed) {
       if (feed == null) throw new Exception('No active puzzle');
 
@@ -42,6 +43,7 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
 
   @override
   Future<VoteForTileResponse> voteForTile(ServiceCall call, VoteForTileRequest request) {
+    print('Recieved vote for tile request');
     // * Keeps user stream alive
     usersAlive[request.userId] = DateTime.now();
 

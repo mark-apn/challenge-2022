@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/generated/puzzle/v1/puzzle.pbgrpc.dart';
 import 'package:flutter_challenge/grpc/channel.dart';
+import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_connection_interface.dart';
 import 'package:shared/shared.dart';
 import 'package:uuid/uuid.dart';
@@ -48,9 +49,12 @@ class GrpcClient {
       if (error is GrpcError) {
         // Delete previous channel, and reconnect when stream was terminated
         // We check the error message because the error code = 2 (UNKNOWN)
-        if (error.message?.contains('Stream was terminated') ?? false) {
+        if (error.code == StatusCode.unavailable || (error.message?.contains('Stream was terminated') ?? false)) {
+          debugPrint('Reconnecting to puzzle stream');
           _cachedChannel = null;
           _reconnectToPuzzle();
+        } else {
+          debugPrint('Error: $error');
         }
       } else {
         debugPrint('Error: $error');

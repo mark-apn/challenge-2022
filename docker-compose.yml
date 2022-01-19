@@ -13,15 +13,22 @@ services:
   # The nginx instance that routes external traffic to the gRPC application server workers
   # If 1 process crashes, the gRPC application server will be restarted and the other workers
   # will pick up the slack
+  envoy:
+    container_name: puzzle_proxy
+    build:
+      context: ./
+      dockerfile: ./build/Dockerfile.envoy
+    ports:
+      - "50000:8080"
+
+  # Nginx load balancer for the 3 separate server containers
   nginx:
-    container_name: puzzle_nginx
+    container_name: puzzle_load_balancer
     build:
       context: ./
       dockerfile: ./build/Dockerfile.nginx
     volumes:
       - ./data/nginx:/var/log/nginx
-    ports:
-      - "50000:8080"
 
   # The background service that run scheduled tasks
   task_worker:
