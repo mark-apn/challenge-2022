@@ -48,7 +48,7 @@ class Tile extends Equatable {
       value: value ?? this.value,
       correctPosition: correctPosition ?? this.correctPosition,
       currentPosition: currentPosition ?? this.currentPosition,
-      previousPosition: previousPosition ?? this.currentPosition,
+      previousPosition: previousPosition ?? this.previousPosition,
       numVotes: numVotes ?? this.numVotes,
       isWhitespace: isWhitespace ?? this.isWhitespace,
     );

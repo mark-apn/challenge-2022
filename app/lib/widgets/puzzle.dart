@@ -73,7 +73,6 @@ class _ImagePuzzle extends ConsumerWidget {
     });
 
     return Stack(
-      alignment: AlignmentDirectional.center,
       fit: StackFit.expand,
       children: tiles,
     );
@@ -94,11 +93,21 @@ class _Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return tile.isWhitespace ? const SizedBox.shrink() : _TappableTile(tile, image: image, size: tileSize);
+    return tile.isWhitespace
+        ? _AnimatedTile(
+            child: const SizedBox.shrink(),
+            tile: tile,
+            size: tileSize,
+          )
+        : _TappableTile(
+            tile,
+            image: image,
+            size: tileSize,
+          );
   }
 }
 
-class _TappableTile extends HookConsumerWidget {
+class _TappableTile extends ConsumerWidget {
   const _TappableTile(
     this.tile, {
     Key? key,
@@ -112,18 +121,9 @@ class _TappableTile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = useAnimationController(duration: const Duration(milliseconds: 1000));
-    final animation = useAnimation(controller);
-
-    useEffect(
-      () {
-        controller.forward();
-      },
-      [tile.currentPosition],
-    );
-
-    return Positioned.fromRect(
-      rect: _animateRect(animation),
+    return _AnimatedTile(
+      tile: tile,
+      size: size,
       child: GestureDetector(
         onTap: () {
           PuzzleVm.instance.tileTapped(tile);
@@ -157,6 +157,37 @@ class _TappableTile extends HookConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _AnimatedTile extends HookWidget {
+  const _AnimatedTile({
+    Key? key,
+    required this.child,
+    required this.tile,
+    required this.size,
+  }) : super(key: key);
+
+  final Widget child;
+  final Tile tile;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = useAnimationController(duration: const Duration(milliseconds: 200));
+    final animation = useAnimation(controller);
+
+    useEffect(
+      () {
+        controller.forward();
+      },
+      [tile.currentPosition],
+    );
+
+    return Positioned.fromRect(
+      rect: _animateRect(animation),
+      child: child,
     );
   }
 

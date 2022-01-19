@@ -163,9 +163,11 @@ class Puzzle extends Equatable {
       // Swap current board positions of the moving tile and the whitespace.
       tiles[tileIndex] = tile.copyWith(
         currentPosition: whitespaceTile.currentPosition,
+        previousPosition: tile.currentPosition,
       );
       tiles[whitespaceTileIndex] = whitespaceTile.copyWith(
         currentPosition: tile.currentPosition,
+        previousPosition: whitespaceTile.currentPosition,
       );
     }
 

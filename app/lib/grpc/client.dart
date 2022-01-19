@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/generated/puzzle/v1/puzzle.pbgrpc.dart';
 import 'package:flutter_challenge/grpc/channel.dart';
-import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_connection_interface.dart';
 import 'package:shared/shared.dart';
 import 'package:uuid/uuid.dart';
