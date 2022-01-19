@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3
   flutter_riverpod: ^1.0.3
+  flutter_hooks: ^0.18.2
   grpc: ^3.0.2
   protobuf: ^2.0.1
   hooks_riverpod: ^1.0.3

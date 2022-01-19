@@ -23,11 +23,7 @@ class MyApp extends StatelessWidget {
             Text('Flutter Challenge'),
             Expanded(
               child: Center(
-                child: FractionallySizedBox(
-                  widthFactor: 0.8,
-                  heightFactor: 0.8,
-                  child: Center(child: ImagePuzzleLoader()),
-                ),
+                child: ImagePuzzleLoader(),
               ),
             ),
           ],

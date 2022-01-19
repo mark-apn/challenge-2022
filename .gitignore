@@ -4,3 +4,6 @@ server/bin/server
 .packages
 .dart_tool/
 .DS_Store
+build/macos
+build/ios
+build/

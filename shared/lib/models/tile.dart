@@ -11,6 +11,7 @@ class Tile extends Equatable {
     required this.value,
     required this.correctPosition,
     required this.currentPosition,
+    this.previousPosition,
     this.numVotes = 0,
     this.isWhitespace = false,
   });
@@ -27,6 +28,9 @@ class Tile extends Equatable {
 
   /// The current 2D [Position] of the [Tile].
   final Position currentPosition;
+
+  /// The previous 2D [Position] of the [Tile].
+  final Position? previousPosition;
 
   /// Denotes if the [Tile] is the whitespace tile or not.
   final bool isWhitespace;
@@ -47,7 +51,6 @@ class Tile extends Equatable {
       isWhitespace: isWhitespace ?? this.isWhitespace,
     );
   }
-
 
   Map<String, dynamic> toMap() {
     return {
