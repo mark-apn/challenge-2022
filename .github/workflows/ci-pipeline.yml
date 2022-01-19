@@ -48,4 +48,4 @@ jobs:
           connect_timeout: 10s
           script: |
             cd "/var/docker_projects/${{ github.repository }}"
-            docker-compose up -d --remove-orphans
+            docker-compose up -d --remove-orphans --build
