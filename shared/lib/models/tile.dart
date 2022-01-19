@@ -40,6 +40,7 @@ class Tile extends Equatable {
     int? value,
     Position? correctPosition,
     Position? currentPosition,
+    Position? previousPosition,
     int? numVotes,
     bool? isWhitespace,
   }) {
@@ -47,6 +48,7 @@ class Tile extends Equatable {
       value: value ?? this.value,
       correctPosition: correctPosition ?? this.correctPosition,
       currentPosition: currentPosition ?? this.currentPosition,
+      previousPosition: previousPosition ?? this.currentPosition,
       numVotes: numVotes ?? this.numVotes,
       isWhitespace: isWhitespace ?? this.isWhitespace,
     );
@@ -57,6 +59,7 @@ class Tile extends Equatable {
       'value': value,
       'correctPosition': correctPosition.toMap(),
       'currentPosition': currentPosition.toMap(),
+      'previousPosition': previousPosition?.toMap(),
       'numVotes': numVotes,
       'isWhitespace': isWhitespace,
     };
@@ -67,16 +70,18 @@ class Tile extends Equatable {
       value: map['value']?.toInt() ?? 0,
       correctPosition: Position.fromMap(map['correctPosition']),
       currentPosition: Position.fromMap(map['currentPosition']),
+      previousPosition: map['previousPosition'] != null ? Position.fromMap(map['previousPosition']) : null,
       numVotes: map['numVotes']?.toInt() ?? 0,
       isWhitespace: map['isWhitespace'] ?? false,
     );
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         value,
         correctPosition,
         currentPosition,
+        previousPosition,
         numVotes,
         isWhitespace,
       ];

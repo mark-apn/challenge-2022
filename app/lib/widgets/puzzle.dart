@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_challenge/extensions.dart';
 import 'package:flutter_challenge/state/providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -44,6 +45,8 @@ class _ImagePuzzle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final puzzleState = ref.watch(puzzleProvider);
+    // * Only listen to num dimensions, not the board or tiles itself
+    final numDimensions = ref.watch(puzzleProvider.select((value) => value.puzzle.getDimension()));
 
     if (puzzleState.isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -58,18 +61,16 @@ class _ImagePuzzle extends ConsumerWidget {
       );
     }
 
-    // * Only listen to num dimensions, not the board or tiles itself
-    final numDimensions = ref.watch(puzzleProvider.select((value) => value.puzzle.getDimension()));
     final tileSize = (boardSize - 64) / numDimensions;
 
-    final tiles = List.generate(
-      numDimensions * numDimensions,
-      (index) => _Tile(
-        puzzleState.puzzle.tiles[index],
-        image: images[index],
+    final tiles = List.generate(numDimensions * numDimensions, (index) {
+      final tile = puzzleState.puzzle.tiles[index];
+      return _Tile(
+        tile,
+        image: images[tile.value - 1],
         tileSize: tileSize,
-      ),
-    );
+      );
+    });
 
     return Stack(
       alignment: AlignmentDirectional.center,
@@ -111,7 +112,7 @@ class _TappableTile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = useAnimationController(duration: const Duration(milliseconds: 200));
+    final controller = useAnimationController(duration: const Duration(milliseconds: 1000));
     final animation = useAnimation(controller);
 
     useEffect(

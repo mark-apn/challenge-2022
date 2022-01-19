@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_challenge/generated/widgets/puzzle.dart';
+import 'package:flutter_challenge/widgets/puzzle.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {

@@ -8,7 +8,7 @@
       "name": "Run local gRPC server",
       "cwd": "server",
       "request": "launch",
-      "program": "bin/server.dart",
+      "program": "bin/server.dart --port 12345",
       "type": "dart"
     },
     {

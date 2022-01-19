@@ -1,5 +1,3 @@
-
-import 'dart:ui';
 import 'package:equatable/equatable.dart';
 
 /// {@template position}
@@ -56,11 +54,4 @@ class Position extends Equatable implements Comparable<Position> {
       y: y ?? this.y,
     );
   }
-
-  Rect getRect({required double tileSize}) => Rect.fromLTWH(
-        (x - 1) * tileSize,
-        (y - 1) * tileSize,
-        tileSize,
-        tileSize,
-      );
 }

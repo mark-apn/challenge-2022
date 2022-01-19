@@ -7,7 +7,7 @@ import 'channel/channel_stub.dart'
 // const _grpcHost = 'localhost';
 // const _secure = false;
 
-const _local = false;
+const _local = true;
 
 const _grpcHost = _local ? 'localhost' : 'grpc.flutterdev.com';
 const _secure = !_local;

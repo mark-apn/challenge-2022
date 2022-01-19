@@ -49,7 +49,8 @@ class GrpcClient {
       if (error is GrpcError) {
         // Delete previous channel, and reconnect when stream was terminated
         // We check the error message because the error code = 2 (UNKNOWN)
-        if (error.code == StatusCode.unavailable || (error.message?.contains('Stream was terminated') ?? false)) {
+        // TODO error.code == StatusCode.unavailable || (Incremental backoff)
+        if ((error.message?.contains('Stream was terminated') ?? false)) {
           debugPrint('Reconnecting to puzzle stream');
           _cachedChannel = null;
           _reconnectToPuzzle();
@@ -80,7 +81,7 @@ Puzzle toPuzzle(PuzzleMessage message) {
     createdAt: DateTime.fromMillisecondsSinceEpoch(message.createdAt.toInt()),
     updatedAt: DateTime.fromMillisecondsSinceEpoch(message.updatedAt.toInt()),
     tiles: message.tiles.map(_toTile).toList(),
-    num_moves: message.numMoves,
+    numMoves: message.numMoves,
     status: message.status.value,
   );
 }
@@ -90,6 +91,7 @@ Tile _toTile(TileMessage message) {
     value: message.value,
     correctPosition: _toPosition(message.correctPosition),
     currentPosition: _toPosition(message.currentPosition),
+    previousPosition: _toPosition(message.previousPosition),
     isWhitespace: message.isWhitespace,
     numVotes: message.numVotes,
   );

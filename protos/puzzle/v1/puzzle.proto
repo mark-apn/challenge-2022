@@ -48,7 +48,8 @@ message TileMessage {
     int32 num_votes = 2;
     TilePosition current_position = 3;
     TilePosition correct_position = 4;
-    bool is_whitespace = 5;
+    TilePosition previous_position = 5;
+    bool is_whitespace = 6;
 }
 
 message TilePosition{
