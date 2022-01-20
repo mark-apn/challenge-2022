@@ -4,7 +4,7 @@ import 'channel/channel_stub.dart'
     if (dart.library.html) 'channel/channel_html.dart'
     if (dart.library.io) 'channel/channel_io.dart';
 
-const _local = true;
+const _local = false;
 const _grpcHost = _local ? 'localhost' : 'grpc.flutterdev.com';
 const _secure = !_local;
 const _grpcPort = 50000;
