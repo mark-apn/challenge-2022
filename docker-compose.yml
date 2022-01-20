@@ -21,14 +21,14 @@ services:
     ports:
       - "50000:8080"
 
-  # Nginx load balancer for the 3 separate server containers
-  nginx:
-    container_name: puzzle_load_balancer
-    build:
-      context: ./
-      dockerfile: ./build/Dockerfile.nginx
-    volumes:
-      - ./data/nginx:/var/log/nginx
+  # # Nginx load balancer for the 3 separate server containers
+  # nginx:
+  #   container_name: puzzle_load_balancer
+  #   build:
+  #     context: ./
+  #     dockerfile: ./build/Dockerfile.nginx
+  #   volumes:
+  #     - ./data/nginx:/var/log/nginx
 
   # The background service that run scheduled tasks
   task_worker:
@@ -46,19 +46,19 @@ services:
       dockerfile: ./build/Dockerfile.server
     restart: always
 
-  server_worker2:
-    container_name: puzzle_server_worker2
-    build:
-      context: ./
-      dockerfile: ./build/Dockerfile.server
-    restart: always
+  # server_worker2:
+  #   container_name: puzzle_server_worker2
+  #   build:
+  #     context: ./
+  #     dockerfile: ./build/Dockerfile.server
+  #   restart: always
 
-  server_worker3:
-    container_name: puzzle_server_worker3
-    build:
-      context: ./
-      dockerfile: ./build/Dockerfile.server
-    restart: always
+  # server_worker3:
+  #   container_name: puzzle_server_worker3
+  #   build:
+  #     context: ./
+  #     dockerfile: ./build/Dockerfile.server
+  #   restart: always
 
   # The database that saves the puzzles
   rethinkdb:
