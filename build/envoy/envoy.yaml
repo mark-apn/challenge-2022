@@ -46,4 +46,12 @@ static_resources:
       type: logical_dns
       http2_protocol_options: {}
       lb_policy: round_robin
-      hosts: [{ socket_address: { address: nginx, port_value: 8080 }}]
+      load_assignment:
+        cluster_name: cluster_0
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: nginx
+                      port_value: 8080
