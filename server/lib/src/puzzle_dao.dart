@@ -15,7 +15,7 @@ class PuzzleDao {
   Future<Connection> get _connection async {
     return _connectionCache ??= await _r.connect(
       db: 'puzzles',
-      host: 'rethinkdb', // docker container identifier
+      host: 'rethinkdb',
     );
   }
 

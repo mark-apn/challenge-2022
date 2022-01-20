@@ -53,5 +53,5 @@ static_resources:
               - endpoint:
                   address:
                     socket_address:
-                      address: server_worker1
+                      address: server_worker
                       port_value: 80
