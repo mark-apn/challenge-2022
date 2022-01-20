@@ -3,6 +3,7 @@
 # TODO, explain
 
 - document protoc install locally (dart pub global activate protoc_plugin)
+- add protoc brew install protobuf 
 - test if working with `protoc`
 
 - install buf (gRPC tools - versioning / lints / generation / api breaking checks etc)
@@ -12,12 +13,13 @@ brew tap bufbuild/buf
 brew install buf
 ```
 
+
 run `./bin/generate` to get generated clients for app and server
 
 -- document local server start
 dart ./server/src/main.dart
 
-
+brew install protobuf
 
 # SERVER
 

@@ -97,12 +97,13 @@ const TileMessage$json = const {
     const {'1': 'num_votes', '3': 2, '4': 1, '5': 5, '10': 'numVotes'},
     const {'1': 'current_position', '3': 3, '4': 1, '5': 11, '6': '.puzzle.v1.TilePosition', '10': 'currentPosition'},
     const {'1': 'correct_position', '3': 4, '4': 1, '5': 11, '6': '.puzzle.v1.TilePosition', '10': 'correctPosition'},
-    const {'1': 'is_whitespace', '3': 5, '4': 1, '5': 8, '10': 'isWhitespace'},
+    const {'1': 'previous_position', '3': 5, '4': 1, '5': 11, '6': '.puzzle.v1.TilePosition', '10': 'previousPosition'},
+    const {'1': 'is_whitespace', '3': 6, '4': 1, '5': 8, '10': 'isWhitespace'},
   ],
 };
 
 /// Descriptor for `TileMessage`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List tileMessageDescriptor = $convert.base64Decode('CgtUaWxlTWVzc2FnZRIUCgV2YWx1ZRgBIAEoBVIFdmFsdWUSGwoJbnVtX3ZvdGVzGAIgASgFUghudW1Wb3RlcxJCChBjdXJyZW50X3Bvc2l0aW9uGAMgASgLMhcucHV6emxlLnYxLlRpbGVQb3NpdGlvblIPY3VycmVudFBvc2l0aW9uEkIKEGNvcnJlY3RfcG9zaXRpb24YBCABKAsyFy5wdXp6bGUudjEuVGlsZVBvc2l0aW9uUg9jb3JyZWN0UG9zaXRpb24SIwoNaXNfd2hpdGVzcGFjZRgFIAEoCFIMaXNXaGl0ZXNwYWNl');
+final $typed_data.Uint8List tileMessageDescriptor = $convert.base64Decode('CgtUaWxlTWVzc2FnZRIUCgV2YWx1ZRgBIAEoBVIFdmFsdWUSGwoJbnVtX3ZvdGVzGAIgASgFUghudW1Wb3RlcxJCChBjdXJyZW50X3Bvc2l0aW9uGAMgASgLMhcucHV6emxlLnYxLlRpbGVQb3NpdGlvblIPY3VycmVudFBvc2l0aW9uEkIKEGNvcnJlY3RfcG9zaXRpb24YBCABKAsyFy5wdXp6bGUudjEuVGlsZVBvc2l0aW9uUg9jb3JyZWN0UG9zaXRpb24SRAoRcHJldmlvdXNfcG9zaXRpb24YBSABKAsyFy5wdXp6bGUudjEuVGlsZVBvc2l0aW9uUhBwcmV2aW91c1Bvc2l0aW9uEiMKDWlzX3doaXRlc3BhY2UYBiABKAhSDGlzV2hpdGVzcGFjZQ==');
 @$core.Deprecated('Use tilePositionDescriptor instead')
 const TilePosition$json = const {
   '1': 'TilePosition',

@@ -24,9 +24,9 @@ static_resources:
               - match: { prefix: "/" }
                 route:
                   cluster: puzzle_service
-                  max_grpc_timeout: 0s
                   timeout: 0s
                   max_stream_duration:
+                    max_stream_duration: 0s
                     grpc_timeout_header_max: 0s
               cors:
                 allow_origin_string_match:
@@ -41,17 +41,9 @@ static_resources:
           - name: envoy.filters.http.router
 
   clusters:
-  - name: puzzle_service
-    connect_timeout: 0.25s
-    type: logical_dns
-    http2_protocol_options: {}
-    lb_policy: round_robin
-    load_assignment:
-      cluster_name: cluster_0
-      endpoints:
-        - lb_endpoints:
-            - endpoint:
-                address:
-                  socket_address:
-                    address: nginx
-                    port_value: 8080
+    - name: puzzle_service
+      connect_timeout: 0.25s
+      type: logical_dns
+      http2_protocol_options: {}
+      lb_policy: round_robin
+      hosts: [{ socket_address: { address: nginx, port_value: 8080 }}]

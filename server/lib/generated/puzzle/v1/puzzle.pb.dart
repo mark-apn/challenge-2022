@@ -393,7 +393,8 @@ class TileMessage extends $pb.GeneratedMessage {
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'numVotes', $pb.PbFieldType.O3)
     ..aOM<TilePosition>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentPosition', subBuilder: TilePosition.create)
     ..aOM<TilePosition>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'correctPosition', subBuilder: TilePosition.create)
-    ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWhitespace')
+    ..aOM<TilePosition>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'previousPosition', subBuilder: TilePosition.create)
+    ..aOB(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWhitespace')
     ..hasRequiredFields = false
   ;
 
@@ -403,6 +404,7 @@ class TileMessage extends $pb.GeneratedMessage {
     $core.int? numVotes,
     TilePosition? currentPosition,
     TilePosition? correctPosition,
+    TilePosition? previousPosition,
     $core.bool? isWhitespace,
   }) {
     final _result = create();
@@ -417,6 +419,9 @@ class TileMessage extends $pb.GeneratedMessage {
     }
     if (correctPosition != null) {
       _result.correctPosition = correctPosition;
+    }
+    if (previousPosition != null) {
+      _result.previousPosition = previousPosition;
     }
     if (isWhitespace != null) {
       _result.isWhitespace = isWhitespace;
@@ -485,13 +490,24 @@ class TileMessage extends $pb.GeneratedMessage {
   TilePosition ensureCorrectPosition() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $core.bool get isWhitespace => $_getBF(4);
+  TilePosition get previousPosition => $_getN(4);
   @$pb.TagNumber(5)
-  set isWhitespace($core.bool v) { $_setBool(4, v); }
+  set previousPosition(TilePosition v) { setField(5, v); }
   @$pb.TagNumber(5)
-  $core.bool hasIsWhitespace() => $_has(4);
+  $core.bool hasPreviousPosition() => $_has(4);
   @$pb.TagNumber(5)
-  void clearIsWhitespace() => clearField(5);
+  void clearPreviousPosition() => clearField(5);
+  @$pb.TagNumber(5)
+  TilePosition ensurePreviousPosition() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  $core.bool get isWhitespace => $_getBF(5);
+  @$pb.TagNumber(6)
+  set isWhitespace($core.bool v) { $_setBool(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasIsWhitespace() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearIsWhitespace() => clearField(6);
 }
 
 class TilePosition extends $pb.GeneratedMessage {

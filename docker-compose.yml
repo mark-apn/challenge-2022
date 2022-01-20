@@ -67,4 +67,5 @@ services:
     volumes:
       - ./data/db:/data
     ports:
+      - "28015:28015"
       - "50001:8080"

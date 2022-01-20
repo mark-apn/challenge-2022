@@ -2,7 +2,7 @@ name: shared
 description: All models and classes both app and server need
 
 environment:
-  sdk: '>2.14.0 <3.0.0'
+  sdk: ">=2.15.1 <3.0.0"
 
 dependencies:
   equatable: ^2.0.3

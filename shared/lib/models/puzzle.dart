@@ -44,7 +44,7 @@ class Puzzle extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     this.status = PUZZLE_STATUS_INCOMPLETE,
-    this.num_moves = 0,
+    this.numMoves = 0,
   });
 
   factory Puzzle.fromTiles(List<Tile> tiles) => Puzzle(
@@ -77,7 +77,7 @@ class Puzzle extends Equatable {
   final int status;
 
   /// The number of moves made to solve the puzzle.
-  final int num_moves;
+  final int numMoves;
 
   /// Get the dimension of a puzzle given its tile arrangement.
   ///
@@ -131,7 +131,8 @@ class Puzzle extends Equatable {
   ///
   // Recursively stores a list of all tiles that need to be moved and passes the
   // list to _swapTiles to individually swap them.
-  Puzzle moveTiles(Tile tile, List<Tile> tilesToSwap) {
+  Puzzle moveTiles(Tile currentTile, List<Tile> tilesToSwap) {
+    final tile = currentTile.copyWith(previousPosition: currentTile.currentPosition);
     final whitespaceTile = getWhitespaceTile();
     final deltaX = whitespaceTile.currentPosition.x - tile.currentPosition.x;
     final deltaY = whitespaceTile.currentPosition.y - tile.currentPosition.y;
@@ -162,15 +163,17 @@ class Puzzle extends Equatable {
       // Swap current board positions of the moving tile and the whitespace.
       tiles[tileIndex] = tile.copyWith(
         currentPosition: whitespaceTile.currentPosition,
+        previousPosition: tile.currentPosition,
       );
       tiles[whitespaceTileIndex] = whitespaceTile.copyWith(
         currentPosition: tile.currentPosition,
+        previousPosition: whitespaceTile.currentPosition,
       );
     }
 
     return copyWith(
       tiles: tiles,
-      num_moves: num_moves + 1,
+      numMoves: numMoves + 1,
     );
   }
 
@@ -248,7 +251,7 @@ class Puzzle extends Equatable {
         updatedAt,
         tiles,
         status,
-        num_moves,
+        numMoves,
       ];
 
   Map<String, dynamic> toMap() {
@@ -258,7 +261,7 @@ class Puzzle extends Equatable {
       'updated_at': updatedAt.millisecondsSinceEpoch,
       'tiles': tiles.map((x) => x.toMap()).toList(),
       'status': status,
-      'num_moves': num_moves,
+      'num_moves': numMoves,
     };
   }
 
@@ -269,7 +272,7 @@ class Puzzle extends Equatable {
       updatedAt: map['updated_at'] != null ? DateTime.fromMillisecondsSinceEpoch(map['updated_at']) : DateTime.now(),
       tiles: List<Tile>.from(map['tiles']?.map((x) => Tile.fromMap(x))),
       status: map['status']?.toInt() ?? 0,
-      num_moves: map['num_moves']?.toInt() ?? 0,
+      numMoves: map['num_moves']?.toInt() ?? 0,
     );
   }
 
@@ -277,7 +280,7 @@ class Puzzle extends Equatable {
     List<Tile>? tiles,
     DateTime? createdAt,
     int? status,
-    int? num_moves,
+    int? numMoves,
   }) {
     return Puzzle(
       id: this.id,
@@ -285,7 +288,7 @@ class Puzzle extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: DateTime.now(),
       status: status ?? this.status,
-      num_moves: num_moves ?? this.num_moves,
+      numMoves: numMoves ?? this.numMoves,
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:grpc/grpc.dart';
 import 'package:shared/shared.dart';
 
 class PuzzleV1Service extends PuzzleV1ServiceBase {
+  // ignore: close_sinks
   final streamController = StreamController<Puzzle>.broadcast();
 
   final usersAlive = <String, DateTime>{};
@@ -68,7 +69,7 @@ PuzzleMessage toPuzzleMessage(Puzzle puzzle) {
     updatedAt: Int64(puzzle.updatedAt.millisecondsSinceEpoch),
     tiles: puzzle.tiles.map(_toTileMessage).toList(),
     status: PuzzleMessage_PuzzleStatus.valueOf(puzzle.status),
-    numMoves: puzzle.num_moves,
+    numMoves: puzzle.numMoves,
   );
 }
 
@@ -77,6 +78,7 @@ TileMessage _toTileMessage(Tile tile) {
     value: tile.value,
     currentPosition: _toPositionMessage(tile.currentPosition),
     correctPosition: _toPositionMessage(tile.correctPosition),
+    previousPosition: tile.previousPosition != null ? _toPositionMessage(tile.previousPosition!) : null,
     numVotes: tile.numVotes,
     isWhitespace: tile.isWhitespace,
   );

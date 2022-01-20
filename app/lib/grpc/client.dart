@@ -24,6 +24,7 @@ class GrpcClient {
     return CallOptions();
   }
 
+  //TODO(mark): save in shared prefs so we can track user across sessions
   final userId = const Uuid().v4();
 
   PuzzleV1ServiceClient get client {
@@ -35,7 +36,12 @@ class GrpcClient {
     return _puzzleStreamController.stream;
   }
 
-  void _reconnectToPuzzle() {
+  // Incremental backoff will start ad 400ms and doubles every pass
+  // TODO(mark): Add max retries
+  Future<void> _reconnectToPuzzle([int incrementalBackoffDelay = 0]) async {
+    // TODO(mark): expose countdown and reconnect now button in the UI
+    await Future.delayed(Duration(milliseconds: incrementalBackoffDelay));
+
     client
         .subscribeToPuzzle(
       SubscribeToPuzzleRequest(userId: userId),
@@ -52,7 +58,7 @@ class GrpcClient {
         if (error.code == StatusCode.unavailable || (error.message?.contains('Stream was terminated') ?? false)) {
           debugPrint('Reconnecting to puzzle stream');
           _cachedChannel = null;
-          _reconnectToPuzzle();
+          _reconnectToPuzzle(incrementalBackoffDelay == 0 ? 400 : incrementalBackoffDelay * 2);
         } else {
           debugPrint('Error: $error');
         }
@@ -80,7 +86,7 @@ Puzzle toPuzzle(PuzzleMessage message) {
     createdAt: DateTime.fromMillisecondsSinceEpoch(message.createdAt.toInt()),
     updatedAt: DateTime.fromMillisecondsSinceEpoch(message.updatedAt.toInt()),
     tiles: message.tiles.map(_toTile).toList(),
-    num_moves: message.numMoves,
+    numMoves: message.numMoves,
     status: message.status.value,
   );
 }
@@ -90,6 +96,7 @@ Tile _toTile(TileMessage message) {
     value: message.value,
     correctPosition: _toPosition(message.correctPosition),
     currentPosition: _toPosition(message.currentPosition),
+    previousPosition: _toPosition(message.previousPosition),
     isWhitespace: message.isWhitespace,
     numVotes: message.numVotes,
   );
