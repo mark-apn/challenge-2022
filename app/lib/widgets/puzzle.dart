@@ -7,7 +7,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared/shared.dart';
 
 class ImagePuzzleLoader extends HookConsumerWidget {
-  const ImagePuzzleLoader({Key? key}) : super(key: key);
+  const ImagePuzzleLoader({Key? key, this.fillPercentage = 0.8}) : super(key: key);
+
+  final double fillPercentage;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +26,7 @@ class ImagePuzzleLoader extends HookConsumerWidget {
 
               return _ImagePuzzle(
                 images: data,
-                boardSize: maxBoardSize,
+                boardSize: maxBoardSize * fillPercentage,
               );
             },
           ),
@@ -61,7 +63,7 @@ class _ImagePuzzle extends ConsumerWidget {
       );
     }
 
-    final tileSize = (boardSize - 64) / numDimensions;
+    final tileSize = boardSize / numDimensions;
 
     final tiles = List.generate(numDimensions * numDimensions, (index) {
       final tile = puzzleState.puzzle.tiles[index];
@@ -72,9 +74,14 @@ class _ImagePuzzle extends ConsumerWidget {
       );
     });
 
-    return Stack(
-      fit: StackFit.expand,
-      children: tiles,
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: boardSize,
+        maxHeight: boardSize,
+      ),
+      child: Stack(
+        children: tiles,
+      ),
     );
   }
 }

@@ -19,6 +19,7 @@ dependencies:
   shared:
     path: ../shared
   uuid: ^3.0.5
+  responsive_builder: ^0.4.1
 
 dev_dependencies:
   flutter_test:

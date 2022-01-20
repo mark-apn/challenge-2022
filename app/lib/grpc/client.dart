@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/generated/puzzle/v1/puzzle.pbgrpc.dart';
 import 'package:flutter_challenge/grpc/channel.dart';
+import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_connection_interface.dart';
 import 'package:shared/shared.dart';
 import 'package:uuid/uuid.dart';
@@ -23,6 +24,7 @@ class GrpcClient {
     return CallOptions();
   }
 
+  //TODO(mark): save in shared prefs so we can track user across sessions
   final userId = const Uuid().v4();
 
   PuzzleV1ServiceClient get client {
@@ -34,7 +36,12 @@ class GrpcClient {
     return _puzzleStreamController.stream;
   }
 
-  void _reconnectToPuzzle() {
+  // Incremental backoff will start ad 400ms and doubles every pass
+  // TODO(mark): Add max retries
+  Future<void> _reconnectToPuzzle([int incrementalBackoffDelay = 0]) async {
+    // TODO(mark): expose countdown and reconnect now button in the UI
+    await Future.delayed(Duration(milliseconds: incrementalBackoffDelay));
+
     client
         .subscribeToPuzzle(
       SubscribeToPuzzleRequest(userId: userId),
@@ -48,11 +55,10 @@ class GrpcClient {
       if (error is GrpcError) {
         // Delete previous channel, and reconnect when stream was terminated
         // We check the error message because the error code = 2 (UNKNOWN)
-        // TODO error.code == StatusCode.unavailable || (Incremental backoff)
-        if ((error.message?.contains('Stream was terminated') ?? false)) {
+        if (error.code == StatusCode.unavailable || (error.message?.contains('Stream was terminated') ?? false)) {
           debugPrint('Reconnecting to puzzle stream');
           _cachedChannel = null;
-          _reconnectToPuzzle();
+          _reconnectToPuzzle(incrementalBackoffDelay == 0 ? 400 : incrementalBackoffDelay * 2);
         } else {
           debugPrint('Error: $error');
         }
