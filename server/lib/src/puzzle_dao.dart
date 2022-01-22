@@ -8,6 +8,8 @@ import 'package:rethink_db_ns/rethink_db_ns.dart';
 
 typedef DbRow = Map<String, dynamic>;
 
+const _local = true;
+
 class PuzzleDao {
   final _r = RethinkDb();
 
@@ -15,7 +17,7 @@ class PuzzleDao {
   Future<Connection> get _connection async {
     return _connectionCache ??= await _r.connect(
       db: 'puzzles',
-      host: 'rethinkdb',
+      host: _local ? 'localhost' : 'rethinkdb',
     );
   }
 

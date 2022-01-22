@@ -4,7 +4,7 @@ import 'channel/channel_stub.dart'
     if (dart.library.html) 'channel/channel_html.dart'
     if (dart.library.io) 'channel/channel_io.dart';
 
-const _local = false;
+const _local = true;
 const _grpcHost = _local ? 'localhost' : 'grpc.nicepants.dev';
 const _secure = !_local;
 const _grpcPort = 50000;
@@ -12,3 +12,4 @@ const _grpcPort = 50000;
 class GrpcChannelBuilder {
   ClientChannelBase get build => createNewGrpcChannel(_local, _secure, _grpcHost, _grpcPort);
 }
+

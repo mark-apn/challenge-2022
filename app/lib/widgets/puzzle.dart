@@ -1,5 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_challenge/extensions.dart';
 import 'package:flutter_challenge/state/providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -69,6 +69,7 @@ class _ImagePuzzle extends ConsumerWidget {
       final tile = puzzleState.puzzle.tiles[index];
       return _Tile(
         tile,
+        key: ValueKey(tile.value),
         image: images[tile.value - 1],
         tileSize: tileSize,
       );
@@ -101,11 +102,7 @@ class _Tile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return tile.isWhitespace
-        ? _AnimatedTile(
-            child: const SizedBox.shrink(),
-            tile: tile,
-            size: tileSize,
-          )
+        ? const SizedBox.shrink()
         : _TappableTile(
             tile,
             image: image,
@@ -182,25 +179,17 @@ class _AnimatedTile extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = useAnimationController(duration: const Duration(milliseconds: 200));
-    final animation = useAnimation(controller);
-
-    useEffect(
-      () {
-        controller.forward();
-      },
-      [tile.currentPosition],
+    return AnimatedAlign(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+      alignment: FractionalOffset(
+        (tile.currentPosition.x - 1) / (3 - 1),
+        (tile.currentPosition.y - 1) / (3 - 1),
+      ),
+      child: SizedBox.fromSize(
+        size: Size(size, size),
+        child: child,
+      ),
     );
-
-    return Positioned.fromRect(
-      rect: _animateRect(animation),
-      child: child,
-    );
-  }
-
-  Rect _animateRect(double animation) {
-    final previousRect = tile.previousPosition?.getRect(tileSize: size);
-    final currentRect = tile.currentPosition.getRect(tileSize: size);
-    return Rect.lerp(previousRect, currentRect, animation) ?? currentRect;
   }
 }

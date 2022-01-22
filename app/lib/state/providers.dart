@@ -65,3 +65,7 @@ final tiledImagesProvider = FutureProvider.autoDispose((ref) async {
 final _remotePuzzleProvider = StreamProvider.autoDispose((ref) {
   return GrpcClient.instance.subscribeToPuzzle();
 });
+
+final puzzleDimensionsProvider = Provider.autoDispose((ref) {
+  return ref.watch(puzzleProvider.select((value) => value.puzzle.getDimension()));
+});
