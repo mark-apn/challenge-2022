@@ -35,7 +35,7 @@ class PortraitLayout extends StatelessWidget {
     return Column(
       children: [
         const Expanded(
-          child: Center(child: ImagePuzzleLoader()),
+          child: Center(child: PuzzleLoader()),
         ),
         Expanded(
           child: Container(),
@@ -56,7 +56,7 @@ class LandScapeLayout extends StatelessWidget {
           child: Container(),
         ),
         const Expanded(
-          child: Center(child: ImagePuzzleLoader()),
+          child: Center(child: PuzzleLoader()),
         ),
       ],
     );

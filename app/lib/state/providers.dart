@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/grpc/client.dart';
@@ -39,31 +38,15 @@ final puzzleProvider = StateProvider.autoDispose((ref) {
       );
 });
 
-// Provides a single tile by index
-final tileProvider = Provider.autoDispose.family((ref, int index) {
-  return ref.watch(puzzleProvider.select((state) => state.puzzle.tiles[index]));
-});
-
+// Image tiler that listens to the puzzle dimensions
 final tiledImagesProvider = FutureProvider.autoDispose((ref) async {
-  final dimensions = ref.watch(puzzleProvider.select((state) => state.puzzle.getDimension()));
-  final completer = Completer<List<Image>>();
+  final dimensions = ref.watch(puzzleDimensionsProvider);
 
   final uiImage = Image.asset('assets/img/dashing_dashes.png');
-  final imageTiler = ImageTiler(dimensions, dimensions);
-
-  final config = uiImage.image.resolve(const ImageConfiguration());
-  config.addListener(ImageStreamListener(
-    (ImageInfo info, __) {
-      imageTiler.image = info.image;
-
-      imageTiler.getTiles().then((tiles) {
-        completer.complete(tiles);
-      });
-    },
-    onError: completer.completeError,
-  ));
-
-  return completer.future;
+  return ImageTiler(
+    rows: dimensions,
+    columns: dimensions,
+  ).tile(uiImage);
 });
 
 // Call the server and get updates on the current active puzzle

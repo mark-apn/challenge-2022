@@ -35,6 +35,19 @@ class Tile extends Equatable {
   /// Denotes if the [Tile] is the whitespace tile or not.
   final bool isWhitespace;
 
+ bool isTileMovable(Tile whitespaceTile) {
+    if (this == whitespaceTile) {
+      return false;
+    }
+
+    // A tile must be in the same row or column as the whitespace to move.
+    if (whitespaceTile.currentPosition.x != currentPosition.x &&
+        whitespaceTile.currentPosition.y != currentPosition.y) {
+      return false;
+    }
+    return true;
+  }
+
   /// Create a copy of this [Tile] with updated current position.
   Tile copyWith({
     int? value,

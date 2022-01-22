@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -10,7 +11,11 @@ class ImageTiler {
   final int _rows;
   final int _columns;
 
-  ImageTiler(this._rows, this._columns);
+  ImageTiler({
+    required int rows,
+    required int columns,
+  })  : _rows = rows,
+        _columns = columns;
 
   set image(ui.Image image) {
     _bitmap = image;
@@ -61,6 +66,24 @@ class ImageTiler {
       image: UiImageProvider(await _croppedBitmap(offset, size)),
       fit: BoxFit.contain,
     );
+  }
+
+  Future<List<Image>> tile(Image uiImage) async {
+    final completer = Completer<List<Image>>();
+    final config = uiImage.image.resolve(const ImageConfiguration());
+
+    config.addListener(ImageStreamListener(
+      (ImageInfo info, __) {
+        image = info.image;
+
+        getTiles().then((tiles) {
+          completer.complete(tiles);
+        });
+      },
+      onError: completer.completeError,
+    ));
+
+    return completer.future;
   }
 }
 

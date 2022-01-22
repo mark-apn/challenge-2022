@@ -1,13 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/state/providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared/shared.dart';
 
-class ImagePuzzleLoader extends HookConsumerWidget {
-  const ImagePuzzleLoader({Key? key, this.fillPercentage = 0.8}) : super(key: key);
+class PuzzleLoader extends HookConsumerWidget {
+  const PuzzleLoader({Key? key, this.fillPercentage = 0.8}) : super(key: key);
 
   final double fillPercentage;
 
@@ -18,15 +16,10 @@ class ImagePuzzleLoader extends HookConsumerWidget {
           error: (error, _) => Text(error.toString()),
           data: (data) => LayoutBuilder(
             builder: (_, constraints) {
-              double maxBoardSize = constraints.maxHeight;
-
-              if (constraints.maxWidth < constraints.maxHeight) {
-                maxBoardSize = constraints.maxWidth;
-              }
-
-              return _ImagePuzzle(
+              final maxSize = constraints.biggest.shortestSide * fillPercentage;
+              return _PuzzleBoard(
                 images: data,
-                boardSize: maxBoardSize * fillPercentage,
+                boardSize: maxSize,
               );
             },
           ),
@@ -34,8 +27,8 @@ class ImagePuzzleLoader extends HookConsumerWidget {
   }
 }
 
-class _ImagePuzzle extends ConsumerWidget {
-  const _ImagePuzzle({
+class _PuzzleBoard extends ConsumerWidget {
+  const _PuzzleBoard({
     Key? key,
     required this.images,
     required this.boardSize,
@@ -48,8 +41,7 @@ class _ImagePuzzle extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(puzzleProvider.select((value) => value.isLoading));
     final isError = ref.watch(puzzleProvider.select((value) => value.isError));
-
-    // * Only listen to num dimensions, not the board or tiles itself
+    final tiles = ref.watch(puzzleProvider.select((value) => value.puzzle.tiles));
     final numDimensions = ref.watch(puzzleDimensionsProvider);
 
     if (isLoading) {
@@ -67,12 +59,13 @@ class _ImagePuzzle extends ConsumerWidget {
 
     final tileSize = boardSize / numDimensions;
 
-    final tiles = ref.watch(puzzleProvider.select((value) => value.puzzle.tiles));
+    final whiteSpaceTile = tiles.firstWhere((tile) => tile.isWhitespace);
     final children = List.generate(
       numDimensions * numDimensions,
       (index) {
         Widget builder(Tile tile) => _Tile(
               tile,
+              whiteSpaceTile,
               key: ValueKey(tile.value),
               image: images[tile.value - 1],
               size: tileSize,
@@ -82,9 +75,6 @@ class _ImagePuzzle extends ConsumerWidget {
 
         if (tile.isWhitespace) return const SizedBox.shrink();
         return builder(tile);
-
-        // TODO(mark): Why doesnt this work :-(
-        return _TileBuilder(index, builder: builder);
       },
     );
 
@@ -97,33 +87,38 @@ class _ImagePuzzle extends ConsumerWidget {
 
 class _Tile extends ConsumerWidget {
   const _Tile(
-    this.tile, {
+    this.tile,
+    this.whiteSpaceTile, {
     Key? key,
     required this.image,
     required this.size,
   }) : super(key: key);
 
   final Tile tile;
+  final Tile whiteSpaceTile;
   final Image image;
   final double size;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    Widget child = SizedBox.square(
+      dimension: size,
+      child: _TileContent(
+        image: image,
+        tile: tile,
+        whiteSpaceTile: whiteSpaceTile,
+      ),
+    );
+
+    if (tile.isTileMovable(whiteSpaceTile)) {
+      child = GestureDetector(
+        onTap: () => PuzzleVm.instance.tileTapped(tile),
+        child: child,
+      );
+    }
     return _AnimatedTile(
       position: tile.currentPosition,
-      child: GestureDetector(
-        onTap: () {
-          debugPrint('Tile tapped: ${tile.value}');
-          PuzzleVm.instance.tileTapped(tile);
-        },
-        child: SizedBox.square(
-          dimension: size,
-          child: _TileContent(
-            image: image,
-            tile: tile,
-          ),
-        ),
-      ),
+      child: child,
     );
   }
 }
@@ -133,68 +128,46 @@ class _TileContent extends StatelessWidget {
     Key? key,
     required this.image,
     required this.tile,
+    required this.whiteSpaceTile,
   }) : super(key: key);
 
   final Image image;
   final Tile tile;
+  final Tile whiteSpaceTile;
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('Tile: ${tile.value} - rebuild');
+    Widget? child;
+    if (tile.isTileMovable(whiteSpaceTile)) {
+      child = Center(
+        child: Text(
+          '${tile.numVotes}',
+          style: const TextStyle(
+            fontSize: 50,
+            shadows: [
+              Shadow(
+                color: Colors.white,
+                blurRadius: 4,
+                offset: Offset(0, 1),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Container(
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(image: image.image, fit: BoxFit.cover),
       ),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              '${tile.numVotes}',
-              style: const TextStyle(
-                fontSize: 50,
-                shadows: [
-                  Shadow(
-                    color: Colors.white,
-                    blurRadius: 4,
-                    offset: Offset(0, 1),
-                  ),
-                ],
-              ),
-            ),
-            const Text('votes'),
-          ],
-        ),
-      ),
+      child: child,
     );
   }
 }
 
-class _TileBuilder extends ConsumerWidget {
-  const _TileBuilder(
-    this.index, {
-    Key? key,
-    required this.builder,
-  }) : super(key: key);
-
-  final int index;
-  final Widget Function(Tile) builder;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tile = ref.watch(tileProvider(index));
-
-    if (tile.isWhitespace) {
-      return const SizedBox.shrink();
-    }
-
-    return builder(tile);
-  }
-}
-
-class _AnimatedTile extends HookWidget {
+class _AnimatedTile extends HookConsumerWidget {
   const _AnimatedTile({
     Key? key,
     required this.child,
@@ -205,13 +178,15 @@ class _AnimatedTile extends HookWidget {
   final Position position;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final numDimensions = ref.watch(puzzleDimensionsProvider);
+
     return AnimatedAlign(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
       alignment: FractionalOffset(
-        (position.x - 1) / (3 - 1),
-        (position.y - 1) / (3 - 1),
+        (position.x - 1) / (numDimensions - 1),
+        (position.y - 1) / (numDimensions - 1),
       ),
       child: child,
     );

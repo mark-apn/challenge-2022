@@ -114,16 +114,7 @@ class Puzzle extends Equatable {
   /// tile.
   bool isTileMovable(Tile tile) {
     final whitespaceTile = getWhitespaceTile();
-    if (tile == whitespaceTile) {
-      return false;
-    }
-
-    // A tile must be in the same row or column as the whitespace to move.
-    if (whitespaceTile.currentPosition.x != tile.currentPosition.x &&
-        whitespaceTile.currentPosition.y != tile.currentPosition.y) {
-      return false;
-    }
-    return true;
+    return tile.isTileMovable(whitespaceTile);
   }
 
   /// Shifts one or many tiles in a row/column with the whitespace and returns
