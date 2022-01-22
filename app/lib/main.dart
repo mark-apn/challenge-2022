@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/widgets/puzzle.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Challenge 2022',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.spaceGroteskTextTheme(),
       ),
       home: Scaffold(
         body: OrientationLayoutBuilder(

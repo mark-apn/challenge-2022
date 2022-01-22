@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/state/providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared/shared.dart';
 
@@ -113,7 +115,7 @@ class _Tile extends ConsumerWidget {
     if (tile.isTileMovable(whiteSpaceTile)) {
       child = GestureDetector(
         onTap: () => PuzzleVm.instance.tileTapped(tile),
-        child: child,
+        child: _TileHover(child: child),
       );
     }
     return _AnimatedTile(
@@ -139,27 +141,39 @@ class _TileContent extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget? child;
     if (tile.isTileMovable(whiteSpaceTile)) {
-      child = Center(
-        child: Text(
-          '${tile.numVotes}',
-          style: const TextStyle(
-            fontSize: 50,
-            shadows: [
-              Shadow(
+      child = Align(
+        alignment: Alignment.topRight,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FractionallySizedBox(
+            widthFactor: 0.2,
+            heightFactor: 0.2,
+            child: Container(
+              decoration: const BoxDecoration(
                 color: Colors.white,
-                blurRadius: 4,
-                offset: Offset(0, 1),
+                shape: BoxShape.circle,
               ),
-            ],
+              child: Center(
+                child: AutoSizeText(
+                  '${tile.numVotes}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 50,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       );
     }
 
     return Container(
-      margin: const EdgeInsets.all(2),
+      margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(16),
         image: DecorationImage(image: image.image, fit: BoxFit.cover),
       ),
       child: child,
@@ -189,6 +203,27 @@ class _AnimatedTile extends HookConsumerWidget {
         (position.y - 1) / (numDimensions - 1),
       ),
       child: child,
+    );
+  }
+}
+
+class _TileHover extends HookWidget {
+  const _TileHover({Key? key, required this.child}) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final isHovering = useState(false);
+
+    return MouseRegion(
+      onEnter: (_) => isHovering.value = true,
+      onExit: (_) => isHovering.value = false,
+      child: AnimatedScale(
+        duration: const Duration(milliseconds: 150),
+        scale: isHovering.value ? 0.8 : 1,
+        child: child,
+      ),
     );
   }
 }

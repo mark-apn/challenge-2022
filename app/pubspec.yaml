@@ -20,6 +20,8 @@ dependencies:
     path: ../shared
   uuid: ^3.0.5
   responsive_builder: ^0.4.1
+  auto_size_text: ^3.0.0
+  google_fonts: ^2.2.0
 
 dev_dependencies:
   flutter_test:
