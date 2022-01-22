@@ -24,6 +24,17 @@
       "type": "dart",
       "request": "launch",
       "program": "lib/main.dart"
+    },
+    {
+      "name": "Run webserver",
+      "cwd": "app",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "-d",
+        "-d web-server"
+      ]
     }
   ]
 }

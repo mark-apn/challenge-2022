@@ -20,7 +20,7 @@ services:
 
   # The background service that run scheduled tasks
   task_worker:
-    container_name: puzzle_task_worker
+    container_name: puzzle_worker
     build:
       context: ./
       dockerfile: ./build/Dockerfile.worker
@@ -28,7 +28,7 @@ services:
 
   # Server that handles the gRPC requests
   server_worker:
-    container_name: puzzle_server_worker
+    container_name: puzzle_server
     build:
       context: ./
       dockerfile: ./build/Dockerfile.server
@@ -36,7 +36,7 @@ services:
 
   # The database that saves the puzzles
   rethinkdb:
-    container_name: puzzle_rethinkdb
+    container_name: puzzle_db
     image: rethinkdb:2.4
     volumes:
       - ./data/db:/data
