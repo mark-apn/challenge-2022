@@ -68,29 +68,25 @@ class _ImagePuzzle extends ConsumerWidget {
     final tileSize = boardSize / numDimensions;
 
     final tiles = ref.watch(puzzleProvider.select((value) => value.puzzle.tiles));
-    final children = List.generate(numDimensions * numDimensions, (index) {
-      final tile = tiles[index];
+    final children = List.generate(
+      numDimensions * numDimensions,
+      (index) {
+        Widget builder(Tile tile) => _Tile(
+              tile,
+              key: ValueKey(tile.value),
+              image: images[tile.value - 1],
+              size: tileSize,
+            );
 
-      if (tile.isWhitespace) return const SizedBox.shrink();
-      return _Tile(
-        tile,
-        key: ValueKey(tile.value),
-        image: images[tile.value - 1],
-        size: tileSize,
-      );
+        final tile = tiles[index];
 
-      // TODO(mark): Why doesnt this work
-      return _TileBuilder(
-        index,
-        key: ValueKey('tile_builder_$index'),
-        builder: (tile) => _Tile(
-          tile,
-          key: ValueKey(tile.value),
-          image: images[tile.value - 1],
-          size: tileSize,
-        ),
-      );
-    });
+        if (tile.isWhitespace) return const SizedBox.shrink();
+        return builder(tile);
+
+        // TODO(mark): Why doesnt this work :-(
+        return _TileBuilder(index, builder: builder);
+      },
+    );
 
     return Container(
       constraints: BoxConstraints.tight(Size(boardSize, boardSize)),
