@@ -46,15 +46,17 @@ class _ImagePuzzle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final puzzleState = ref.watch(puzzleProvider);
-    // * Only listen to num dimensions, not the board or tiles itself
-    final numDimensions = ref.watch(puzzleProvider.select((value) => value.puzzle.getDimension()));
+    final isLoading = ref.watch(puzzleProvider.select((value) => value.isLoading));
+    final isError = ref.watch(puzzleProvider.select((value) => value.isError));
 
-    if (puzzleState.isLoading) {
+    // * Only listen to num dimensions, not the board or tiles itself
+    final numDimensions = ref.watch(puzzleDimensionsProvider);
+
+    if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (puzzleState.isError) {
+    if (isError) {
       return Center(
         child: TextButton(
           child: const Text('Reconnect'),
@@ -65,54 +67,40 @@ class _ImagePuzzle extends ConsumerWidget {
 
     final tileSize = boardSize / numDimensions;
 
-    final tiles = List.generate(numDimensions * numDimensions, (index) {
-      final tile = puzzleState.puzzle.tiles[index];
+    final tiles = ref.watch(puzzleProvider.select((value) => value.puzzle.tiles));
+    final children = List.generate(numDimensions * numDimensions, (index) {
+      final tile = tiles[index];
+
+      if (tile.isWhitespace) return const SizedBox.shrink();
       return _Tile(
         tile,
         key: ValueKey(tile.value),
         image: images[tile.value - 1],
-        tileSize: tileSize,
+        size: tileSize,
+      );
+
+      // TODO(mark): Why doesnt this work
+      return _TileBuilder(
+        index,
+        key: ValueKey('tile_builder_$index'),
+        builder: (tile) => _Tile(
+          tile,
+          key: ValueKey(tile.value),
+          image: images[tile.value - 1],
+          size: tileSize,
+        ),
       );
     });
 
     return Container(
-      constraints: BoxConstraints(
-        maxWidth: boardSize,
-        maxHeight: boardSize,
-      ),
-      child: Stack(
-        children: tiles,
-      ),
+      constraints: BoxConstraints.tight(Size(boardSize, boardSize)),
+      child: Stack(children: children),
     );
   }
 }
 
-class _Tile extends StatelessWidget {
+class _Tile extends ConsumerWidget {
   const _Tile(
-    this.tile, {
-    Key? key,
-    required this.image,
-    required this.tileSize,
-  }) : super(key: key);
-
-  final Tile tile;
-  final Image? image;
-  final double tileSize;
-
-  @override
-  Widget build(BuildContext context) {
-    return tile.isWhitespace
-        ? const SizedBox.shrink()
-        : _TappableTile(
-            tile,
-            image: image,
-            size: tileSize,
-          );
-  }
-}
-
-class _TappableTile extends ConsumerWidget {
-  const _TappableTile(
     this.tile, {
     Key? key,
     required this.image,
@@ -120,44 +108,67 @@ class _TappableTile extends ConsumerWidget {
   }) : super(key: key);
 
   final Tile tile;
-  final Image? image;
+  final Image image;
   final double size;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return _AnimatedTile(
-      tile: tile,
-      size: size,
+      position: tile.currentPosition,
       child: GestureDetector(
         onTap: () {
+          debugPrint('Tile tapped: ${tile.value}');
           PuzzleVm.instance.tileTapped(tile);
         },
-        child: Stack(
+        child: SizedBox.square(
+          dimension: size,
+          child: _TileContent(
+            image: image,
+            tile: tile,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TileContent extends StatelessWidget {
+  const _TileContent({
+    Key? key,
+    required this.image,
+    required this.tile,
+  }) : super(key: key);
+
+  final Image image;
+  final Tile tile;
+
+  @override
+  Widget build(BuildContext context) {
+    debugPrint('Tile: ${tile.value} - rebuild');
+    return Container(
+      margin: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(image: image.image, fit: BoxFit.cover),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              margin: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: image != null ? DecorationImage(image: image!.image, fit: BoxFit.cover) : null,
-              ),
-            ),
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    '${tile.numVotes}',
-                    style: const TextStyle(
-                      fontSize: 50,
-                      shadows: [
-                        Shadow(color: Colors.white, blurRadius: 4, offset: Offset(0, 1)),
-                      ],
-                    ),
+            Text(
+              '${tile.numVotes}',
+              style: const TextStyle(
+                fontSize: 50,
+                shadows: [
+                  Shadow(
+                    color: Colors.white,
+                    blurRadius: 4,
+                    offset: Offset(0, 1),
                   ),
-                  const Text('votes'),
                 ],
               ),
             ),
+            const Text('votes'),
           ],
         ),
       ),
@@ -165,17 +176,37 @@ class _TappableTile extends ConsumerWidget {
   }
 }
 
+class _TileBuilder extends ConsumerWidget {
+  const _TileBuilder(
+    this.index, {
+    Key? key,
+    required this.builder,
+  }) : super(key: key);
+
+  final int index;
+  final Widget Function(Tile) builder;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tile = ref.watch(tileProvider(index));
+
+    if (tile.isWhitespace) {
+      return const SizedBox.shrink();
+    }
+
+    return builder(tile);
+  }
+}
+
 class _AnimatedTile extends HookWidget {
   const _AnimatedTile({
     Key? key,
     required this.child,
-    required this.tile,
-    required this.size,
+    required this.position,
   }) : super(key: key);
 
   final Widget child;
-  final Tile tile;
-  final double size;
+  final Position position;
 
   @override
   Widget build(BuildContext context) {
@@ -183,13 +214,10 @@ class _AnimatedTile extends HookWidget {
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
       alignment: FractionalOffset(
-        (tile.currentPosition.x - 1) / (3 - 1),
-        (tile.currentPosition.y - 1) / (3 - 1),
+        (position.x - 1) / (3 - 1),
+        (position.y - 1) / (3 - 1),
       ),
-      child: SizedBox.fromSize(
-        size: Size(size, size),
-        child: child,
-      ),
+      child: child,
     );
   }
 }

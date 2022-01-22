@@ -39,6 +39,11 @@ final puzzleProvider = StateProvider.autoDispose((ref) {
       );
 });
 
+// Provides a single tile by index
+final tileProvider = Provider.autoDispose.family((ref, int index) {
+  return ref.watch(puzzleProvider.select((state) => state.puzzle.tiles[index]));
+});
+
 final tiledImagesProvider = FutureProvider.autoDispose((ref) async {
   final dimensions = ref.watch(puzzleProvider.select((state) => state.puzzle.getDimension()));
   final completer = Completer<List<Image>>();
