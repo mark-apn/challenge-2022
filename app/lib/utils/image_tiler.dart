@@ -74,7 +74,9 @@ class ImageTiler {
         image = info.image;
 
         getTiles().then((tiles) {
-          completer.complete(tiles);
+          if (!completer.isCompleted) {
+            completer.complete(tiles);
+          }
         });
       },
       onError: completer.completeError,

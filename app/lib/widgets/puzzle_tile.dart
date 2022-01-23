@@ -1,5 +1,3 @@
-
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/state/puzzle_providers.dart';
@@ -110,7 +108,7 @@ class _TileBackground extends HookConsumerWidget {
       margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        image: DecorationImage(image: image.image, fit: BoxFit.cover),
+        image: image != null ? DecorationImage(image: image.image, fit: BoxFit.cover) : null,
       ),
       child: child,
     );

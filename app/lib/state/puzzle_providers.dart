@@ -52,7 +52,12 @@ final tileImagesProvider = FutureProvider.autoDispose((ref) async {
   final tiles = await ImageTiler(
     rows: dimensions,
     columns: dimensions,
-  ).tile(uiImage);
+  ).tile(uiImage).onError((error, stackTrace) {
+    print(error.toString());
+    print(stackTrace.toString());
+
+    return [];
+  });
 
   int i = 0;
   final cache = ImageCache.instance;
@@ -66,9 +71,15 @@ final tileImagesProvider = FutureProvider.autoDispose((ref) async {
 });
 
 /// Used to get 1 of the tiles from the tile cache
-final imageForTileByValueProvider = Provider.autoDispose.family<Image, int>((ref, value) {
+final imageForTileByValueProvider = Provider.autoDispose.family<Image?, int>((ref, value) {
   // Tile value is 1 based, cache 0 based so subtract 1 from given value
-  return Image.memory(ImageCache.instance.get(value-1)!);
+  final imageData = ImageCache.instance.get(value - 1);
+
+  if (imageData != null) {
+    return Image.memory(imageData);
+  } else {
+    return null;
+  }
 });
 
 // Call the server and get updates on the current active puzzle
