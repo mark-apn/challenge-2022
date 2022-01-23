@@ -20,15 +20,14 @@ class PuzzleTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final puzzleStatus = ref.watch(puzzleStatusProvider);
+    final isMoveable = tile.isTileMovable(whiteSpaceTile) && puzzleStatus != PUZZLE_STATUS_COMPLETE;
     Widget child = SizedBox.square(
       dimension: size,
-      child: _TileContent(
-        tile: tile,
-        whiteSpaceTile: whiteSpaceTile,
-      ),
+      child: _TileContent(tile: tile, isMoveable: isMoveable),
     );
 
-    if (tile.isTileMovable(whiteSpaceTile)) {
+    if (tile.isTileMovable(whiteSpaceTile) && puzzleStatus != PUZZLE_STATUS_COMPLETE) {
       child = GestureDetector(
         onTap: () => PuzzleVm.instance.tileTapped(tile),
         child: _TileHover(child: child),
@@ -45,16 +44,16 @@ class _TileContent extends StatelessWidget {
   const _TileContent({
     Key? key,
     required this.tile,
-    required this.whiteSpaceTile,
+    required this.isMoveable,
   }) : super(key: key);
 
   final Tile tile;
-  final Tile whiteSpaceTile;
+  final bool isMoveable;
 
   @override
   Widget build(BuildContext context) {
     Widget? child;
-    if (tile.isTileMovable(whiteSpaceTile)) {
+    if (isMoveable) {
       child = Align(
         alignment: Alignment.topRight,
         child: Padding(

@@ -60,8 +60,7 @@ class CreatedAtPanel extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // * Listen to the timer that will update the label value
     ref.watch(createdAtTimerProvider);
-    // * Listen to the smallest piece of data that we care about.
-    final label = ref.watch(createdAtTime);
+    final label = ref.watch(createdAtLabelProvider);
 
     return _BaseInfoPanel(
       icon: Icons.timer,

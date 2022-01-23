@@ -86,3 +86,7 @@ final remotePuzzleProvider = StreamProvider.autoDispose((ref) {
 final puzzleDimensionsProvider = Provider.autoDispose((ref) {
   return ref.watch(puzzleProvider.select((value) => value.puzzle.getDimension()));
 });
+
+final puzzleStatusProvider = Provider.autoDispose((ref) {
+  return ref.watch(puzzleProvider.select((value) => value.puzzle.status));
+});

@@ -10,7 +10,9 @@ class LandScapeLayout extends StatelessWidget {
     return Row(
       children: const [
         Expanded(
-          child: Center(child: InfoPanelRow()),
+          child: Center(
+            child: InfoPanelRow(),
+          ),
         ),
         Expanded(
           child: Center(child: PuzzleBoardLoader()),
