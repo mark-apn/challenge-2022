@@ -33,7 +33,7 @@
       "program": "lib/main.dart",
       "args": [
         "-d",
-        "-d web-server"
+        "web-server"
       ]
     }
   ]

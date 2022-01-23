@@ -52,12 +52,7 @@ final tileImagesProvider = FutureProvider.autoDispose((ref) async {
   final tiles = await ImageTiler(
     rows: dimensions,
     columns: dimensions,
-  ).tile(uiImage).onError((error, stackTrace) {
-    print(error.toString());
-    print(stackTrace.toString());
-
-    return [];
-  });
+  ).tile(uiImage).onError((_, __) => []);
 
   int i = 0;
   final cache = ImageCache.instance;
