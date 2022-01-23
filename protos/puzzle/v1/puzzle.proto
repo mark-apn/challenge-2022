@@ -3,16 +3,9 @@ syntax = "proto3";
 package puzzle.v1;
 
 service PuzzleV1Service {
-    rpc KeepAlive(KeepAliveRequest) returns (KeepAliveResponse) {}
     rpc SubscribeToPuzzle (SubscribeToPuzzleRequest) returns (stream SubscribeToPuzzleResponse);
     rpc VoteForTile (VoteForTileRequest) returns (VoteForTileResponse);
 }
-
-message KeepAliveRequest {
-    string user_id = 1;
-}
-
-message KeepAliveResponse {}
 
 message SubscribeToPuzzleRequest {
     string user_id = 1;
@@ -33,14 +26,17 @@ message PuzzleMessage {
     string id = 1;
     int64 created_at = 2;
     int64 updated_at = 3;
-    repeated TileMessage tiles = 4;
+    int64 ends_at = 4;
+    repeated TileMessage tiles = 5;
+    int32 participant_count = 6;
     enum PuzzleStatus {
         PUZZLE_STATUS_UNSPECIFIED = 0;
         PUZZLE_STATUS_IN_PROGRESS = 1;
         PUZZLE_STATUS_COMPLETED = 2;
     }
-    PuzzleStatus status = 5;
-    int32 num_moves = 6;
+    PuzzleStatus status = 7;
+    int32 num_moves = 8;
+    int32 total_votes = 9;
 }
 
 message TileMessage {
@@ -48,8 +44,7 @@ message TileMessage {
     int32 num_votes = 2;
     TilePosition current_position = 3;
     TilePosition correct_position = 4;
-    TilePosition previous_position = 5;
-    bool is_whitespace = 6;
+    bool is_whitespace = 5;
 }
 
 message TilePosition{

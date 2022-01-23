@@ -6,17 +6,27 @@ import 'package:shared/shared.dart';
 class PuzzleRepository {
   final dao = PuzzleDao();
 
-  Future<bool> voteForMoveOnLatestGame(int tileValue) async {
+  Future<bool> voteForMoveOnLatestGame(String userId, int tileValue) async {
     final puzzle = await getLatestPuzzle();
     if (puzzle == null) return false;
 
+    // * Add userId if not yet present in participants list
+    List<String> participants = puzzle.participants;
+    if (!participants.contains(userId)) {
+      participants.add(userId);
+    }
+
     final updated = puzzle.copyWith(
-        tiles: puzzle.tiles.map((t) {
-      if (t.value == tileValue) {
-        return t.copyWith(numVotes: t.numVotes + 1);
-      }
-      return t;
-    }).toList());
+        participants: participants,
+        totalVotes: puzzle.totalVotes + 1,
+        tiles: puzzle.tiles.map(
+          (t) {
+            if (t.value == tileValue) {
+              return t.copyWith(numVotes: t.numVotes + 1);
+            }
+            return t;
+          },
+        ).toList());
 
     print('Voting for move on puzzle with id ${puzzle.id}');
     await dao.update(puzzle.id, updated.toMap());
@@ -42,7 +52,7 @@ class PuzzleRepository {
   }
 
   Future<Puzzle> createNewPuzzle() async {
-    final puzzle = PuzzleGenerator(3).generate();
+    final puzzle = const PuzzleGenerator(3).generate();
 
     await dao.insert(puzzle.toMap());
 
@@ -72,5 +82,4 @@ class PuzzleRepository {
       return false;
     }
   }
-
 }

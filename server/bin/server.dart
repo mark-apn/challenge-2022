@@ -12,17 +12,19 @@ Future<void> main(List<String> args) async {
 
   // * Setup gRPC server
   final server = Server(
-    [PuzzleV1Service()],
-    const <Interceptor>[logInterceptor],
-    CodecRegistry(codecs: const [
-      GzipCodec()
-    ]),
+    // * Services
+    [
+      PuzzleV1Service(),
+    ],
+    // * Interceptors
+    [
+      logInterceptor,
+    ],
+    CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
 
   // * Serve
-  await server.serve(
-    port: int.parse(arguments['port']),
-  );
+  await server.serve(port: int.parse(arguments['port'] as String));
 
   print('Server listening on port ${server.port}...');
 }

@@ -25,8 +25,8 @@ class ImageTiler {
     );
   }
 
-  Future<List<Image>> getTiles() async {
-    final tiles = <Image>[];
+  Future<List<ui.Image>> getTiles() async {
+    final tiles = <ui.Image>[];
     for (int row = 0; row < _rows; row++) {
       for (int column = 0; column < _columns; column++) {
         tiles.add(await croppedImage(row, column));
@@ -51,7 +51,7 @@ class ImageTiler {
         );
   }
 
-  Future<Image> croppedImage(int rowIndex, int columnIndex) async {
+  Future<ui.Image> croppedImage(int rowIndex, int columnIndex) async {
     final offset = Offset(
       columnIndex * _bitmapSize.width / _columns,
       rowIndex * _bitmapSize.height / _rows,
@@ -62,14 +62,11 @@ class ImageTiler {
       _bitmapSize.height / _rows,
     );
 
-    return Image(
-      image: UiImageProvider(await _croppedBitmap(offset, size)),
-      fit: BoxFit.contain,
-    );
+    return _croppedBitmap(offset, size);
   }
 
-  Future<List<Image>> tile(Image uiImage) async {
-    final completer = Completer<List<Image>>();
+  Future<List<ui.Image>> tile(Image uiImage) async {
+    final completer = Completer<List<ui.Image>>();
     final config = uiImage.image.resolve(const ImageConfiguration());
 
     config.addListener(ImageStreamListener(

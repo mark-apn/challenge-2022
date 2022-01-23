@@ -8,23 +8,6 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
-@$core.Deprecated('Use keepAliveRequestDescriptor instead')
-const KeepAliveRequest$json = const {
-  '1': 'KeepAliveRequest',
-  '2': const [
-    const {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
-  ],
-};
-
-/// Descriptor for `KeepAliveRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List keepAliveRequestDescriptor = $convert.base64Decode('ChBLZWVwQWxpdmVSZXF1ZXN0EhcKB3VzZXJfaWQYASABKAlSBnVzZXJJZA==');
-@$core.Deprecated('Use keepAliveResponseDescriptor instead')
-const KeepAliveResponse$json = const {
-  '1': 'KeepAliveResponse',
-};
-
-/// Descriptor for `KeepAliveResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List keepAliveResponseDescriptor = $convert.base64Decode('ChFLZWVwQWxpdmVSZXNwb25zZQ==');
 @$core.Deprecated('Use subscribeToPuzzleRequestDescriptor instead')
 const SubscribeToPuzzleRequest$json = const {
   '1': 'SubscribeToPuzzleRequest',
@@ -70,9 +53,12 @@ const PuzzleMessage$json = const {
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'created_at', '3': 2, '4': 1, '5': 3, '10': 'createdAt'},
     const {'1': 'updated_at', '3': 3, '4': 1, '5': 3, '10': 'updatedAt'},
-    const {'1': 'tiles', '3': 4, '4': 3, '5': 11, '6': '.puzzle.v1.TileMessage', '10': 'tiles'},
-    const {'1': 'status', '3': 5, '4': 1, '5': 14, '6': '.puzzle.v1.PuzzleMessage.PuzzleStatus', '10': 'status'},
-    const {'1': 'num_moves', '3': 6, '4': 1, '5': 5, '10': 'numMoves'},
+    const {'1': 'ends_at', '3': 4, '4': 1, '5': 3, '10': 'endsAt'},
+    const {'1': 'tiles', '3': 5, '4': 3, '5': 11, '6': '.puzzle.v1.TileMessage', '10': 'tiles'},
+    const {'1': 'participant_count', '3': 6, '4': 1, '5': 5, '10': 'participantCount'},
+    const {'1': 'status', '3': 7, '4': 1, '5': 14, '6': '.puzzle.v1.PuzzleMessage.PuzzleStatus', '10': 'status'},
+    const {'1': 'num_moves', '3': 8, '4': 1, '5': 5, '10': 'numMoves'},
+    const {'1': 'total_votes', '3': 9, '4': 1, '5': 5, '10': 'totalVotes'},
   ],
   '4': const [PuzzleMessage_PuzzleStatus$json],
 };
@@ -88,7 +74,7 @@ const PuzzleMessage_PuzzleStatus$json = const {
 };
 
 /// Descriptor for `PuzzleMessage`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List puzzleMessageDescriptor = $convert.base64Decode('Cg1QdXp6bGVNZXNzYWdlEg4KAmlkGAEgASgJUgJpZBIdCgpjcmVhdGVkX2F0GAIgASgDUgljcmVhdGVkQXQSHQoKdXBkYXRlZF9hdBgDIAEoA1IJdXBkYXRlZEF0EiwKBXRpbGVzGAQgAygLMhYucHV6emxlLnYxLlRpbGVNZXNzYWdlUgV0aWxlcxI9CgZzdGF0dXMYBSABKA4yJS5wdXp6bGUudjEuUHV6emxlTWVzc2FnZS5QdXp6bGVTdGF0dXNSBnN0YXR1cxIbCgludW1fbW92ZXMYBiABKAVSCG51bU1vdmVzImkKDFB1enpsZVN0YXR1cxIdChlQVVpaTEVfU1RBVFVTX1VOU1BFQ0lGSUVEEAASHQoZUFVaWkxFX1NUQVRVU19JTl9QUk9HUkVTUxABEhsKF1BVWlpMRV9TVEFUVVNfQ09NUExFVEVEEAI=');
+final $typed_data.Uint8List puzzleMessageDescriptor = $convert.base64Decode('Cg1QdXp6bGVNZXNzYWdlEg4KAmlkGAEgASgJUgJpZBIdCgpjcmVhdGVkX2F0GAIgASgDUgljcmVhdGVkQXQSHQoKdXBkYXRlZF9hdBgDIAEoA1IJdXBkYXRlZEF0EhcKB2VuZHNfYXQYBCABKANSBmVuZHNBdBIsCgV0aWxlcxgFIAMoCzIWLnB1enpsZS52MS5UaWxlTWVzc2FnZVIFdGlsZXMSKwoRcGFydGljaXBhbnRfY291bnQYBiABKAVSEHBhcnRpY2lwYW50Q291bnQSPQoGc3RhdHVzGAcgASgOMiUucHV6emxlLnYxLlB1enpsZU1lc3NhZ2UuUHV6emxlU3RhdHVzUgZzdGF0dXMSGwoJbnVtX21vdmVzGAggASgFUghudW1Nb3ZlcxIfCgt0b3RhbF92b3RlcxgJIAEoBVIKdG90YWxWb3RlcyJpCgxQdXp6bGVTdGF0dXMSHQoZUFVaWkxFX1NUQVRVU19VTlNQRUNJRklFRBAAEh0KGVBVWlpMRV9TVEFUVVNfSU5fUFJPR1JFU1MQARIbChdQVVpaTEVfU1RBVFVTX0NPTVBMRVRFRBAC');
 @$core.Deprecated('Use tileMessageDescriptor instead')
 const TileMessage$json = const {
   '1': 'TileMessage',
@@ -97,13 +83,12 @@ const TileMessage$json = const {
     const {'1': 'num_votes', '3': 2, '4': 1, '5': 5, '10': 'numVotes'},
     const {'1': 'current_position', '3': 3, '4': 1, '5': 11, '6': '.puzzle.v1.TilePosition', '10': 'currentPosition'},
     const {'1': 'correct_position', '3': 4, '4': 1, '5': 11, '6': '.puzzle.v1.TilePosition', '10': 'correctPosition'},
-    const {'1': 'previous_position', '3': 5, '4': 1, '5': 11, '6': '.puzzle.v1.TilePosition', '10': 'previousPosition'},
-    const {'1': 'is_whitespace', '3': 6, '4': 1, '5': 8, '10': 'isWhitespace'},
+    const {'1': 'is_whitespace', '3': 5, '4': 1, '5': 8, '10': 'isWhitespace'},
   ],
 };
 
 /// Descriptor for `TileMessage`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List tileMessageDescriptor = $convert.base64Decode('CgtUaWxlTWVzc2FnZRIUCgV2YWx1ZRgBIAEoBVIFdmFsdWUSGwoJbnVtX3ZvdGVzGAIgASgFUghudW1Wb3RlcxJCChBjdXJyZW50X3Bvc2l0aW9uGAMgASgLMhcucHV6emxlLnYxLlRpbGVQb3NpdGlvblIPY3VycmVudFBvc2l0aW9uEkIKEGNvcnJlY3RfcG9zaXRpb24YBCABKAsyFy5wdXp6bGUudjEuVGlsZVBvc2l0aW9uUg9jb3JyZWN0UG9zaXRpb24SRAoRcHJldmlvdXNfcG9zaXRpb24YBSABKAsyFy5wdXp6bGUudjEuVGlsZVBvc2l0aW9uUhBwcmV2aW91c1Bvc2l0aW9uEiMKDWlzX3doaXRlc3BhY2UYBiABKAhSDGlzV2hpdGVzcGFjZQ==');
+final $typed_data.Uint8List tileMessageDescriptor = $convert.base64Decode('CgtUaWxlTWVzc2FnZRIUCgV2YWx1ZRgBIAEoBVIFdmFsdWUSGwoJbnVtX3ZvdGVzGAIgASgFUghudW1Wb3RlcxJCChBjdXJyZW50X3Bvc2l0aW9uGAMgASgLMhcucHV6emxlLnYxLlRpbGVQb3NpdGlvblIPY3VycmVudFBvc2l0aW9uEkIKEGNvcnJlY3RfcG9zaXRpb24YBCABKAsyFy5wdXp6bGUudjEuVGlsZVBvc2l0aW9uUg9jb3JyZWN0UG9zaXRpb24SIwoNaXNfd2hpdGVzcGFjZRgFIAEoCFIMaXNXaGl0ZXNwYWNl');
 @$core.Deprecated('Use tilePositionDescriptor instead')
 const TilePosition$json = const {
   '1': 'TilePosition',

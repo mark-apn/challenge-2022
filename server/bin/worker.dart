@@ -13,7 +13,7 @@ Future<void> main(List<String> args) async {
   listener = stream.listen(commandParser);
 
   // * Schedule worker tasks
-  schedule(Duration(seconds: 3), UpdatePuzzle());
+  schedule(const Duration(seconds: 3), UpdatePuzzle());
 }
 
 void schedule(Duration duration, Task task) {
@@ -25,7 +25,9 @@ void commandParser(String line) {
   if (line == 'exit') {
     print('Exiting worker...');
     // * Cleanup
-    tasks.forEach((task) => task.timer.cancel());
+    for (var i = 0; i < tasks.length; i++) {
+      tasks[i].timer.cancel();
+    }
     listener?.cancel();
 
     // * Exit

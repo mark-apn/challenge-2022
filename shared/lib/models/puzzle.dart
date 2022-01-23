@@ -7,6 +7,7 @@ import 'models.dart';
 
 const PUZZLE_STATUS_INCOMPLETE = 1;
 const PUZZLE_STATUS_COMPLETE = 2;
+const PUZZLE_STATUS_CLOSED = 3;
 
 // A 3x3 puzzle board visualization:
 //
@@ -43,8 +44,11 @@ class Puzzle extends Equatable {
     required this.tiles,
     required this.createdAt,
     required this.updatedAt,
+    this.endsAt,
+    this.participants = const <String>[],
     this.status = PUZZLE_STATUS_INCOMPLETE,
     this.numMoves = 0,
+    this.totalVotes = 0,
   });
 
   factory Puzzle.fromTiles(List<Tile> tiles) => Puzzle(
@@ -73,11 +77,20 @@ class Puzzle extends Equatable {
   /// The date this puzzle was last updated.
   final DateTime updatedAt;
 
+  /// The date this puzzle wil end. If null this puzzle will never (automatically) end.
+  final DateTime? endsAt;
+
+  /// List of user ids that have participated in this puzzle.
+  final List<String> participants;
+
   /// The current status of the puzzle.
   final int status;
 
   /// The number of moves made to solve the puzzle.
   final int numMoves;
+
+  /// The total amount of votes cast on this puzzle
+  final int totalVotes;
 
   /// Get the dimension of a puzzle given its tile arrangement.
   ///
@@ -123,7 +136,7 @@ class Puzzle extends Equatable {
   // Recursively stores a list of all tiles that need to be moved and passes the
   // list to _swapTiles to individually swap them.
   Puzzle moveTiles(Tile currentTile, List<Tile> tilesToSwap) {
-    final tile = currentTile.copyWith(previousPosition: currentTile.currentPosition);
+    final tile = currentTile.copyWith();
     final whitespaceTile = getWhitespaceTile();
     final deltaX = whitespaceTile.currentPosition.x - tile.currentPosition.x;
     final deltaY = whitespaceTile.currentPosition.y - tile.currentPosition.y;
@@ -152,14 +165,8 @@ class Puzzle extends Equatable {
       final whitespaceTileIndex = tiles.indexOf(whitespaceTile);
 
       // Swap current board positions of the moving tile and the whitespace.
-      tiles[tileIndex] = tile.copyWith(
-        currentPosition: whitespaceTile.currentPosition,
-        previousPosition: tile.currentPosition,
-      );
-      tiles[whitespaceTileIndex] = whitespaceTile.copyWith(
-        currentPosition: tile.currentPosition,
-        previousPosition: whitespaceTile.currentPosition,
-      );
+      tiles[tileIndex] = tile.copyWith(currentPosition: whitespaceTile.currentPosition);
+      tiles[whitespaceTileIndex] = whitespaceTile.copyWith(currentPosition: tile.currentPosition);
     }
 
     return copyWith(
@@ -236,13 +243,16 @@ class Puzzle extends Equatable {
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         createdAt,
         updatedAt,
+        endsAt,
+        participants,
         tiles,
         status,
         numMoves,
+        totalVotes,
       ];
 
   Map<String, dynamic> toMap() {
@@ -250,9 +260,12 @@ class Puzzle extends Equatable {
       'id': id,
       'created_at': createdAt.millisecondsSinceEpoch,
       'updated_at': updatedAt.millisecondsSinceEpoch,
+      'ends_at': endsAt?.millisecondsSinceEpoch,
+      'participants': participants,
       'tiles': tiles.map((x) => x.toMap()).toList(),
       'status': status,
       'num_moves': numMoves,
+      'total_votes': totalVotes,
     };
   }
 
@@ -261,25 +274,34 @@ class Puzzle extends Equatable {
       id: map['id']!,
       createdAt: map['created_at'] != null ? DateTime.fromMillisecondsSinceEpoch(map['created_at']) : DateTime.now(),
       updatedAt: map['updated_at'] != null ? DateTime.fromMillisecondsSinceEpoch(map['updated_at']) : DateTime.now(),
+      endsAt: map['ends_at'] != null ? DateTime.fromMillisecondsSinceEpoch(map['ends_at']) : null,
+      participants: List<String>.from(map['participants'] == null ? [] : map['participants']?.map((e) => e.toString())),
       tiles: List<Tile>.from(map['tiles']?.map((x) => Tile.fromMap(x))),
       status: map['status']?.toInt() ?? 0,
       numMoves: map['num_moves']?.toInt() ?? 0,
+      totalVotes: map['total_votes']?.toInt() ?? 0,
     );
   }
 
   Puzzle copyWith({
     List<Tile>? tiles,
     DateTime? createdAt,
+    DateTime? endsAt,
+    List<String>? participants,
     int? status,
     int? numMoves,
+    int? totalVotes,
   }) {
     return Puzzle(
       id: this.id,
       tiles: tiles ?? this.tiles,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: DateTime.now(),
+      endsAt: endsAt ?? this.endsAt,
+      participants: participants ?? this.participants,
       status: status ?? this.status,
       numMoves: numMoves ?? this.numMoves,
+      totalVotes: totalVotes ?? this.totalVotes,
     );
   }
 }

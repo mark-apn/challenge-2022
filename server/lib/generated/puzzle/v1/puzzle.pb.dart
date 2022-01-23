@@ -14,82 +14,6 @@ import 'puzzle.pbenum.dart';
 
 export 'puzzle.pbenum.dart';
 
-class KeepAliveRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'KeepAliveRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId')
-    ..hasRequiredFields = false
-  ;
-
-  KeepAliveRequest._() : super();
-  factory KeepAliveRequest({
-    $core.String? userId,
-  }) {
-    final _result = create();
-    if (userId != null) {
-      _result.userId = userId;
-    }
-    return _result;
-  }
-  factory KeepAliveRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory KeepAliveRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  KeepAliveRequest clone() => KeepAliveRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  KeepAliveRequest copyWith(void Function(KeepAliveRequest) updates) => super.copyWith((message) => updates(message as KeepAliveRequest)) as KeepAliveRequest; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static KeepAliveRequest create() => KeepAliveRequest._();
-  KeepAliveRequest createEmptyInstance() => create();
-  static $pb.PbList<KeepAliveRequest> createRepeated() => $pb.PbList<KeepAliveRequest>();
-  @$core.pragma('dart2js:noInline')
-  static KeepAliveRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<KeepAliveRequest>(create);
-  static KeepAliveRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get userId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set userId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasUserId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearUserId() => clearField(1);
-}
-
-class KeepAliveResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'KeepAliveResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
-    ..hasRequiredFields = false
-  ;
-
-  KeepAliveResponse._() : super();
-  factory KeepAliveResponse() => create();
-  factory KeepAliveResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory KeepAliveResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  KeepAliveResponse clone() => KeepAliveResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  KeepAliveResponse copyWith(void Function(KeepAliveResponse) updates) => super.copyWith((message) => updates(message as KeepAliveResponse)) as KeepAliveResponse; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static KeepAliveResponse create() => KeepAliveResponse._();
-  KeepAliveResponse createEmptyInstance() => create();
-  static $pb.PbList<KeepAliveResponse> createRepeated() => $pb.PbList<KeepAliveResponse>();
-  @$core.pragma('dart2js:noInline')
-  static KeepAliveResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<KeepAliveResponse>(create);
-  static KeepAliveResponse? _defaultInstance;
-}
-
 class SubscribeToPuzzleRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubscribeToPuzzleRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId')
@@ -281,9 +205,12 @@ class PuzzleMessage extends $pb.GeneratedMessage {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aInt64(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'createdAt')
     ..aInt64(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updatedAt')
-    ..pc<TileMessage>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tiles', $pb.PbFieldType.PM, subBuilder: TileMessage.create)
-    ..e<PuzzleMessage_PuzzleStatus>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: PuzzleMessage_PuzzleStatus.PUZZLE_STATUS_UNSPECIFIED, valueOf: PuzzleMessage_PuzzleStatus.valueOf, enumValues: PuzzleMessage_PuzzleStatus.values)
-    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'numMoves', $pb.PbFieldType.O3)
+    ..aInt64(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'endsAt')
+    ..pc<TileMessage>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tiles', $pb.PbFieldType.PM, subBuilder: TileMessage.create)
+    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'participantCount', $pb.PbFieldType.O3)
+    ..e<PuzzleMessage_PuzzleStatus>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: PuzzleMessage_PuzzleStatus.PUZZLE_STATUS_UNSPECIFIED, valueOf: PuzzleMessage_PuzzleStatus.valueOf, enumValues: PuzzleMessage_PuzzleStatus.values)
+    ..a<$core.int>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'numMoves', $pb.PbFieldType.O3)
+    ..a<$core.int>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'totalVotes', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -292,9 +219,12 @@ class PuzzleMessage extends $pb.GeneratedMessage {
     $core.String? id,
     $fixnum.Int64? createdAt,
     $fixnum.Int64? updatedAt,
+    $fixnum.Int64? endsAt,
     $core.Iterable<TileMessage>? tiles,
+    $core.int? participantCount,
     PuzzleMessage_PuzzleStatus? status,
     $core.int? numMoves,
+    $core.int? totalVotes,
   }) {
     final _result = create();
     if (id != null) {
@@ -306,14 +236,23 @@ class PuzzleMessage extends $pb.GeneratedMessage {
     if (updatedAt != null) {
       _result.updatedAt = updatedAt;
     }
+    if (endsAt != null) {
+      _result.endsAt = endsAt;
+    }
     if (tiles != null) {
       _result.tiles.addAll(tiles);
+    }
+    if (participantCount != null) {
+      _result.participantCount = participantCount;
     }
     if (status != null) {
       _result.status = status;
     }
     if (numMoves != null) {
       _result.numMoves = numMoves;
+    }
+    if (totalVotes != null) {
+      _result.totalVotes = totalVotes;
     }
     return _result;
   }
@@ -366,25 +305,52 @@ class PuzzleMessage extends $pb.GeneratedMessage {
   void clearUpdatedAt() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.List<TileMessage> get tiles => $_getList(3);
+  $fixnum.Int64 get endsAt => $_getI64(3);
+  @$pb.TagNumber(4)
+  set endsAt($fixnum.Int64 v) { $_setInt64(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasEndsAt() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearEndsAt() => clearField(4);
 
   @$pb.TagNumber(5)
-  PuzzleMessage_PuzzleStatus get status => $_getN(4);
-  @$pb.TagNumber(5)
-  set status(PuzzleMessage_PuzzleStatus v) { setField(5, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasStatus() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearStatus() => clearField(5);
+  $core.List<TileMessage> get tiles => $_getList(4);
 
   @$pb.TagNumber(6)
-  $core.int get numMoves => $_getIZ(5);
+  $core.int get participantCount => $_getIZ(5);
   @$pb.TagNumber(6)
-  set numMoves($core.int v) { $_setSignedInt32(5, v); }
+  set participantCount($core.int v) { $_setSignedInt32(5, v); }
   @$pb.TagNumber(6)
-  $core.bool hasNumMoves() => $_has(5);
+  $core.bool hasParticipantCount() => $_has(5);
   @$pb.TagNumber(6)
-  void clearNumMoves() => clearField(6);
+  void clearParticipantCount() => clearField(6);
+
+  @$pb.TagNumber(7)
+  PuzzleMessage_PuzzleStatus get status => $_getN(6);
+  @$pb.TagNumber(7)
+  set status(PuzzleMessage_PuzzleStatus v) { setField(7, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasStatus() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearStatus() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.int get numMoves => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set numMoves($core.int v) { $_setSignedInt32(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasNumMoves() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearNumMoves() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.int get totalVotes => $_getIZ(8);
+  @$pb.TagNumber(9)
+  set totalVotes($core.int v) { $_setSignedInt32(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasTotalVotes() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearTotalVotes() => clearField(9);
 }
 
 class TileMessage extends $pb.GeneratedMessage {
@@ -393,8 +359,7 @@ class TileMessage extends $pb.GeneratedMessage {
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'numVotes', $pb.PbFieldType.O3)
     ..aOM<TilePosition>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentPosition', subBuilder: TilePosition.create)
     ..aOM<TilePosition>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'correctPosition', subBuilder: TilePosition.create)
-    ..aOM<TilePosition>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'previousPosition', subBuilder: TilePosition.create)
-    ..aOB(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWhitespace')
+    ..aOB(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWhitespace')
     ..hasRequiredFields = false
   ;
 
@@ -404,7 +369,6 @@ class TileMessage extends $pb.GeneratedMessage {
     $core.int? numVotes,
     TilePosition? currentPosition,
     TilePosition? correctPosition,
-    TilePosition? previousPosition,
     $core.bool? isWhitespace,
   }) {
     final _result = create();
@@ -419,9 +383,6 @@ class TileMessage extends $pb.GeneratedMessage {
     }
     if (correctPosition != null) {
       _result.correctPosition = correctPosition;
-    }
-    if (previousPosition != null) {
-      _result.previousPosition = previousPosition;
     }
     if (isWhitespace != null) {
       _result.isWhitespace = isWhitespace;
@@ -490,24 +451,13 @@ class TileMessage extends $pb.GeneratedMessage {
   TilePosition ensureCorrectPosition() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  TilePosition get previousPosition => $_getN(4);
+  $core.bool get isWhitespace => $_getBF(4);
   @$pb.TagNumber(5)
-  set previousPosition(TilePosition v) { setField(5, v); }
+  set isWhitespace($core.bool v) { $_setBool(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasPreviousPosition() => $_has(4);
+  $core.bool hasIsWhitespace() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPreviousPosition() => clearField(5);
-  @$pb.TagNumber(5)
-  TilePosition ensurePreviousPosition() => $_ensure(4);
-
-  @$pb.TagNumber(6)
-  $core.bool get isWhitespace => $_getBF(5);
-  @$pb.TagNumber(6)
-  set isWhitespace($core.bool v) { $_setBool(5, v); }
-  @$pb.TagNumber(6)
-  $core.bool hasIsWhitespace() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearIsWhitespace() => clearField(6);
+  void clearIsWhitespace() => clearField(5);
 }
 
 class TilePosition extends $pb.GeneratedMessage {

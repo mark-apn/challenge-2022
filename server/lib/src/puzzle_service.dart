@@ -9,15 +9,13 @@ import 'package:shared/shared.dart';
 class PuzzleV1Service extends PuzzleV1ServiceBase {
   // ignore: close_sinks
   final streamController = StreamController<Puzzle>.broadcast();
-
-  final usersAlive = <String, DateTime>{};
   final puzzleRepo = PuzzleRepository();
 
   @override
   Stream<SubscribeToPuzzleResponse> subscribeToPuzzle(ServiceCall call, SubscribeToPuzzleRequest request) {
     print('Recieved subscribe to puzzle request');
     puzzleRepo.subscribeToLatestPuzzle().then((feed) {
-      if (feed == null) throw new Exception('No active puzzle');
+      if (feed == null) throw Exception('No active puzzle');
 
       puzzleRepo.getLatestPuzzle().then((value) {
         if (value != null) {
@@ -45,20 +43,10 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
   @override
   Future<VoteForTileResponse> voteForTile(ServiceCall call, VoteForTileRequest request) {
     print('Recieved vote for tile request');
-    // * Keeps user stream alive
-    usersAlive[request.userId] = DateTime.now();
 
-    return puzzleRepo.voteForMoveOnLatestGame(request.tileValue).then((_) {
+    return puzzleRepo.voteForMoveOnLatestGame(request.userId, request.tileValue).then((_) {
       return VoteForTileResponse();
     });
-  }
-
-  @override
-  Future<KeepAliveResponse> keepAlive(ServiceCall call, KeepAliveRequest request) async {
-    // * Keeps user stream alive
-    usersAlive[request.userId] = DateTime.now();
-
-    return KeepAliveResponse();
   }
 }
 
@@ -67,9 +55,12 @@ PuzzleMessage toPuzzleMessage(Puzzle puzzle) {
     id: puzzle.id,
     createdAt: Int64(puzzle.createdAt.millisecondsSinceEpoch),
     updatedAt: Int64(puzzle.updatedAt.millisecondsSinceEpoch),
+    endsAt: puzzle.endsAt != null ? Int64(puzzle.endsAt!.millisecondsSinceEpoch) : null,
     tiles: puzzle.tiles.map(_toTileMessage).toList(),
+    participantCount: puzzle.participants.length,
     status: PuzzleMessage_PuzzleStatus.valueOf(puzzle.status),
     numMoves: puzzle.numMoves,
+    totalVotes: puzzle.totalVotes,
   );
 }
 
@@ -78,7 +69,6 @@ TileMessage _toTileMessage(Tile tile) {
     value: tile.value,
     currentPosition: _toPositionMessage(tile.currentPosition),
     correctPosition: _toPositionMessage(tile.correctPosition),
-    previousPosition: tile.previousPosition != null ? _toPositionMessage(tile.previousPosition!) : null,
     numVotes: tile.numVotes,
     isWhitespace: tile.isWhitespace,
   );

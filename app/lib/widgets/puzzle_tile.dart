@@ -1,104 +1,23 @@
+
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_challenge/state/providers.dart';
+import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared/shared.dart';
+import 'package:shared/models/models.dart';
 
-class PuzzleLoader extends HookConsumerWidget {
-  const PuzzleLoader({Key? key, this.fillPercentage = 0.8}) : super(key: key);
-
-  final double fillPercentage;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(tiledImagesProvider).when(
-          loading: () => const CircularProgressIndicator(color: Colors.amber),
-          error: (error, _) => Text(error.toString()),
-          data: (data) => LayoutBuilder(
-            builder: (_, constraints) {
-              final maxSize = constraints.biggest.shortestSide * fillPercentage;
-              return _PuzzleBoard(
-                images: data,
-                boardSize: maxSize,
-              );
-            },
-          ),
-        );
-  }
-}
-
-class _PuzzleBoard extends ConsumerWidget {
-  const _PuzzleBoard({
-    Key? key,
-    required this.images,
-    required this.boardSize,
-  }) : super(key: key);
-
-  final List<Image> images;
-  final double boardSize;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isLoading = ref.watch(puzzleProvider.select((value) => value.isLoading));
-    final isError = ref.watch(puzzleProvider.select((value) => value.isError));
-    final tiles = ref.watch(puzzleProvider.select((value) => value.puzzle.tiles));
-    final numDimensions = ref.watch(puzzleDimensionsProvider);
-
-    if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (isError) {
-      return Center(
-        child: TextButton(
-          child: const Text('Reconnect'),
-          onPressed: () => ref.refresh(puzzleProvider),
-        ),
-      );
-    }
-
-    final tileSize = boardSize / numDimensions;
-
-    final whiteSpaceTile = tiles.firstWhere((tile) => tile.isWhitespace);
-    final children = List.generate(
-      numDimensions * numDimensions,
-      (index) {
-        Widget builder(Tile tile) => _Tile(
-              tile,
-              whiteSpaceTile,
-              key: ValueKey(tile.value),
-              image: images[tile.value - 1],
-              size: tileSize,
-            );
-
-        final tile = tiles[index];
-
-        if (tile.isWhitespace) return const SizedBox.shrink();
-        return builder(tile);
-      },
-    );
-
-    return Container(
-      constraints: BoxConstraints.tight(Size(boardSize, boardSize)),
-      child: Stack(children: children),
-    );
-  }
-}
-
-class _Tile extends ConsumerWidget {
-  const _Tile(
+class PuzzleTile extends ConsumerWidget {
+  const PuzzleTile(
     this.tile,
     this.whiteSpaceTile, {
     Key? key,
-    required this.image,
     required this.size,
   }) : super(key: key);
 
   final Tile tile;
   final Tile whiteSpaceTile;
-  final Image image;
   final double size;
 
   @override
@@ -106,7 +25,6 @@ class _Tile extends ConsumerWidget {
     Widget child = SizedBox.square(
       dimension: size,
       child: _TileContent(
-        image: image,
         tile: tile,
         whiteSpaceTile: whiteSpaceTile,
       ),
@@ -128,12 +46,10 @@ class _Tile extends ConsumerWidget {
 class _TileContent extends StatelessWidget {
   const _TileContent({
     Key? key,
-    required this.image,
     required this.tile,
     required this.whiteSpaceTile,
   }) : super(key: key);
 
-  final Image image;
   final Tile tile;
   final Tile whiteSpaceTile;
 
@@ -170,6 +86,26 @@ class _TileContent extends StatelessWidget {
       );
     }
 
+    return _TileBackground(
+      tileValue: tile.value,
+      child: child,
+    );
+  }
+}
+
+class _TileBackground extends HookConsumerWidget {
+  const _TileBackground({
+    Key? key,
+    required this.child,
+    required this.tileValue,
+  }) : super(key: key);
+
+  final Widget? child;
+  final int tileValue;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final image = ref.watch(imageForTileByValueProvider(tileValue));
     return Container(
       margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
