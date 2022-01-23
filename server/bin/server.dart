@@ -20,7 +20,7 @@ Future<void> main(List<String> args) async {
     [
       logInterceptor,
     ],
-    CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
+    CodecRegistry(codecs: const [GzipCodec()]),
   );
 
   // * Serve
