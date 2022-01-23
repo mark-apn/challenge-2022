@@ -92,6 +92,8 @@ class Puzzle extends Equatable {
   /// The total amount of votes cast on this puzzle
   final int totalVotes;
 
+  bool get isFinished => status != PUZZLE_STATUS_INCOMPLETE;
+
   /// Get the dimension of a puzzle given its tile arrangement.
   ///
   /// Ex: A 4x4 puzzle has a dimension of 4.
