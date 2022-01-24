@@ -11,9 +11,9 @@ class PuzzleRepository {
     if (puzzle == null) return false;
 
     // * Add userId if not yet present in participants list
-    List<String> participants = puzzle.participants;
-    if (!participants.contains(userId)) {
-      participants.add(userId);
+    List<Participant> participants = puzzle.participants;
+    if (participants.where((element) => element.userId == userId).isEmpty) {
+      participants.add(Participant(userId: userId, lastActive: DateTime.now()));
     }
 
     final updated = puzzle.copyWith(

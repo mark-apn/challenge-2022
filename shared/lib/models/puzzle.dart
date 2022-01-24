@@ -45,7 +45,7 @@ class Puzzle extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     this.endsAt,
-    this.participants = const <String>[],
+    this.participants = const [],
     this.status = PUZZLE_STATUS_INCOMPLETE,
     this.numMoves = 0,
     this.totalVotes = 0,
@@ -81,7 +81,7 @@ class Puzzle extends Equatable {
   final DateTime? endsAt;
 
   /// List of user ids that have participated in this puzzle.
-  final List<String> participants;
+  final List<Participant> participants;
 
   /// The current status of the puzzle.
   final int status;
@@ -277,7 +277,7 @@ class Puzzle extends Equatable {
       createdAt: map['created_at'] != null ? DateTime.fromMillisecondsSinceEpoch(map['created_at']) : DateTime.now(),
       updatedAt: map['updated_at'] != null ? DateTime.fromMillisecondsSinceEpoch(map['updated_at']) : DateTime.now(),
       endsAt: map['ends_at'] != null ? DateTime.fromMillisecondsSinceEpoch(map['ends_at']) : null,
-      participants: List<String>.from(map['participants'] == null ? [] : map['participants']?.map((e) => e.toString())),
+      participants: List<Participant>.from(map['participants']?.map((e) => Participant.fromMap(e)).toList()),
       tiles: List<Tile>.from(map['tiles']?.map((x) => Tile.fromMap(x))),
       status: map['status']?.toInt() ?? 0,
       numMoves: map['num_moves']?.toInt() ?? 0,
@@ -289,7 +289,7 @@ class Puzzle extends Equatable {
     List<Tile>? tiles,
     DateTime? createdAt,
     DateTime? endsAt,
-    List<String>? participants,
+    List<Participant>? participants,
     int? status,
     int? numMoves,
     int? totalVotes,

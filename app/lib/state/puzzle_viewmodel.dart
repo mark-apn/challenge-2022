@@ -10,4 +10,8 @@ class PuzzleVm {
   Future<void> tileTapped(Tile tappedTile) async {
     await GrpcClient.instance.voteOnTile(tappedTile.value);
   }
+
+  Future<void> updateMousePosition(double x, double y) async {
+
+  }
 }

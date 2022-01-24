@@ -55,9 +55,9 @@ PuzzleMessage toPuzzleMessage(Puzzle puzzle) {
     id: puzzle.id,
     createdAt: Int64(puzzle.createdAt.millisecondsSinceEpoch),
     updatedAt: Int64(puzzle.updatedAt.millisecondsSinceEpoch),
-    endsAt: puzzle.endsAt != null ? Int64(puzzle.endsAt!.millisecondsSinceEpoch) : null,
+    endsAt: puzzle.endsAt != null ? Int64(puzzle.endsAt!.millisecondsSinceEpoch) : Int64.ZERO,
     tiles: puzzle.tiles.map(_toTileMessage).toList(),
-    participantCount: puzzle.participants.length,
+    participants: puzzle.participants.map(_toParticipantMessage).toList(),
     status: PuzzleMessage_PuzzleStatus.valueOf(puzzle.status),
     numMoves: puzzle.numMoves,
     totalVotes: puzzle.totalVotes,
@@ -74,8 +74,16 @@ TileMessage _toTileMessage(Tile tile) {
   );
 }
 
-TilePosition _toPositionMessage(Position position) {
-  return TilePosition(
+ParticipantMessage _toParticipantMessage(Participant participant) {
+  return ParticipantMessage(
+    userId: participant.userId,
+    lastActive: Int64(participant.lastActive.millisecondsSinceEpoch),
+    mousePosition: participant.position != null ? _toPositionMessage(participant.position!) : null,
+  );
+}
+
+PositionMessage _toPositionMessage(Position position) {
+  return PositionMessage(
     x: position.x,
     y: position.y,
   );

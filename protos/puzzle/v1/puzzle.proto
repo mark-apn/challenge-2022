@@ -28,7 +28,7 @@ message PuzzleMessage {
     int64 updated_at = 3;
     int64 ends_at = 4;
     repeated TileMessage tiles = 5;
-    int32 participant_count = 6;
+    repeated ParticipantMessage participants = 6;
     enum PuzzleStatus {
         PUZZLE_STATUS_UNSPECIFIED = 0;
         PUZZLE_STATUS_IN_PROGRESS = 1;
@@ -42,12 +42,18 @@ message PuzzleMessage {
 message TileMessage {
     int32 value = 1;
     int32 num_votes = 2;
-    TilePosition current_position = 3;
-    TilePosition correct_position = 4;
+    PositionMessage current_position = 3;
+    PositionMessage correct_position = 4;
     bool is_whitespace = 5;
 }
 
-message TilePosition{
+message ParticipantMessage {
+    string user_id = 1;
+    PositionMessage mouse_position = 2;
+    int64 last_active = 3;
+}
+
+message PositionMessage{
     int32 x = 1;
     int32 y = 2;
 }
