@@ -3,6 +3,7 @@ import 'package:flutter_challenge/grpc/client.dart';
 import 'package:flutter_challenge/layouts/landscape.dart';
 import 'package:flutter_challenge/layouts/portrait.dart';
 import 'package:flutter_challenge/prefs.dart';
+import 'package:flutter_challenge/styles.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -38,7 +39,7 @@ class App extends StatelessWidget {
         textTheme: GoogleFonts.spaceGroteskTextTheme(),
       ),
       home: Scaffold(
-        backgroundColor: const Color(0xFF172D4F),
+        backgroundColor: kPrimaryColor,
         body: OrientationLayoutBuilder(
           portrait: (_) => const PortraitLayout(),
           landscape: (_) => const LandScapeLayout(),
