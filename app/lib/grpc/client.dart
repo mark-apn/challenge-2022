@@ -22,6 +22,7 @@ class GrpcClient {
   final _puzzleStreamController = StreamController<Puzzle>();
 
   StreamSubscription<SubscribeToPuzzleResponse>? listener;
+  DateTime? lastDataReceived;
 
   ClientChannelBase? _cachedChannel;
   ClientChannelBase get _newChannel => GrpcChannelBuilder().build;
@@ -40,11 +41,12 @@ class GrpcClient {
     return _puzzleStreamController.stream;
   }
 
-  // Incremental backoff will start ad 400ms and doubles every pass
+  // Incremental backoff will start at 400ms and doubles every pass
   // TODO(mark): Add max retries
   Future<void> _reconnectToPuzzle([int incrementalBackoffDelay = 0]) async {
     debugPrint('Reconnecting to puzzle stream');
     listener?.cancel();
+
     // TODO(mark): expose countdown and reconnect now button in the UI
     await Future.delayed(Duration(milliseconds: incrementalBackoffDelay));
 
@@ -55,6 +57,7 @@ class GrpcClient {
     )
         .listen(
       (event) {
+        lastDataReceived = DateTime.now();
         _puzzleStreamController.sink.add(toPuzzle(event.puzzle));
       },
     )
@@ -70,6 +73,15 @@ class GrpcClient {
   }
 
   Future<void> voteOnTile(int tileValue) async {
+    // * After a while in the background or idle, the server will send a
+    // * disconnect and the app will not pick it up. The client will then
+    // * try to reconnect to the server.
+    if (lastDataReceived == null || DateTime.now().difference(lastDataReceived!).inMinutes > 2) {
+      debugPrint('Pre-emptively reconnecting to puzzle stream');
+      _reconnectToPuzzle();
+    }
+
+    // * Vote on the tile
     await client.voteForTile(
       VoteForTileRequest(userId: userId, tileValue: tileValue),
       options: _defaultOptions,
@@ -77,7 +89,7 @@ class GrpcClient {
   }
 
   bool _shouldTryReconnecting(GrpcError error) {
-    // * On server updates the server will be down temporarily
+    // * When deploying the app the server will be down temporarily
     final serverUnavailable = error.code == StatusCode.unavailable;
     if (serverUnavailable) return true;
 
