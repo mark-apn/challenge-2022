@@ -46,6 +46,24 @@ const VoteForTileResponse$json = const {
 
 /// Descriptor for `VoteForTileResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List voteForTileResponseDescriptor = $convert.base64Decode('ChNWb3RlRm9yVGlsZVJlc3BvbnNl');
+@$core.Deprecated('Use updateMousePositionRequestDescriptor instead')
+const UpdateMousePositionRequest$json = const {
+  '1': 'UpdateMousePositionRequest',
+  '2': const [
+    const {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
+    const {'1': 'position', '3': 3, '4': 1, '5': 11, '6': '.puzzle.v1.MousePositionMessage', '10': 'position'},
+  ],
+};
+
+/// Descriptor for `UpdateMousePositionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateMousePositionRequestDescriptor = $convert.base64Decode('ChpVcGRhdGVNb3VzZVBvc2l0aW9uUmVxdWVzdBIXCgd1c2VyX2lkGAEgASgJUgZ1c2VySWQSOwoIcG9zaXRpb24YAyABKAsyHy5wdXp6bGUudjEuTW91c2VQb3NpdGlvbk1lc3NhZ2VSCHBvc2l0aW9u');
+@$core.Deprecated('Use updateMousePositionResponseDescriptor instead')
+const UpdateMousePositionResponse$json = const {
+  '1': 'UpdateMousePositionResponse',
+};
+
+/// Descriptor for `UpdateMousePositionResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateMousePositionResponseDescriptor = $convert.base64Decode('ChtVcGRhdGVNb3VzZVBvc2l0aW9uUmVzcG9uc2U=');
 @$core.Deprecated('Use puzzleMessageDescriptor instead')
 const PuzzleMessage$json = const {
   '1': 'PuzzleMessage',
@@ -94,13 +112,13 @@ const ParticipantMessage$json = const {
   '1': 'ParticipantMessage',
   '2': const [
     const {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
-    const {'1': 'mouse_position', '3': 2, '4': 1, '5': 11, '6': '.puzzle.v1.PositionMessage', '10': 'mousePosition'},
+    const {'1': 'mouse_position', '3': 2, '4': 1, '5': 11, '6': '.puzzle.v1.MousePositionMessage', '10': 'mousePosition'},
     const {'1': 'last_active', '3': 3, '4': 1, '5': 3, '10': 'lastActive'},
   ],
 };
 
 /// Descriptor for `ParticipantMessage`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List participantMessageDescriptor = $convert.base64Decode('ChJQYXJ0aWNpcGFudE1lc3NhZ2USFwoHdXNlcl9pZBgBIAEoCVIGdXNlcklkEkEKDm1vdXNlX3Bvc2l0aW9uGAIgASgLMhoucHV6emxlLnYxLlBvc2l0aW9uTWVzc2FnZVINbW91c2VQb3NpdGlvbhIfCgtsYXN0X2FjdGl2ZRgDIAEoA1IKbGFzdEFjdGl2ZQ==');
+final $typed_data.Uint8List participantMessageDescriptor = $convert.base64Decode('ChJQYXJ0aWNpcGFudE1lc3NhZ2USFwoHdXNlcl9pZBgBIAEoCVIGdXNlcklkEkYKDm1vdXNlX3Bvc2l0aW9uGAIgASgLMh8ucHV6emxlLnYxLk1vdXNlUG9zaXRpb25NZXNzYWdlUg1tb3VzZVBvc2l0aW9uEh8KC2xhc3RfYWN0aXZlGAMgASgDUgpsYXN0QWN0aXZl');
 @$core.Deprecated('Use positionMessageDescriptor instead')
 const PositionMessage$json = const {
   '1': 'PositionMessage',
@@ -112,3 +130,14 @@ const PositionMessage$json = const {
 
 /// Descriptor for `PositionMessage`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List positionMessageDescriptor = $convert.base64Decode('Cg9Qb3NpdGlvbk1lc3NhZ2USDAoBeBgBIAEoBVIBeBIMCgF5GAIgASgFUgF5');
+@$core.Deprecated('Use mousePositionMessageDescriptor instead')
+const MousePositionMessage$json = const {
+  '1': 'MousePositionMessage',
+  '2': const [
+    const {'1': 'x', '3': 1, '4': 1, '5': 2, '10': 'x'},
+    const {'1': 'y', '3': 2, '4': 1, '5': 2, '10': 'y'},
+  ],
+};
+
+/// Descriptor for `MousePositionMessage`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List mousePositionMessageDescriptor = $convert.base64Decode('ChRNb3VzZVBvc2l0aW9uTWVzc2FnZRIMCgF4GAEgASgCUgF4EgwKAXkYAiABKAJSAXk=');

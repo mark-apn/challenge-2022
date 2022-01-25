@@ -1,3 +1,4 @@
+import 'package:flutter_challenge_server/generated/puzzle/v1/puzzle.pb.dart';
 import 'package:flutter_challenge_server/src/puzzle_dao.dart';
 import 'package:flutter_challenge_server/src/puzzle_generator.dart';
 import 'package:rethink_db_ns/rethink_db_ns.dart';
@@ -82,5 +83,26 @@ class PuzzleRepository {
     } else {
       return false;
     }
+  }
+
+  Future<bool> updateMousePosition(String userId, MousePositionMessage message) async {
+    final puzzle = await getLatestPuzzle();
+    if (puzzle == null) return false;
+
+    final position = MousePosition(x: message.x, y: message.y);
+
+    // * Add userId if not yet present in participants list
+    List<Participant> participants = [...puzzle.participants];
+    int index = participants.indexWhere((p) => p.userId == userId);
+    if (index == -1) {
+      participants.add(Participant(userId: userId, lastActive: DateTime.now(), position: position));
+    } else {
+      participants[index] = participants[index].copyWith(lastActive: DateTime.now(), position: position);
+    }
+
+    final updated = puzzle.copyWith(participants: participants);
+    final result = await dao.update(puzzle.id, updated.toMap());
+
+    return result['replaced'] == 1;
   }
 }

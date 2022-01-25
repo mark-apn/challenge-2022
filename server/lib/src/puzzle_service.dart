@@ -48,6 +48,12 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
       return VoteForTileResponse();
     });
   }
+
+  @override
+  Future<UpdateMousePositionResponse> updateMousePosition(ServiceCall call, UpdateMousePositionRequest request) async {
+    puzzleRepo.updateMousePosition(request.userId, request.position);
+    return UpdateMousePositionResponse();
+  }
 }
 
 PuzzleMessage toPuzzleMessage(Puzzle puzzle) {
@@ -78,12 +84,18 @@ ParticipantMessage _toParticipantMessage(Participant participant) {
   return ParticipantMessage(
     userId: participant.userId,
     lastActive: Int64(participant.lastActive.millisecondsSinceEpoch),
-    mousePosition: participant.position != null ? _toPositionMessage(participant.position!) : null,
+    mousePosition: participant.position != null ? _toMousePositionMessage(participant.position!) : null,
   );
 }
 
 PositionMessage _toPositionMessage(Position position) {
   return PositionMessage(
+    x: position.x,
+    y: position.y,
+  );
+}
+MousePositionMessage _toMousePositionMessage(MousePosition position) {
+  return MousePositionMessage(
     x: position.x,
     y: position.y,
   );

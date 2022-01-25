@@ -113,7 +113,7 @@ class _PuzzleBoard extends ConsumerWidget {
       },
     );
 
-    children.add(const MousePointers());
+    children.add( MousePointers(boardSize: boardSize));
 
     return Container(
       constraints: BoxConstraints.tight(Size(boardSize, boardSize)),

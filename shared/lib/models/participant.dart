@@ -1,20 +1,20 @@
+
 import 'package:equatable/equatable.dart';
-import 'package:shared/models/models.dart';
 
 class Participant extends Equatable {
   const Participant({
     required this.userId,
     required this.lastActive,
-     this.position,
+    this.position,
   });
   final String userId;
   final DateTime lastActive;
-  final Position? position;
+  final MousePosition? position;
 
   Participant copyWith({
     String? userId,
     DateTime? lastActive,
-    Position? position,
+    MousePosition? position,
   }) {
     return Participant(
       userId: userId ?? this.userId,
@@ -35,7 +35,7 @@ class Participant extends Equatable {
     return Participant(
       userId: map['userId'] ?? '',
       lastActive: DateTime.fromMillisecondsSinceEpoch(map['lastActive']),
-      position: map['position'] != null ? Position.fromMap(map['position']) : null,
+      position: map['position'] != null ? MousePosition.fromMap(map['position']) : null,
     );
   }
 
@@ -45,5 +45,41 @@ class Participant extends Equatable {
         lastActive,
         position,
       ];
+}
 
+class MousePosition extends Equatable {
+  const MousePosition({
+    required this.x,
+    required this.y,
+  });
+
+  final double x;
+  final double y;
+
+  @override
+  List<Object> get props => [x, y];
+
+  MousePosition copyWith({
+    double? x,
+    double? y,
+  }) {
+    return MousePosition(
+      x: x ?? this.x,
+      y: y ?? this.y,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'x': x,
+      'y': y,
+    };
+  }
+
+  factory MousePosition.fromMap(Map<String, dynamic> map) {
+    return MousePosition(
+      x: map['x']?.toDouble() ?? 0.0,
+      y: map['y']?.toDouble() ?? 0.0,
+    );
+  }
 }

@@ -200,6 +200,98 @@ class VoteForTileResponse extends $pb.GeneratedMessage {
   static VoteForTileResponse? _defaultInstance;
 }
 
+class UpdateMousePositionRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdateMousePositionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId')
+    ..aOM<MousePositionMessage>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: MousePositionMessage.create)
+    ..hasRequiredFields = false
+  ;
+
+  UpdateMousePositionRequest._() : super();
+  factory UpdateMousePositionRequest({
+    $core.String? userId,
+    MousePositionMessage? position,
+  }) {
+    final _result = create();
+    if (userId != null) {
+      _result.userId = userId;
+    }
+    if (position != null) {
+      _result.position = position;
+    }
+    return _result;
+  }
+  factory UpdateMousePositionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UpdateMousePositionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UpdateMousePositionRequest clone() => UpdateMousePositionRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UpdateMousePositionRequest copyWith(void Function(UpdateMousePositionRequest) updates) => super.copyWith((message) => updates(message as UpdateMousePositionRequest)) as UpdateMousePositionRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UpdateMousePositionRequest create() => UpdateMousePositionRequest._();
+  UpdateMousePositionRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdateMousePositionRequest> createRepeated() => $pb.PbList<UpdateMousePositionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateMousePositionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdateMousePositionRequest>(create);
+  static UpdateMousePositionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get userId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => clearField(1);
+
+  @$pb.TagNumber(3)
+  MousePositionMessage get position => $_getN(1);
+  @$pb.TagNumber(3)
+  set position(MousePositionMessage v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasPosition() => $_has(1);
+  @$pb.TagNumber(3)
+  void clearPosition() => clearField(3);
+  @$pb.TagNumber(3)
+  MousePositionMessage ensurePosition() => $_ensure(1);
+}
+
+class UpdateMousePositionResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdateMousePositionResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  UpdateMousePositionResponse._() : super();
+  factory UpdateMousePositionResponse() => create();
+  factory UpdateMousePositionResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UpdateMousePositionResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UpdateMousePositionResponse clone() => UpdateMousePositionResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UpdateMousePositionResponse copyWith(void Function(UpdateMousePositionResponse) updates) => super.copyWith((message) => updates(message as UpdateMousePositionResponse)) as UpdateMousePositionResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UpdateMousePositionResponse create() => UpdateMousePositionResponse._();
+  UpdateMousePositionResponse createEmptyInstance() => create();
+  static $pb.PbList<UpdateMousePositionResponse> createRepeated() => $pb.PbList<UpdateMousePositionResponse>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateMousePositionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdateMousePositionResponse>(create);
+  static UpdateMousePositionResponse? _defaultInstance;
+}
+
 class PuzzleMessage extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PuzzleMessage', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
@@ -457,7 +549,7 @@ class TileMessage extends $pb.GeneratedMessage {
 class ParticipantMessage extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ParticipantMessage', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId')
-    ..aOM<PositionMessage>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mousePosition', subBuilder: PositionMessage.create)
+    ..aOM<MousePositionMessage>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mousePosition', subBuilder: MousePositionMessage.create)
     ..aInt64(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastActive')
     ..hasRequiredFields = false
   ;
@@ -465,7 +557,7 @@ class ParticipantMessage extends $pb.GeneratedMessage {
   ParticipantMessage._() : super();
   factory ParticipantMessage({
     $core.String? userId,
-    PositionMessage? mousePosition,
+    MousePositionMessage? mousePosition,
     $fixnum.Int64? lastActive,
   }) {
     final _result = create();
@@ -511,15 +603,15 @@ class ParticipantMessage extends $pb.GeneratedMessage {
   void clearUserId() => clearField(1);
 
   @$pb.TagNumber(2)
-  PositionMessage get mousePosition => $_getN(1);
+  MousePositionMessage get mousePosition => $_getN(1);
   @$pb.TagNumber(2)
-  set mousePosition(PositionMessage v) { setField(2, v); }
+  set mousePosition(MousePositionMessage v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasMousePosition() => $_has(1);
   @$pb.TagNumber(2)
   void clearMousePosition() => clearField(2);
   @$pb.TagNumber(2)
-  PositionMessage ensureMousePosition() => $_ensure(1);
+  MousePositionMessage ensureMousePosition() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $fixnum.Int64 get lastActive => $_getI64(2);
@@ -586,6 +678,67 @@ class PositionMessage extends $pb.GeneratedMessage {
   $core.int get y => $_getIZ(1);
   @$pb.TagNumber(2)
   set y($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasY() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearY() => clearField(2);
+}
+
+class MousePositionMessage extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MousePositionMessage', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
+    ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'x', $pb.PbFieldType.OF)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'y', $pb.PbFieldType.OF)
+    ..hasRequiredFields = false
+  ;
+
+  MousePositionMessage._() : super();
+  factory MousePositionMessage({
+    $core.double? x,
+    $core.double? y,
+  }) {
+    final _result = create();
+    if (x != null) {
+      _result.x = x;
+    }
+    if (y != null) {
+      _result.y = y;
+    }
+    return _result;
+  }
+  factory MousePositionMessage.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory MousePositionMessage.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  MousePositionMessage clone() => MousePositionMessage()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  MousePositionMessage copyWith(void Function(MousePositionMessage) updates) => super.copyWith((message) => updates(message as MousePositionMessage)) as MousePositionMessage; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static MousePositionMessage create() => MousePositionMessage._();
+  MousePositionMessage createEmptyInstance() => create();
+  static $pb.PbList<MousePositionMessage> createRepeated() => $pb.PbList<MousePositionMessage>();
+  @$core.pragma('dart2js:noInline')
+  static MousePositionMessage getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MousePositionMessage>(create);
+  static MousePositionMessage? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.double get x => $_getN(0);
+  @$pb.TagNumber(1)
+  set x($core.double v) { $_setFloat(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasX() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearX() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get y => $_getN(1);
+  @$pb.TagNumber(2)
+  set y($core.double v) { $_setFloat(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasY() => $_has(1);
   @$pb.TagNumber(2)

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_challenge/grpc/client.dart';
 import 'package:shared/shared.dart';
 
@@ -11,7 +14,7 @@ class PuzzleVm {
     await GrpcClient.instance.voteOnTile(tappedTile.value);
   }
 
-  Future<void> updateMousePosition(double x, double y) async {
-
+  Future<void> updateMousePosition(Offset position) async {
+    GrpcClient.instance.updateMousePointer(position.dx, position.dy);
   }
 }

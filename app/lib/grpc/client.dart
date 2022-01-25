@@ -28,9 +28,6 @@ class GrpcClient {
   ClientChannelBase get _newChannel => GrpcChannelBuilder().build;
 
   ClientChannelBase get _channel => _cachedChannel ??= _newChannel;
-  CallOptions get _defaultOptions {
-    return CallOptions();
-  }
 
   PuzzleV1ServiceClient get client {
     return PuzzleV1ServiceClient(_channel);
@@ -51,12 +48,7 @@ class GrpcClient {
     // TODO(mark): expose countdown and reconnect now button in the UI
     await Future.delayed(Duration(milliseconds: incrementalBackoffDelay));
 
-    listener = client
-        .subscribeToPuzzle(
-      SubscribeToPuzzleRequest(userId: userId),
-      options: _defaultOptions,
-    )
-        .listen(
+    listener = client.subscribeToPuzzle(SubscribeToPuzzleRequest(userId: userId)).listen(
       (event) {
         lastDataReceived = DateTime.now();
         _puzzleStreamController.sink.add(toPuzzle(event.puzzle));
@@ -73,6 +65,26 @@ class GrpcClient {
   }
 
   Future<void> voteOnTile(int tileValue) async {
+    // * Reconnect stream after idle time
+    await _idleRefresh();
+
+    // * Vote on the tile
+    await client.voteForTile(
+      VoteForTileRequest(userId: userId, tileValue: tileValue),
+    );
+  }
+
+  Future<void> updateMousePointer(double x, double y) async {
+    // * Reconnect stream after idle time
+    await _idleRefresh();
+
+    // * Update the mouse pointer
+    await client.updateMousePosition(
+      UpdateMousePositionRequest(userId: userId, position: MousePositionMessage(x: x, y: y)),
+    );
+  }
+
+  Future<void> _idleRefresh() async {
     // * After a while in the background or idle, the server will send a
     // * disconnect and the app will not pick it up. The client will then
     // * try to reconnect to the server.
@@ -80,12 +92,6 @@ class GrpcClient {
       debugPrint('Pre-emptively reconnecting to puzzle stream');
       await _reconnectToPuzzle();
     }
-
-    // * Vote on the tile
-    await client.voteForTile(
-      VoteForTileRequest(userId: userId, tileValue: tileValue),
-      options: _defaultOptions,
-    );
   }
 
   bool _shouldTryReconnecting(GrpcError error) {
@@ -130,12 +136,19 @@ Participant _toParticipant(ParticipantMessage message) {
   return Participant(
     userId: message.userId,
     lastActive: DateTime.fromMillisecondsSinceEpoch(message.lastActive.toInt()),
-    position: message.mousePosition.hasX() ? _toPosition(message.mousePosition) : null,
+    position: message.mousePosition.hasX() ? _toMousePosition(message.mousePosition) : null,
   );
 }
 
 Position _toPosition(PositionMessage message) {
   return Position(
+    x: message.x,
+    y: message.y,
+  );
+}
+
+MousePosition _toMousePosition(MousePositionMessage message) {
+  return MousePosition(
     x: message.x,
     y: message.y,
   );
