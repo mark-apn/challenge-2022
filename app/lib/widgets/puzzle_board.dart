@@ -6,6 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared/shared.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'mouse_pointers.dart';
+
 class PuzzleBoardLoader extends StatelessWidget {
   const PuzzleBoardLoader({Key? key, this.fillPercentage = 0.8}) : super(key: key);
 
@@ -52,7 +54,7 @@ class _PuzzleShimmer extends ConsumerWidget {
           children: List.generate(9, (index) {
             return Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: kPrimaryColor,
                 borderRadius: BorderRadius.circular(16),
               ),
             );
@@ -110,6 +112,8 @@ class _PuzzleBoard extends ConsumerWidget {
         return builder(tile);
       },
     );
+
+    children.add(const MousePointers());
 
     return Container(
       constraints: BoxConstraints.tight(Size(boardSize, boardSize)),

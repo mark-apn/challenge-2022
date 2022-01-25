@@ -11,22 +11,23 @@ class PuzzleRepository {
     if (puzzle == null) return false;
 
     // * Add userId if not yet present in participants list
-    List<Participant> participants = puzzle.participants;
-    if (participants.where((element) => element.userId == userId).isEmpty) {
+    List<Participant> participants = [...puzzle.participants];
+    int index = participants.indexWhere((p) => p.userId == userId);
+    if (index == -1) {
       participants.add(Participant(userId: userId, lastActive: DateTime.now()));
+    } else {
+      participants[index] = participants[index].copyWith(lastActive: DateTime.now());
     }
 
     final updated = puzzle.copyWith(
         participants: participants,
         totalVotes: puzzle.totalVotes + 1,
-        tiles: puzzle.tiles.map(
-          (t) {
-            if (t.value == tileValue) {
-              return t.copyWith(numVotes: t.numVotes + 1);
-            }
-            return t;
-          },
-        ).toList());
+        tiles: puzzle.tiles.map((t) {
+          if (t.value == tileValue) {
+            return t.copyWith(numVotes: t.numVotes + 1);
+          }
+          return t;
+        }).toList());
 
     print('Voting for move on puzzle with id ${puzzle.id}');
     await dao.update(puzzle.id, updated.toMap());

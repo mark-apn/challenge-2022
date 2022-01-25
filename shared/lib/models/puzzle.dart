@@ -263,7 +263,7 @@ class Puzzle extends Equatable {
       'created_at': createdAt.millisecondsSinceEpoch,
       'updated_at': updatedAt.millisecondsSinceEpoch,
       'ends_at': endsAt?.millisecondsSinceEpoch,
-      'participants': participants,
+      'participants': participants.map((x) => x.toMap()).toList(),
       'tiles': tiles.map((x) => x.toMap()).toList(),
       'status': status,
       'num_moves': numMoves,
