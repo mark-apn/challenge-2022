@@ -5,36 +5,26 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run local gRPC server",
-      "cwd": "server",
-      "request": "launch",
-      "program": "bin/server.dart --port 12345",
-      "type": "dart"
-    },
-    {
-      "name": "Run worker",
-      "cwd": "server",
-      "request": "launch",
-      "program": "bin/worker.dart",
-      "type": "dart"
-    },
-    {
-      "name": "Run Flutter app",
+      "name": "Run app",
       "cwd": "app",
       "type": "dart",
       "request": "launch",
       "program": "lib/main.dart"
     },
     {
-      "name": "Run webserver",
-      "cwd": "app",
+      "name": "Start worker",
+      "cwd": "server",
+      "request": "launch",
+      "program": "bin/worker.dart",
+      "type": "dart"
+    },
+    {
+      "name": "Start server",
       "type": "dart",
       "request": "launch",
-      "program": "lib/main.dart",
-      "args": [
-        "-d",
-        "web-server"
-      ]
+      "cwd": "server",
+      "program": "bin/server.dart",
+      "args": ["--port", "50000"]
     }
   ]
 }

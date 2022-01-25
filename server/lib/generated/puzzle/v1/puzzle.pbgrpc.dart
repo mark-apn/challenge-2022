@@ -26,6 +26,12 @@ class PuzzleV1ServiceClient extends $grpc.Client {
           ($0.VoteForTileRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.VoteForTileResponse.fromBuffer(value));
+  static final _$updateMousePosition = $grpc.ClientMethod<
+          $0.UpdateMousePositionRequest, $0.UpdateMousePositionResponse>(
+      '/puzzle.v1.PuzzleV1Service/UpdateMousePosition',
+      ($0.UpdateMousePositionRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $0.UpdateMousePositionResponse.fromBuffer(value));
 
   PuzzleV1ServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -44,6 +50,12 @@ class PuzzleV1ServiceClient extends $grpc.Client {
       $0.VoteForTileRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$voteForTile, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.UpdateMousePositionResponse> updateMousePosition(
+      $0.UpdateMousePositionRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateMousePosition, request, options: options);
   }
 }
 
@@ -69,6 +81,15 @@ abstract class PuzzleV1ServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.VoteForTileRequest.fromBuffer(value),
             ($0.VoteForTileResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.UpdateMousePositionRequest,
+            $0.UpdateMousePositionResponse>(
+        'UpdateMousePosition',
+        updateMousePosition_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.UpdateMousePositionRequest.fromBuffer(value),
+        ($0.UpdateMousePositionResponse value) => value.writeToBuffer()));
   }
 
   $async.Stream<$0.SubscribeToPuzzleResponse> subscribeToPuzzle_Pre(
@@ -82,8 +103,16 @@ abstract class PuzzleV1ServiceBase extends $grpc.Service {
     return voteForTile(call, await request);
   }
 
+  $async.Future<$0.UpdateMousePositionResponse> updateMousePosition_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.UpdateMousePositionRequest> request) async {
+    return updateMousePosition(call, await request);
+  }
+
   $async.Stream<$0.SubscribeToPuzzleResponse> subscribeToPuzzle(
       $grpc.ServiceCall call, $0.SubscribeToPuzzleRequest request);
   $async.Future<$0.VoteForTileResponse> voteForTile(
       $grpc.ServiceCall call, $0.VoteForTileRequest request);
+  $async.Future<$0.UpdateMousePositionResponse> updateMousePosition(
+      $grpc.ServiceCall call, $0.UpdateMousePositionRequest request);
 }

@@ -90,3 +90,8 @@ final puzzleDimensionsProvider = Provider.autoDispose((ref) {
 final puzzleStatusProvider = Provider.autoDispose((ref) {
   return ref.watch(puzzleProvider.select((value) => value.puzzle.status));
 });
+
+
+final mousePositionsProvider = StateProvider.autoDispose((ref){
+  return [];
+});

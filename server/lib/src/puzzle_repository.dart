@@ -1,3 +1,4 @@
+import 'package:flutter_challenge_server/generated/puzzle/v1/puzzle.pb.dart';
 import 'package:flutter_challenge_server/src/puzzle_dao.dart';
 import 'package:flutter_challenge_server/src/puzzle_generator.dart';
 import 'package:rethink_db_ns/rethink_db_ns.dart';
@@ -11,22 +12,23 @@ class PuzzleRepository {
     if (puzzle == null) return false;
 
     // * Add userId if not yet present in participants list
-    List<String> participants = puzzle.participants;
-    if (!participants.contains(userId)) {
-      participants.add(userId);
+    List<Participant> participants = [...puzzle.participants];
+    int index = participants.indexWhere((p) => p.userId == userId);
+    if (index == -1) {
+      participants.add(Participant(userId: userId, lastActive: DateTime.now()));
+    } else {
+      participants[index] = participants[index].copyWith(lastActive: DateTime.now());
     }
 
     final updated = puzzle.copyWith(
         participants: participants,
         totalVotes: puzzle.totalVotes + 1,
-        tiles: puzzle.tiles.map(
-          (t) {
-            if (t.value == tileValue) {
-              return t.copyWith(numVotes: t.numVotes + 1);
-            }
-            return t;
-          },
-        ).toList());
+        tiles: puzzle.tiles.map((t) {
+          if (t.value == tileValue) {
+            return t.copyWith(numVotes: t.numVotes + 1);
+          }
+          return t;
+        }).toList());
 
     print('Voting for move on puzzle with id ${puzzle.id}');
     await dao.update(puzzle.id, updated.toMap());
@@ -81,5 +83,26 @@ class PuzzleRepository {
     } else {
       return false;
     }
+  }
+
+  Future<bool> updateMousePosition(String userId, MousePositionMessage message) async {
+    final puzzle = await getLatestPuzzle();
+    if (puzzle == null) return false;
+
+    final position = MousePosition(x: message.x, y: message.y);
+
+    // * Add userId if not yet present in participants list
+    List<Participant> participants = [...puzzle.participants];
+    int index = participants.indexWhere((p) => p.userId == userId);
+    if (index == -1) {
+      participants.add(Participant(userId: userId, lastActive: DateTime.now(), position: position));
+    } else {
+      participants[index] = participants[index].copyWith(lastActive: DateTime.now(), position: position);
+    }
+
+    final updated = puzzle.copyWith(participants: participants);
+    final result = await dao.update(puzzle.id, updated.toMap());
+
+    return result['replaced'] == 1;
   }
 }

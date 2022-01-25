@@ -28,9 +28,6 @@ class GrpcClient {
   ClientChannelBase get _newChannel => GrpcChannelBuilder().build;
 
   ClientChannelBase get _channel => _cachedChannel ??= _newChannel;
-  CallOptions get _defaultOptions {
-    return CallOptions();
-  }
 
   PuzzleV1ServiceClient get client {
     return PuzzleV1ServiceClient(_channel);
@@ -44,18 +41,14 @@ class GrpcClient {
   // Incremental backoff will start at 400ms and doubles every pass
   // TODO(mark): Add max retries
   Future<void> _reconnectToPuzzle([int incrementalBackoffDelay = 0]) async {
-    debugPrint('Reconnecting to puzzle stream');
+    debugPrint('Reconnecting to puzzle stream with clean channel');
+    _cachedChannel = null;
     listener?.cancel();
 
     // TODO(mark): expose countdown and reconnect now button in the UI
     await Future.delayed(Duration(milliseconds: incrementalBackoffDelay));
 
-    listener = client
-        .subscribeToPuzzle(
-      SubscribeToPuzzleRequest(userId: userId),
-      options: _defaultOptions,
-    )
-        .listen(
+    listener = client.subscribeToPuzzle(SubscribeToPuzzleRequest(userId: userId)).listen(
       (event) {
         lastDataReceived = DateTime.now();
         _puzzleStreamController.sink.add(toPuzzle(event.puzzle));
@@ -66,26 +59,39 @@ class GrpcClient {
         debugPrint('Error: $error');
         // Delete previous channel, and reconnect if we can
         if (error is GrpcError && _shouldTryReconnecting(error)) {
-          _cachedChannel = null;
           _reconnectToPuzzle(incrementalBackoffDelay == 0 ? 400 : incrementalBackoffDelay * 2);
         }
       });
   }
 
   Future<void> voteOnTile(int tileValue) async {
+    // * Reconnect stream after idle time
+    await _idleRefresh();
+
+    // * Vote on the tile
+    await client.voteForTile(
+      VoteForTileRequest(userId: userId, tileValue: tileValue),
+    );
+  }
+
+  Future<void> updateMousePointer(double x, double y) async {
+    // * Reconnect stream after idle time
+    await _idleRefresh();
+
+    // * Update the mouse pointer
+    await client.updateMousePosition(
+      UpdateMousePositionRequest(userId: userId, position: MousePositionMessage(x: x, y: y)),
+    );
+  }
+
+  Future<void> _idleRefresh() async {
     // * After a while in the background or idle, the server will send a
     // * disconnect and the app will not pick it up. The client will then
     // * try to reconnect to the server.
     if (lastDataReceived == null || DateTime.now().difference(lastDataReceived!).inMinutes > 2) {
       debugPrint('Pre-emptively reconnecting to puzzle stream');
-      _reconnectToPuzzle();
+      await _reconnectToPuzzle();
     }
-
-    // * Vote on the tile
-    await client.voteForTile(
-      VoteForTileRequest(userId: userId, tileValue: tileValue),
-      options: _defaultOptions,
-    );
   }
 
   bool _shouldTryReconnecting(GrpcError error) {
@@ -93,13 +99,9 @@ class GrpcClient {
     final serverUnavailable = error.code == StatusCode.unavailable;
     if (serverUnavailable) return true;
 
-    // * The stream can be aborted by the server (Envoy proxy timeouts)
-    final connectionTerminated = error.code == StatusCode.aborted;
-    if (connectionTerminated) return true;
-
     // * After a while the stream can be terminated by the server.
     // * We check the error message string because the error code = 2 (UNKNOWN)
-    final streamTerminated = (error.message?.contains('Stream was terminated') ?? false);
+    final streamTerminated = (error.message?.contains('terminated') ?? false);
     if (streamTerminated) return true;
 
     return false;
@@ -113,8 +115,7 @@ Puzzle toPuzzle(PuzzleMessage message) {
     updatedAt: DateTime.fromMillisecondsSinceEpoch(message.updatedAt.toInt()),
     endsAt: message.endsAt.isZero ? null : DateTime.fromMillisecondsSinceEpoch(message.endsAt.toInt()),
     tiles: message.tiles.map(_toTile).toList(),
-    // We don't care about the participant ids to create an empty list of strings
-    participants: List.generate(message.participantCount, (index) => ""),
+    participants: message.participants.map(_toParticipant).toList(),
     numMoves: message.numMoves,
     status: message.status.value,
     totalVotes: message.totalVotes,
@@ -131,8 +132,23 @@ Tile _toTile(TileMessage message) {
   );
 }
 
-Position _toPosition(TilePosition message) {
+Participant _toParticipant(ParticipantMessage message) {
+  return Participant(
+    userId: message.userId,
+    lastActive: DateTime.fromMillisecondsSinceEpoch(message.lastActive.toInt()),
+    position: message.mousePosition.hasX() ? _toMousePosition(message.mousePosition) : null,
+  );
+}
+
+Position _toPosition(PositionMessage message) {
   return Position(
+    x: message.x,
+    y: message.y,
+  );
+}
+
+MousePosition _toMousePosition(MousePositionMessage message) {
+  return MousePosition(
     x: message.x,
     y: message.y,
   );

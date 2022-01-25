@@ -4,8 +4,10 @@ import 'package:equatable/equatable.dart';
 /// 2-dimensional position model.
 ///
 /// (1, 1) is the top left corner of the board.
+/// Also used for user mouse position (And is treated as alignment)
 /// {@endtemplate}
 class Position extends Equatable implements Comparable<Position> {
+
   /// {@macro position}
   const Position({required this.x, required this.y});
 
