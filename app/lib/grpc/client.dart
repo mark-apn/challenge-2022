@@ -74,13 +74,13 @@ class GrpcClient {
     );
   }
 
-  Future<void> updateMousePointer(double x, double y) async {
+  Future<void> updatePointer(double x, double y) async {
     // * Reconnect stream after idle time
     await _idleRefresh();
 
-    // * Update the mouse pointer
-    await client.updateMousePosition(
-      UpdateMousePositionRequest(userId: userId, position: MousePositionMessage(x: x, y: y)),
+    // * Update the pointer
+    await client.updatePointerPosition(
+      UpdatePointerPositionRequest(userId: userId, position: PointerPositionMessage(x: x, y: y)),
     );
   }
 
@@ -136,7 +136,10 @@ Participant _toParticipant(ParticipantMessage message) {
   return Participant(
     userId: message.userId,
     lastActive: DateTime.fromMillisecondsSinceEpoch(message.lastActive.toInt()),
-    position: message.mousePosition.hasX() ? _toPointerPosition(message.mousePosition) : null,
+    pointer: ParticipantPointer(
+      position: message.pointer.hasPosition() ? _toPointerPosition(message.pointer.position) : null,
+      settings: _toPointerSettings(message.pointer.settings),
+    ),
   );
 }
 
@@ -147,9 +150,14 @@ Position _toPosition(PositionMessage message) {
   );
 }
 
-PointerPosition _toPointerPosition(MousePositionMessage message) {
-  return PointerPosition(
-    x: message.x,
-    y: message.y,
+PointerPosition _toPointerPosition(PointerPositionMessage message) {
+  return PointerPosition(x: message.x, y: message.y);
+}
+
+PointerDisplaySettings _toPointerSettings(PointerSettingsMessage message) {
+  return PointerDisplaySettings(
+    colorHex: message.colorHex,
+    shape: PointerDisplayShape.values[message.shape.value - 1], // proto value is 1 indexed
+    size: message.size,
   );
 }

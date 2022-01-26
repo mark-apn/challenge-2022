@@ -90,14 +90,29 @@ class PuzzleRepository {
     if (puzzle == null) return false;
 
     final position = PointerPosition(x: message.x, y: message.y);
+    final initialPointer = ParticipantPointer(
+      position: position,
+      settings: PointerDisplaySettings.initial(),
+    );
 
     // * Add userId if not yet present in participants list
     List<Participant> participants = [...puzzle.participants];
     int index = participants.indexWhere((p) => p.userId == userId);
     if (index == -1) {
-      participants.add(Participant(userId: userId, lastActive: DateTime.now(), position: position));
+      participants.add(
+        Participant(
+          userId: userId,
+          lastActive: DateTime.now(),
+          pointer: initialPointer,
+        ),
+      );
     } else {
-      participants[index] = participants[index].copyWith(lastActive: DateTime.now(), position: position);
+      final pointer = participants[index].pointer?.copyWith(position: position) ?? initialPointer;
+
+      participants[index] = participants[index].copyWith(
+        lastActive: DateTime.now(),
+        pointer: pointer,
+      );
     }
 
     final updated = puzzle.copyWith(participants: participants);

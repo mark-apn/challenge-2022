@@ -28,7 +28,7 @@ class Pointers extends HookConsumerWidget {
     useEffect(() {
       throttleTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
         if (mousePosition.value != null && isUpdated.value == true) {
-          PuzzleVm.instance.updateMousePosition(mousePosition.value!);
+          PuzzleVm.instance.updatePointerPosition(mousePosition.value!);
           isUpdated.value = false;
         }
       });
@@ -41,8 +41,8 @@ class Pointers extends HookConsumerWidget {
       puzzleProvider.select(
         (state) => state.puzzle.participants
             .whereNot((p) => p.userId == userId)
-            .where((p) => p.position != null)
-            .map((p) => p.position!)
+            .where((p) => p.pointer?.position != null)
+            .map((p) => p.pointer!)
             .toList(),
       ),
     );
@@ -72,7 +72,7 @@ class Pointers extends HookConsumerWidget {
       },
       child: Stack(
         children: [
-          ...otherPointers.map((p) => Pointer(position: p)).toList(),
+          ...otherPointers.map((p) => Pointer(position: p.position!)).toList(),
           if (myPointer != null)
             Pointer(
               position: myPointer,

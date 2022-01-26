@@ -15,12 +15,12 @@ class Participant extends Equatable {
   Participant copyWith({
     String? userId,
     DateTime? lastActive,
-    ParticipantPointer? position,
+    ParticipantPointer? pointer,
   }) {
     return Participant(
       userId: userId ?? this.userId,
       lastActive: lastActive ?? this.lastActive,
-      pointer: position ?? this.pointer,
+      pointer: pointer ?? this.pointer,
     );
   }
 

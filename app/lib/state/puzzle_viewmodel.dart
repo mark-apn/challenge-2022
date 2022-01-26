@@ -14,7 +14,7 @@ class PuzzleVm {
     await GrpcClient.instance.voteOnTile(tappedTile.value);
   }
 
-  Future<void> updateMousePosition(Offset position) async {
-    GrpcClient.instance.updateMousePointer(position.dx, position.dy);
+  Future<void> updatePointerPosition(Offset position) async {
+    GrpcClient.instance.updatePointer(position.dx, position.dy);
   }
 }
