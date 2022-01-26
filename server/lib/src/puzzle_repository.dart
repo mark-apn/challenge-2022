@@ -85,11 +85,11 @@ class PuzzleRepository {
     }
   }
 
-  Future<bool> updateMousePosition(String userId, MousePositionMessage message) async {
+  Future<bool> updatePointerPosition(String userId, PointerPositionMessage message) async {
     final puzzle = await getLatestPuzzle();
     if (puzzle == null) return false;
 
-    final position = MousePosition(x: message.x, y: message.y);
+    final position = PointerPosition(x: message.x, y: message.y);
 
     // * Add userId if not yet present in participants list
     List<Participant> participants = [...puzzle.participants];

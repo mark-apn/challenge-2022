@@ -1,25 +1,26 @@
-
 import 'package:equatable/equatable.dart';
+import 'package:shared/models/pointer.dart';
 
 class Participant extends Equatable {
-  const Participant({
+  Participant({
     required this.userId,
     required this.lastActive,
-    this.position,
+    this.pointer = null,
   });
+
   final String userId;
   final DateTime lastActive;
-  final MousePosition? position;
+  final ParticipantPointer? pointer;
 
   Participant copyWith({
     String? userId,
     DateTime? lastActive,
-    MousePosition? position,
+    ParticipantPointer? position,
   }) {
     return Participant(
       userId: userId ?? this.userId,
       lastActive: lastActive ?? this.lastActive,
-      position: position ?? this.position,
+      pointer: position ?? this.pointer,
     );
   }
 
@@ -27,7 +28,7 @@ class Participant extends Equatable {
     return {
       'userId': userId,
       'lastActive': lastActive.millisecondsSinceEpoch,
-      'position': position?.toMap(),
+      'pointer': pointer?.toMap(),
     };
   }
 
@@ -35,7 +36,7 @@ class Participant extends Equatable {
     return Participant(
       userId: map['userId'] ?? '',
       lastActive: DateTime.fromMillisecondsSinceEpoch(map['lastActive']),
-      position: map['position'] != null ? MousePosition.fromMap(map['position']) : null,
+      pointer: map['pointer'] != null ? ParticipantPointer.fromMap(map['pointer']) : null,
     );
   }
 
@@ -43,43 +44,6 @@ class Participant extends Equatable {
   List<Object?> get props => [
         userId,
         lastActive,
-        position,
+        pointer,
       ];
-}
-
-class MousePosition extends Equatable {
-  const MousePosition({
-    required this.x,
-    required this.y,
-  });
-
-  final double x;
-  final double y;
-
-  @override
-  List<Object> get props => [x, y];
-
-  MousePosition copyWith({
-    double? x,
-    double? y,
-  }) {
-    return MousePosition(
-      x: x ?? this.x,
-      y: y ?? this.y,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'x': x,
-      'y': y,
-    };
-  }
-
-  factory MousePosition.fromMap(Map<String, dynamic> map) {
-    return MousePosition(
-      x: map['x']?.toDouble() ?? 0.0,
-      y: map['y']?.toDouble() ?? 0.0,
-    );
-  }
 }

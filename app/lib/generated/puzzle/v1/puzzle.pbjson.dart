@@ -46,24 +46,42 @@ const VoteForTileResponse$json = const {
 
 /// Descriptor for `VoteForTileResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List voteForTileResponseDescriptor = $convert.base64Decode('ChNWb3RlRm9yVGlsZVJlc3BvbnNl');
-@$core.Deprecated('Use updateMousePositionRequestDescriptor instead')
-const UpdateMousePositionRequest$json = const {
-  '1': 'UpdateMousePositionRequest',
+@$core.Deprecated('Use updatePointerPositionRequestDescriptor instead')
+const UpdatePointerPositionRequest$json = const {
+  '1': 'UpdatePointerPositionRequest',
   '2': const [
     const {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
-    const {'1': 'position', '3': 3, '4': 1, '5': 11, '6': '.puzzle.v1.MousePositionMessage', '10': 'position'},
+    const {'1': 'position', '3': 2, '4': 1, '5': 11, '6': '.puzzle.v1.PointerPositionMessage', '10': 'position'},
   ],
 };
 
-/// Descriptor for `UpdateMousePositionRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateMousePositionRequestDescriptor = $convert.base64Decode('ChpVcGRhdGVNb3VzZVBvc2l0aW9uUmVxdWVzdBIXCgd1c2VyX2lkGAEgASgJUgZ1c2VySWQSOwoIcG9zaXRpb24YAyABKAsyHy5wdXp6bGUudjEuTW91c2VQb3NpdGlvbk1lc3NhZ2VSCHBvc2l0aW9u');
-@$core.Deprecated('Use updateMousePositionResponseDescriptor instead')
-const UpdateMousePositionResponse$json = const {
-  '1': 'UpdateMousePositionResponse',
+/// Descriptor for `UpdatePointerPositionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updatePointerPositionRequestDescriptor = $convert.base64Decode('ChxVcGRhdGVQb2ludGVyUG9zaXRpb25SZXF1ZXN0EhcKB3VzZXJfaWQYASABKAlSBnVzZXJJZBI9Cghwb3NpdGlvbhgCIAEoCzIhLnB1enpsZS52MS5Qb2ludGVyUG9zaXRpb25NZXNzYWdlUghwb3NpdGlvbg==');
+@$core.Deprecated('Use updatePointerPositionResponseDescriptor instead')
+const UpdatePointerPositionResponse$json = const {
+  '1': 'UpdatePointerPositionResponse',
 };
 
-/// Descriptor for `UpdateMousePositionResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateMousePositionResponseDescriptor = $convert.base64Decode('ChtVcGRhdGVNb3VzZVBvc2l0aW9uUmVzcG9uc2U=');
+/// Descriptor for `UpdatePointerPositionResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updatePointerPositionResponseDescriptor = $convert.base64Decode('Ch1VcGRhdGVQb2ludGVyUG9zaXRpb25SZXNwb25zZQ==');
+@$core.Deprecated('Use updatePointerSettingsRequestDescriptor instead')
+const UpdatePointerSettingsRequest$json = const {
+  '1': 'UpdatePointerSettingsRequest',
+  '2': const [
+    const {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
+    const {'1': 'settings', '3': 2, '4': 1, '5': 11, '6': '.puzzle.v1.PointerSettingsMessage', '10': 'settings'},
+  ],
+};
+
+/// Descriptor for `UpdatePointerSettingsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updatePointerSettingsRequestDescriptor = $convert.base64Decode('ChxVcGRhdGVQb2ludGVyU2V0dGluZ3NSZXF1ZXN0EhcKB3VzZXJfaWQYASABKAlSBnVzZXJJZBI9CghzZXR0aW5ncxgCIAEoCzIhLnB1enpsZS52MS5Qb2ludGVyU2V0dGluZ3NNZXNzYWdlUghzZXR0aW5ncw==');
+@$core.Deprecated('Use updatePointerSettingsResponseDescriptor instead')
+const UpdatePointerSettingsResponse$json = const {
+  '1': 'UpdatePointerSettingsResponse',
+};
+
+/// Descriptor for `UpdatePointerSettingsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updatePointerSettingsResponseDescriptor = $convert.base64Decode('Ch1VcGRhdGVQb2ludGVyU2V0dGluZ3NSZXNwb25zZQ==');
 @$core.Deprecated('Use puzzleMessageDescriptor instead')
 const PuzzleMessage$json = const {
   '1': 'PuzzleMessage',
@@ -112,13 +130,13 @@ const ParticipantMessage$json = const {
   '1': 'ParticipantMessage',
   '2': const [
     const {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
-    const {'1': 'mouse_position', '3': 2, '4': 1, '5': 11, '6': '.puzzle.v1.MousePositionMessage', '10': 'mousePosition'},
+    const {'1': 'pointer', '3': 2, '4': 1, '5': 11, '6': '.puzzle.v1.PointerMessage', '10': 'pointer'},
     const {'1': 'last_active', '3': 3, '4': 1, '5': 3, '10': 'lastActive'},
   ],
 };
 
 /// Descriptor for `ParticipantMessage`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List participantMessageDescriptor = $convert.base64Decode('ChJQYXJ0aWNpcGFudE1lc3NhZ2USFwoHdXNlcl9pZBgBIAEoCVIGdXNlcklkEkYKDm1vdXNlX3Bvc2l0aW9uGAIgASgLMh8ucHV6emxlLnYxLk1vdXNlUG9zaXRpb25NZXNzYWdlUg1tb3VzZVBvc2l0aW9uEh8KC2xhc3RfYWN0aXZlGAMgASgDUgpsYXN0QWN0aXZl');
+final $typed_data.Uint8List participantMessageDescriptor = $convert.base64Decode('ChJQYXJ0aWNpcGFudE1lc3NhZ2USFwoHdXNlcl9pZBgBIAEoCVIGdXNlcklkEjMKB3BvaW50ZXIYAiABKAsyGS5wdXp6bGUudjEuUG9pbnRlck1lc3NhZ2VSB3BvaW50ZXISHwoLbGFzdF9hY3RpdmUYAyABKANSCmxhc3RBY3RpdmU=');
 @$core.Deprecated('Use positionMessageDescriptor instead')
 const PositionMessage$json = const {
   '1': 'PositionMessage',
@@ -130,14 +148,48 @@ const PositionMessage$json = const {
 
 /// Descriptor for `PositionMessage`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List positionMessageDescriptor = $convert.base64Decode('Cg9Qb3NpdGlvbk1lc3NhZ2USDAoBeBgBIAEoBVIBeBIMCgF5GAIgASgFUgF5');
-@$core.Deprecated('Use mousePositionMessageDescriptor instead')
-const MousePositionMessage$json = const {
-  '1': 'MousePositionMessage',
+@$core.Deprecated('Use pointerMessageDescriptor instead')
+const PointerMessage$json = const {
+  '1': 'PointerMessage',
+  '2': const [
+    const {'1': 'position', '3': 1, '4': 1, '5': 11, '6': '.puzzle.v1.PointerPositionMessage', '10': 'position'},
+    const {'1': 'settings', '3': 2, '4': 1, '5': 11, '6': '.puzzle.v1.PointerSettingsMessage', '10': 'settings'},
+  ],
+};
+
+/// Descriptor for `PointerMessage`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List pointerMessageDescriptor = $convert.base64Decode('Cg5Qb2ludGVyTWVzc2FnZRI9Cghwb3NpdGlvbhgBIAEoCzIhLnB1enpsZS52MS5Qb2ludGVyUG9zaXRpb25NZXNzYWdlUghwb3NpdGlvbhI9CghzZXR0aW5ncxgCIAEoCzIhLnB1enpsZS52MS5Qb2ludGVyU2V0dGluZ3NNZXNzYWdlUghzZXR0aW5ncw==');
+@$core.Deprecated('Use pointerPositionMessageDescriptor instead')
+const PointerPositionMessage$json = const {
+  '1': 'PointerPositionMessage',
   '2': const [
     const {'1': 'x', '3': 1, '4': 1, '5': 2, '10': 'x'},
     const {'1': 'y', '3': 2, '4': 1, '5': 2, '10': 'y'},
   ],
 };
 
-/// Descriptor for `MousePositionMessage`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List mousePositionMessageDescriptor = $convert.base64Decode('ChRNb3VzZVBvc2l0aW9uTWVzc2FnZRIMCgF4GAEgASgCUgF4EgwKAXkYAiABKAJSAXk=');
+/// Descriptor for `PointerPositionMessage`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List pointerPositionMessageDescriptor = $convert.base64Decode('ChZQb2ludGVyUG9zaXRpb25NZXNzYWdlEgwKAXgYASABKAJSAXgSDAoBeRgCIAEoAlIBeQ==');
+@$core.Deprecated('Use pointerSettingsMessageDescriptor instead')
+const PointerSettingsMessage$json = const {
+  '1': 'PointerSettingsMessage',
+  '2': const [
+    const {'1': 'color_hex', '3': 1, '4': 1, '5': 9, '10': 'colorHex'},
+    const {'1': 'size', '3': 2, '4': 1, '5': 2, '10': 'size'},
+    const {'1': 'shape', '3': 3, '4': 1, '5': 14, '6': '.puzzle.v1.PointerSettingsMessage.PointerShape', '10': 'shape'},
+  ],
+  '4': const [PointerSettingsMessage_PointerShape$json],
+};
+
+@$core.Deprecated('Use pointerSettingsMessageDescriptor instead')
+const PointerSettingsMessage_PointerShape$json = const {
+  '1': 'PointerShape',
+  '2': const [
+    const {'1': 'POINTER_SHAPE_UNSPECIFIED', '2': 0},
+    const {'1': 'POINTER_SHAPE_CIRCLE', '2': 1},
+    const {'1': 'POINTER_SHAPE_ARROW', '2': 2},
+  ],
+};
+
+/// Descriptor for `PointerSettingsMessage`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List pointerSettingsMessageDescriptor = $convert.base64Decode('ChZQb2ludGVyU2V0dGluZ3NNZXNzYWdlEhsKCWNvbG9yX2hleBgBIAEoCVIIY29sb3JIZXgSEgoEc2l6ZRgCIAEoAlIEc2l6ZRJECgVzaGFwZRgDIAEoDjIuLnB1enpsZS52MS5Qb2ludGVyU2V0dGluZ3NNZXNzYWdlLlBvaW50ZXJTaGFwZVIFc2hhcGUiYAoMUG9pbnRlclNoYXBlEh0KGVBPSU5URVJfU0hBUEVfVU5TUEVDSUZJRUQQABIYChRQT0lOVEVSX1NIQVBFX0NJUkNMRRABEhcKE1BPSU5URVJfU0hBUEVfQVJST1cQAg==');

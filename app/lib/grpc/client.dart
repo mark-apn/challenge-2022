@@ -136,7 +136,7 @@ Participant _toParticipant(ParticipantMessage message) {
   return Participant(
     userId: message.userId,
     lastActive: DateTime.fromMillisecondsSinceEpoch(message.lastActive.toInt()),
-    position: message.mousePosition.hasX() ? _toMousePosition(message.mousePosition) : null,
+    position: message.mousePosition.hasX() ? _toPointerPosition(message.mousePosition) : null,
   );
 }
 
@@ -147,8 +147,8 @@ Position _toPosition(PositionMessage message) {
   );
 }
 
-MousePosition _toMousePosition(MousePositionMessage message) {
-  return MousePosition(
+PointerPosition _toPointerPosition(MousePositionMessage message) {
+  return PointerPosition(
     x: message.x,
     y: message.y,
   );

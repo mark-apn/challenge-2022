@@ -200,17 +200,17 @@ class VoteForTileResponse extends $pb.GeneratedMessage {
   static VoteForTileResponse? _defaultInstance;
 }
 
-class UpdateMousePositionRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdateMousePositionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
+class UpdatePointerPositionRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdatePointerPositionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId')
-    ..aOM<MousePositionMessage>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: MousePositionMessage.create)
+    ..aOM<PointerPositionMessage>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: PointerPositionMessage.create)
     ..hasRequiredFields = false
   ;
 
-  UpdateMousePositionRequest._() : super();
-  factory UpdateMousePositionRequest({
+  UpdatePointerPositionRequest._() : super();
+  factory UpdatePointerPositionRequest({
     $core.String? userId,
-    MousePositionMessage? position,
+    PointerPositionMessage? position,
   }) {
     final _result = create();
     if (userId != null) {
@@ -221,26 +221,26 @@ class UpdateMousePositionRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory UpdateMousePositionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory UpdateMousePositionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory UpdatePointerPositionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UpdatePointerPositionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  UpdateMousePositionRequest clone() => UpdateMousePositionRequest()..mergeFromMessage(this);
+  UpdatePointerPositionRequest clone() => UpdatePointerPositionRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  UpdateMousePositionRequest copyWith(void Function(UpdateMousePositionRequest) updates) => super.copyWith((message) => updates(message as UpdateMousePositionRequest)) as UpdateMousePositionRequest; // ignore: deprecated_member_use
+  UpdatePointerPositionRequest copyWith(void Function(UpdatePointerPositionRequest) updates) => super.copyWith((message) => updates(message as UpdatePointerPositionRequest)) as UpdatePointerPositionRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static UpdateMousePositionRequest create() => UpdateMousePositionRequest._();
-  UpdateMousePositionRequest createEmptyInstance() => create();
-  static $pb.PbList<UpdateMousePositionRequest> createRepeated() => $pb.PbList<UpdateMousePositionRequest>();
+  static UpdatePointerPositionRequest create() => UpdatePointerPositionRequest._();
+  UpdatePointerPositionRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdatePointerPositionRequest> createRepeated() => $pb.PbList<UpdatePointerPositionRequest>();
   @$core.pragma('dart2js:noInline')
-  static UpdateMousePositionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdateMousePositionRequest>(create);
-  static UpdateMousePositionRequest? _defaultInstance;
+  static UpdatePointerPositionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdatePointerPositionRequest>(create);
+  static UpdatePointerPositionRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get userId => $_getSZ(0);
@@ -251,45 +251,137 @@ class UpdateMousePositionRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearUserId() => clearField(1);
 
-  @$pb.TagNumber(3)
-  MousePositionMessage get position => $_getN(1);
-  @$pb.TagNumber(3)
-  set position(MousePositionMessage v) { setField(3, v); }
-  @$pb.TagNumber(3)
+  @$pb.TagNumber(2)
+  PointerPositionMessage get position => $_getN(1);
+  @$pb.TagNumber(2)
+  set position(PointerPositionMessage v) { setField(2, v); }
+  @$pb.TagNumber(2)
   $core.bool hasPosition() => $_has(1);
-  @$pb.TagNumber(3)
-  void clearPosition() => clearField(3);
-  @$pb.TagNumber(3)
-  MousePositionMessage ensurePosition() => $_ensure(1);
+  @$pb.TagNumber(2)
+  void clearPosition() => clearField(2);
+  @$pb.TagNumber(2)
+  PointerPositionMessage ensurePosition() => $_ensure(1);
 }
 
-class UpdateMousePositionResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdateMousePositionResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
+class UpdatePointerPositionResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdatePointerPositionResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
     ..hasRequiredFields = false
   ;
 
-  UpdateMousePositionResponse._() : super();
-  factory UpdateMousePositionResponse() => create();
-  factory UpdateMousePositionResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory UpdateMousePositionResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  UpdatePointerPositionResponse._() : super();
+  factory UpdatePointerPositionResponse() => create();
+  factory UpdatePointerPositionResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UpdatePointerPositionResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  UpdateMousePositionResponse clone() => UpdateMousePositionResponse()..mergeFromMessage(this);
+  UpdatePointerPositionResponse clone() => UpdatePointerPositionResponse()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  UpdateMousePositionResponse copyWith(void Function(UpdateMousePositionResponse) updates) => super.copyWith((message) => updates(message as UpdateMousePositionResponse)) as UpdateMousePositionResponse; // ignore: deprecated_member_use
+  UpdatePointerPositionResponse copyWith(void Function(UpdatePointerPositionResponse) updates) => super.copyWith((message) => updates(message as UpdatePointerPositionResponse)) as UpdatePointerPositionResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static UpdateMousePositionResponse create() => UpdateMousePositionResponse._();
-  UpdateMousePositionResponse createEmptyInstance() => create();
-  static $pb.PbList<UpdateMousePositionResponse> createRepeated() => $pb.PbList<UpdateMousePositionResponse>();
+  static UpdatePointerPositionResponse create() => UpdatePointerPositionResponse._();
+  UpdatePointerPositionResponse createEmptyInstance() => create();
+  static $pb.PbList<UpdatePointerPositionResponse> createRepeated() => $pb.PbList<UpdatePointerPositionResponse>();
   @$core.pragma('dart2js:noInline')
-  static UpdateMousePositionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdateMousePositionResponse>(create);
-  static UpdateMousePositionResponse? _defaultInstance;
+  static UpdatePointerPositionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdatePointerPositionResponse>(create);
+  static UpdatePointerPositionResponse? _defaultInstance;
+}
+
+class UpdatePointerSettingsRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdatePointerSettingsRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId')
+    ..aOM<PointerSettingsMessage>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'settings', subBuilder: PointerSettingsMessage.create)
+    ..hasRequiredFields = false
+  ;
+
+  UpdatePointerSettingsRequest._() : super();
+  factory UpdatePointerSettingsRequest({
+    $core.String? userId,
+    PointerSettingsMessage? settings,
+  }) {
+    final _result = create();
+    if (userId != null) {
+      _result.userId = userId;
+    }
+    if (settings != null) {
+      _result.settings = settings;
+    }
+    return _result;
+  }
+  factory UpdatePointerSettingsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UpdatePointerSettingsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UpdatePointerSettingsRequest clone() => UpdatePointerSettingsRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UpdatePointerSettingsRequest copyWith(void Function(UpdatePointerSettingsRequest) updates) => super.copyWith((message) => updates(message as UpdatePointerSettingsRequest)) as UpdatePointerSettingsRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UpdatePointerSettingsRequest create() => UpdatePointerSettingsRequest._();
+  UpdatePointerSettingsRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdatePointerSettingsRequest> createRepeated() => $pb.PbList<UpdatePointerSettingsRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UpdatePointerSettingsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdatePointerSettingsRequest>(create);
+  static UpdatePointerSettingsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get userId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  PointerSettingsMessage get settings => $_getN(1);
+  @$pb.TagNumber(2)
+  set settings(PointerSettingsMessage v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSettings() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSettings() => clearField(2);
+  @$pb.TagNumber(2)
+  PointerSettingsMessage ensureSettings() => $_ensure(1);
+}
+
+class UpdatePointerSettingsResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdatePointerSettingsResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  UpdatePointerSettingsResponse._() : super();
+  factory UpdatePointerSettingsResponse() => create();
+  factory UpdatePointerSettingsResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UpdatePointerSettingsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UpdatePointerSettingsResponse clone() => UpdatePointerSettingsResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UpdatePointerSettingsResponse copyWith(void Function(UpdatePointerSettingsResponse) updates) => super.copyWith((message) => updates(message as UpdatePointerSettingsResponse)) as UpdatePointerSettingsResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UpdatePointerSettingsResponse create() => UpdatePointerSettingsResponse._();
+  UpdatePointerSettingsResponse createEmptyInstance() => create();
+  static $pb.PbList<UpdatePointerSettingsResponse> createRepeated() => $pb.PbList<UpdatePointerSettingsResponse>();
+  @$core.pragma('dart2js:noInline')
+  static UpdatePointerSettingsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdatePointerSettingsResponse>(create);
+  static UpdatePointerSettingsResponse? _defaultInstance;
 }
 
 class PuzzleMessage extends $pb.GeneratedMessage {
@@ -549,7 +641,7 @@ class TileMessage extends $pb.GeneratedMessage {
 class ParticipantMessage extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ParticipantMessage', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId')
-    ..aOM<MousePositionMessage>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mousePosition', subBuilder: MousePositionMessage.create)
+    ..aOM<PointerMessage>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pointer', subBuilder: PointerMessage.create)
     ..aInt64(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastActive')
     ..hasRequiredFields = false
   ;
@@ -557,15 +649,15 @@ class ParticipantMessage extends $pb.GeneratedMessage {
   ParticipantMessage._() : super();
   factory ParticipantMessage({
     $core.String? userId,
-    MousePositionMessage? mousePosition,
+    PointerMessage? pointer,
     $fixnum.Int64? lastActive,
   }) {
     final _result = create();
     if (userId != null) {
       _result.userId = userId;
     }
-    if (mousePosition != null) {
-      _result.mousePosition = mousePosition;
+    if (pointer != null) {
+      _result.pointer = pointer;
     }
     if (lastActive != null) {
       _result.lastActive = lastActive;
@@ -603,15 +695,15 @@ class ParticipantMessage extends $pb.GeneratedMessage {
   void clearUserId() => clearField(1);
 
   @$pb.TagNumber(2)
-  MousePositionMessage get mousePosition => $_getN(1);
+  PointerMessage get pointer => $_getN(1);
   @$pb.TagNumber(2)
-  set mousePosition(MousePositionMessage v) { setField(2, v); }
+  set pointer(PointerMessage v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasMousePosition() => $_has(1);
+  $core.bool hasPointer() => $_has(1);
   @$pb.TagNumber(2)
-  void clearMousePosition() => clearField(2);
+  void clearPointer() => clearField(2);
   @$pb.TagNumber(2)
-  MousePositionMessage ensureMousePosition() => $_ensure(1);
+  PointerMessage ensurePointer() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $fixnum.Int64 get lastActive => $_getI64(2);
@@ -684,15 +776,80 @@ class PositionMessage extends $pb.GeneratedMessage {
   void clearY() => clearField(2);
 }
 
-class MousePositionMessage extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MousePositionMessage', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
+class PointerMessage extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PointerMessage', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
+    ..aOM<PointerPositionMessage>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: PointerPositionMessage.create)
+    ..aOM<PointerSettingsMessage>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'settings', subBuilder: PointerSettingsMessage.create)
+    ..hasRequiredFields = false
+  ;
+
+  PointerMessage._() : super();
+  factory PointerMessage({
+    PointerPositionMessage? position,
+    PointerSettingsMessage? settings,
+  }) {
+    final _result = create();
+    if (position != null) {
+      _result.position = position;
+    }
+    if (settings != null) {
+      _result.settings = settings;
+    }
+    return _result;
+  }
+  factory PointerMessage.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PointerMessage.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PointerMessage clone() => PointerMessage()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PointerMessage copyWith(void Function(PointerMessage) updates) => super.copyWith((message) => updates(message as PointerMessage)) as PointerMessage; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PointerMessage create() => PointerMessage._();
+  PointerMessage createEmptyInstance() => create();
+  static $pb.PbList<PointerMessage> createRepeated() => $pb.PbList<PointerMessage>();
+  @$core.pragma('dart2js:noInline')
+  static PointerMessage getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PointerMessage>(create);
+  static PointerMessage? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  PointerPositionMessage get position => $_getN(0);
+  @$pb.TagNumber(1)
+  set position(PointerPositionMessage v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasPosition() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPosition() => clearField(1);
+  @$pb.TagNumber(1)
+  PointerPositionMessage ensurePosition() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  PointerSettingsMessage get settings => $_getN(1);
+  @$pb.TagNumber(2)
+  set settings(PointerSettingsMessage v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSettings() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSettings() => clearField(2);
+  @$pb.TagNumber(2)
+  PointerSettingsMessage ensureSettings() => $_ensure(1);
+}
+
+class PointerPositionMessage extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PointerPositionMessage', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
     ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'x', $pb.PbFieldType.OF)
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'y', $pb.PbFieldType.OF)
     ..hasRequiredFields = false
   ;
 
-  MousePositionMessage._() : super();
-  factory MousePositionMessage({
+  PointerPositionMessage._() : super();
+  factory PointerPositionMessage({
     $core.double? x,
     $core.double? y,
   }) {
@@ -705,26 +862,26 @@ class MousePositionMessage extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory MousePositionMessage.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory MousePositionMessage.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory PointerPositionMessage.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PointerPositionMessage.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  MousePositionMessage clone() => MousePositionMessage()..mergeFromMessage(this);
+  PointerPositionMessage clone() => PointerPositionMessage()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  MousePositionMessage copyWith(void Function(MousePositionMessage) updates) => super.copyWith((message) => updates(message as MousePositionMessage)) as MousePositionMessage; // ignore: deprecated_member_use
+  PointerPositionMessage copyWith(void Function(PointerPositionMessage) updates) => super.copyWith((message) => updates(message as PointerPositionMessage)) as PointerPositionMessage; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static MousePositionMessage create() => MousePositionMessage._();
-  MousePositionMessage createEmptyInstance() => create();
-  static $pb.PbList<MousePositionMessage> createRepeated() => $pb.PbList<MousePositionMessage>();
+  static PointerPositionMessage create() => PointerPositionMessage._();
+  PointerPositionMessage createEmptyInstance() => create();
+  static $pb.PbList<PointerPositionMessage> createRepeated() => $pb.PbList<PointerPositionMessage>();
   @$core.pragma('dart2js:noInline')
-  static MousePositionMessage getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MousePositionMessage>(create);
-  static MousePositionMessage? _defaultInstance;
+  static PointerPositionMessage getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PointerPositionMessage>(create);
+  static PointerPositionMessage? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.double get x => $_getN(0);
@@ -743,5 +900,80 @@ class MousePositionMessage extends $pb.GeneratedMessage {
   $core.bool hasY() => $_has(1);
   @$pb.TagNumber(2)
   void clearY() => clearField(2);
+}
+
+class PointerSettingsMessage extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PointerSettingsMessage', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'puzzle.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'colorHex')
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'size', $pb.PbFieldType.OF)
+    ..e<PointerSettingsMessage_PointerShape>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'shape', $pb.PbFieldType.OE, defaultOrMaker: PointerSettingsMessage_PointerShape.POINTER_SHAPE_UNSPECIFIED, valueOf: PointerSettingsMessage_PointerShape.valueOf, enumValues: PointerSettingsMessage_PointerShape.values)
+    ..hasRequiredFields = false
+  ;
+
+  PointerSettingsMessage._() : super();
+  factory PointerSettingsMessage({
+    $core.String? colorHex,
+    $core.double? size,
+    PointerSettingsMessage_PointerShape? shape,
+  }) {
+    final _result = create();
+    if (colorHex != null) {
+      _result.colorHex = colorHex;
+    }
+    if (size != null) {
+      _result.size = size;
+    }
+    if (shape != null) {
+      _result.shape = shape;
+    }
+    return _result;
+  }
+  factory PointerSettingsMessage.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PointerSettingsMessage.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PointerSettingsMessage clone() => PointerSettingsMessage()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PointerSettingsMessage copyWith(void Function(PointerSettingsMessage) updates) => super.copyWith((message) => updates(message as PointerSettingsMessage)) as PointerSettingsMessage; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PointerSettingsMessage create() => PointerSettingsMessage._();
+  PointerSettingsMessage createEmptyInstance() => create();
+  static $pb.PbList<PointerSettingsMessage> createRepeated() => $pb.PbList<PointerSettingsMessage>();
+  @$core.pragma('dart2js:noInline')
+  static PointerSettingsMessage getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PointerSettingsMessage>(create);
+  static PointerSettingsMessage? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get colorHex => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set colorHex($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasColorHex() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearColorHex() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get size => $_getN(1);
+  @$pb.TagNumber(2)
+  set size($core.double v) { $_setFloat(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSize() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSize() => clearField(2);
+
+  @$pb.TagNumber(3)
+  PointerSettingsMessage_PointerShape get shape => $_getN(2);
+  @$pb.TagNumber(3)
+  set shape(PointerSettingsMessage_PointerShape v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasShape() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearShape() => clearField(3);
 }
 

@@ -8,10 +8,10 @@ import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared/models/participant.dart';
+import 'package:shared/shared.dart';
 
-class MousePointers extends HookConsumerWidget {
-  const MousePointers({
+class Pointers extends HookConsumerWidget {
+  const Pointers({
     Key? key,
     required this.boardSize,
   }) : super(key: key);
@@ -47,9 +47,9 @@ class MousePointers extends HookConsumerWidget {
       ),
     );
 
-    final MousePosition? myPointer;
+    final PointerPosition? myPointer;
     if (mousePosition.value != null) {
-      myPointer = MousePosition(
+      myPointer = PointerPosition(
         x: mousePosition.value!.dx,
         y: mousePosition.value!.dy,
       );
@@ -69,30 +69,29 @@ class MousePointers extends HookConsumerWidget {
           localPosition.dx / boardSize,
           localPosition.dy / boardSize,
         );
-        debugPrint(mousePosition.value.toString());
       },
       child: Stack(
         children: [
+          ...otherPointers.map((p) => Pointer(position: p)).toList(),
           if (myPointer != null)
-            MousePointer(
+            Pointer(
               position: myPointer,
               duration: Duration.zero,
             ),
-          ...otherPointers.map((p) => MousePointer(position: p)).toList(),
         ],
       ),
     );
   }
 }
 
-class MousePointer extends HookWidget {
-  const MousePointer({
+class Pointer extends HookWidget {
+  const Pointer({
     Key? key,
     required this.position,
     this.duration = const Duration(milliseconds: 100),
   }) : super(key: key);
 
-  final MousePosition position;
+  final PointerPosition position;
   final Duration duration;
 
   @override
@@ -106,7 +105,7 @@ class MousePointer extends HookWidget {
 
     return AnimatedAlign(
       duration: duration,
-      alignment: Alignment((position.x * 2) - 1, (position.y * 2) - 1),
+      alignment: alignment,
       child: Container(
         width: 10,
         height: 10,
@@ -117,4 +116,7 @@ class MousePointer extends HookWidget {
       ),
     );
   }
+
+  // Converts
+  Alignment get alignment => Alignment((position.x * 2) - 1, (position.y * 2) - 1);
 }
