@@ -94,6 +94,11 @@ class Puzzle extends Equatable {
 
   bool get isFinished => status != PUZZLE_STATUS_INCOMPLETE;
 
+  Participant getParticipantByUserId(String userId) => participants.firstWhere(
+        (p) => p.userId == userId,
+        orElse: () => Participant(userId: userId),
+      );
+
   /// Get the dimension of a puzzle given its tile arrangement.
   ///
   /// Ex: A 4x4 puzzle has a dimension of 4.

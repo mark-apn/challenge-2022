@@ -4,22 +4,24 @@ import 'package:shared/models/pointer.dart';
 class Participant extends Equatable {
   Participant({
     required this.userId,
-    required this.lastActive,
-    this.pointer = null,
-  });
+    DateTime? lastActive,
+    ParticipantPointer? pointer,
+  })  : lastActive = lastActive ?? DateTime.now(),
+        pointer = pointer ?? ParticipantPointer.initial();
+
+  factory Participant.fromUserId(String userId) => Participant(userId: userId);
 
   final String userId;
   final DateTime lastActive;
-  final ParticipantPointer? pointer;
+  final ParticipantPointer pointer;
 
   Participant copyWith({
     String? userId,
-    DateTime? lastActive,
     ParticipantPointer? pointer,
   }) {
     return Participant(
       userId: userId ?? this.userId,
-      lastActive: lastActive ?? this.lastActive,
+      lastActive: DateTime.now(),
       pointer: pointer ?? this.pointer,
     );
   }
@@ -28,7 +30,7 @@ class Participant extends Equatable {
     return {
       'userId': userId,
       'lastActive': lastActive.millisecondsSinceEpoch,
-      'pointer': pointer?.toMap(),
+      'pointer': pointer.toMap(),
     };
   }
 

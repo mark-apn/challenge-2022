@@ -8,6 +8,8 @@ import 'package:flutter_challenge/utils/image_tiler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared/shared.dart';
 
+import '../prefs.dart';
+
 // Inital puzzle state
 final puzzleProvider = StateProvider.autoDispose((ref) {
   // * Convert data to state
@@ -91,7 +93,11 @@ final puzzleStatusProvider = Provider.autoDispose((ref) {
   return ref.watch(puzzleProvider.select((value) => value.puzzle.status));
 });
 
-
-final mousePositionsProvider = StateProvider.autoDispose((ref){
-  return [];
+final myPointerSettingsProvider = Provider.autoDispose((ref) {
+  final myUserId = Prefs.instance.getString(kUserId)!;
+  return ref
+      .watch(
+        puzzleProvider.select((value) => value.puzzle.getParticipantByUserId(myUserId).pointer),
+      )
+      .settings;
 });

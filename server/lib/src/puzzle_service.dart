@@ -66,8 +66,8 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
     ServiceCall call,
     UpdatePointerSettingsRequest request,
   ) async {
-    // TODO: implement updatePointerSettings
-    throw UnimplementedError();
+    puzzleRepo.updatePointerSettings(request.userId, request.settings);
+    return UpdatePointerSettingsResponse();
   }
 }
 
@@ -99,7 +99,7 @@ ParticipantMessage _toParticipantMessage(Participant participant) {
   return ParticipantMessage(
     userId: participant.userId,
     lastActive: Int64(participant.lastActive.millisecondsSinceEpoch),
-    pointer: participant.pointer != null ? _toPointerMessage(participant.pointer!) : null,
+    pointer: _toPointerMessage(participant.pointer),
   );
 }
 
@@ -121,7 +121,8 @@ PointerMessage _toPointerMessage(ParticipantPointer pointer) {
     settings: PointerSettingsMessage(
       colorHex: pointer.settings.colorHex,
       shape: PointerSettingsMessage_PointerShape.valueOf(
-          pointer.settings.shape.index + 1), // 0 is reserved for UNSPECIFIED
+        pointer.settings.shape.index + 1,
+      ), // 0 is reserved for UNSPECIFIED
       size: pointer.settings.size,
     ),
   );

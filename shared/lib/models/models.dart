@@ -1,3 +1,4 @@
+export 'extensions.dart';
 export 'participant.dart';
 export 'pointer.dart';
 export 'position.dart';

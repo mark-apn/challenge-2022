@@ -11,14 +11,11 @@ class PuzzleRepository {
     final puzzle = await getLatestPuzzle();
     if (puzzle == null) return false;
 
-    // * Add userId if not yet present in participants list
-    List<Participant> participants = [...puzzle.participants];
-    int index = participants.indexWhere((p) => p.userId == userId);
-    if (index == -1) {
-      participants.add(Participant(userId: userId, lastActive: DateTime.now()));
-    } else {
-      participants[index] = participants[index].copyWith(lastActive: DateTime.now());
-    }
+    final participant = puzzle.getParticipantByUserId(userId);
+    final participants = puzzle.participants.addOrReplace(
+      (participant) => participant.userId == userId,
+      participant.copyWith(), // copyWith will update the last active date
+    );
 
     final updated = puzzle.copyWith(
         participants: participants,
@@ -90,33 +87,46 @@ class PuzzleRepository {
     if (puzzle == null) return false;
 
     final position = PointerPosition(x: message.x, y: message.y);
-    final initialPointer = ParticipantPointer(
-      position: position,
-      settings: PointerDisplaySettings.initial(),
+
+    final participant = puzzle.getParticipantByUserId(userId);
+    final participants = puzzle.participants.addOrReplace(
+      (participant) => participant.userId == userId,
+      participant.copyWith(
+        pointer: participant.pointer.copyWith(position: position),
+      ),
     );
 
-    // * Add userId if not yet present in participants list
-    List<Participant> participants = [...puzzle.participants];
-    int index = participants.indexWhere((p) => p.userId == userId);
-    if (index == -1) {
-      participants.add(
-        Participant(
-          userId: userId,
-          lastActive: DateTime.now(),
-          pointer: initialPointer,
-        ),
-      );
-    } else {
-      final pointer = participants[index].pointer?.copyWith(position: position) ?? initialPointer;
+    final result = await dao.update(
+      puzzle.id,
+      puzzle.copyWith(participants: participants).toMap(),
+    );
 
-      participants[index] = participants[index].copyWith(
-        lastActive: DateTime.now(),
-        pointer: pointer,
-      );
-    }
+    return result['replaced'] == 1;
+  }
 
-    final updated = puzzle.copyWith(participants: participants);
-    final result = await dao.update(puzzle.id, updated.toMap());
+  Future<bool> updatePointerSettings(String userId, PointerSettingsMessage settings) async {
+    final puzzle = await getLatestPuzzle();
+    if (puzzle == null) return false;
+
+    final pointerSettings = PointerDisplaySettings(
+      colorHex: settings.colorHex,
+      size: settings.size,
+      shape: PointerDisplayShape.values[settings.shape.value - 1],
+    );
+
+    final participant = puzzle.getParticipantByUserId(userId);
+    final updated = participant.copyWith(
+      pointer: participant.pointer.copyWith(settings: pointerSettings),
+    );
+    final participants = [...puzzle.participants].addOrReplace(
+      (participant) => participant.userId == userId,
+      updated,
+    );
+
+    final result = await dao.update(
+      puzzle.id,
+      puzzle.copyWith(participants: participants).toMap(),
+    );
 
     return result['replaced'] == 1;
   }

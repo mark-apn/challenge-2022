@@ -15,6 +15,10 @@ class PuzzleVm {
   }
 
   Future<void> updatePointerPosition(Offset position) async {
-    GrpcClient.instance.updatePointer(position.dx, position.dy);
+    GrpcClient.instance.updatePointerPosition(position.dx, position.dy);
+  }
+
+  Future<void> updatePointerSettings({required PointerDisplaySettings settings}) async {
+    GrpcClient.instance.updatePointerSettings(settings);
   }
 }

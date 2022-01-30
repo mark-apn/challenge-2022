@@ -74,13 +74,35 @@ class GrpcClient {
     );
   }
 
-  Future<void> updatePointer(double x, double y) async {
+  Future<void> updatePointerPosition(double x, double y) async {
     // * Reconnect stream after idle time
     await _idleRefresh();
 
     // * Update the pointer
     await client.updatePointerPosition(
-      UpdatePointerPositionRequest(userId: userId, position: PointerPositionMessage(x: x, y: y)),
+      UpdatePointerPositionRequest(
+        userId: userId,
+        position: PointerPositionMessage(x: x, y: y),
+      ),
+    );
+  }
+
+  Future<void> updatePointerSettings(PointerDisplaySettings settings) async {
+    // * Reconnect stream after idle time
+    await _idleRefresh();
+
+    // * Update the pointer
+    await client.updatePointerSettings(
+      UpdatePointerSettingsRequest(
+        userId: userId,
+        settings: PointerSettingsMessage(
+          colorHex: settings.colorHex,
+          shape: PointerSettingsMessage_PointerShape.valueOf(
+            settings.shape.index + 1,
+          ), // Proto enum 0 is reserved, so we add 1
+          size: settings.size,
+        ),
+      ),
     );
   }
 

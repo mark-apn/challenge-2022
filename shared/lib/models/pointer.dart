@@ -11,6 +11,8 @@ class ParticipantPointer extends Equatable {
   @override
   List<Object?> get props => [position, settings];
 
+  factory ParticipantPointer.initial() => ParticipantPointer(settings: PointerDisplaySettings.initial());
+
   ParticipantPointer copyWith({
     PointerPosition? position,
     PointerDisplaySettings? settings,
