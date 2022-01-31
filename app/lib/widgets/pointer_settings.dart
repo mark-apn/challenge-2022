@@ -6,6 +6,7 @@ import 'package:flutter_challenge/utils/use_throttle.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared/models/models.dart';
 
 class PointerSettings extends HookConsumerWidget {
   const PointerSettings({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class PointerSettings extends HookConsumerWidget {
     // * Convert to state variables
     final size = useState(myPointerSettings.size);
     final color = useState(myPointerSettings.colorHex);
+    final shape = useState(myPointerSettings.shape.index);
 
     final isUpdated = useState(false);
 
@@ -29,6 +31,7 @@ class PointerSettings extends HookConsumerWidget {
           settings: myPointerSettings.copyWith(
             size: size.value,
             colorHex: color.value,
+            shape: PointerDisplayShape.values[shape.value],
           ),
         );
         isUpdated.value = false;
@@ -39,6 +42,7 @@ class PointerSettings extends HookConsumerWidget {
       constraints: const BoxConstraints(maxWidth: 250),
       child: Column(
         children: [
+          // Size slider
           Slider(
             value: size.value,
             min: 8,
@@ -48,6 +52,8 @@ class PointerSettings extends HookConsumerWidget {
               size.value = value;
             },
           ),
+
+          // Change cursor color
           TextButton.icon(
             onPressed: () {
               showDialog(
@@ -72,6 +78,21 @@ class PointerSettings extends HookConsumerWidget {
             },
             icon: const Icon(Icons.color_lens),
             label: const Text('Cursor color'),
+          ),
+
+          ToggleButtons(
+            children: const [
+              Text('Circle'),
+              Text('Arrow'),
+            ],
+            onPressed: (index) {
+              isUpdated.value = true;
+              shape.value = index;
+            },
+            isSelected: [
+              shape.value == 0,
+              shape.value == 1,
+            ],
           ),
         ],
       ),

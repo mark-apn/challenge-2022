@@ -98,14 +98,14 @@ class Pointer extends HookWidget {
     return AnimatedAlign(
       duration: duration,
       alignment: alignment,
-      child: AnimatedContainer(
-        duration: duration,
+      child: Container(
         width: pointer.settings.size,
         height: pointer.settings.size,
-        decoration: BoxDecoration(
+        decoration: ShapeDecoration(
           color: HexColor(pointer.settings.colorHex),
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.black),
+          shape: pointer.settings.shape == PointerDisplayShape.circle
+              ? const CircleBorder(side: BorderSide())
+              : const ArrowShape(side: BorderSide()),
         ),
       ),
     );
@@ -116,4 +116,84 @@ class Pointer extends HookWidget {
         (pointer.position!.x * 2) - 1,
         (pointer.position!.y * 2) - 1,
       );
+}
+
+class ArrowShape extends OutlinedBorder {
+  /// Create an arrow border.
+  ///
+  /// The [side] argument must not be null.
+  const ArrowShape({BorderSide side = BorderSide.none}) : super(side: side);
+
+  @override
+  EdgeInsetsGeometry get dimensions {
+    return EdgeInsets.all(side.width);
+  }
+
+  @override
+  ShapeBorder scale(double t) => ArrowShape(side: side.scale(t));
+
+  @override
+  ShapeBorder? lerpFrom(ShapeBorder? a, double t) {
+    if (a is ArrowShape) return ArrowShape(side: BorderSide.lerp(a.side, side, t));
+    return super.lerpFrom(a, t);
+  }
+
+  @override
+  ShapeBorder? lerpTo(ShapeBorder? b, double t) {
+    if (b is ArrowShape) return ArrowShape(side: BorderSide.lerp(side, b.side, t));
+    return super.lerpTo(b, t);
+  }
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
+    final path = Path();
+    final size = rect.size;
+    path.moveTo(size.width * 0.40, size.height * 0.94);
+    path.lineTo(size.width * 0.05, size.height * 0.05);
+    path.lineTo(size.width * 0.94, size.height * 0.51);
+    path.lineTo(size.width * 0.58, size.height * 0.64);
+    path.close();
+
+    return path.shift(rect.topLeft);
+  }
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+    final path = Path();
+    final size = rect.size;
+    path.moveTo(size.width * 0.40, size.height * 0.94);
+    path.lineTo(size.width * 0.05, size.height * 0.05);
+    path.lineTo(size.width * 0.94, size.height * 0.51);
+    path.lineTo(size.width * 0.58, size.height * 0.64);
+    path.close();
+
+    return path.shift(rect.topLeft);
+  }
+
+  @override
+  ArrowShape copyWith({BorderSide? side}) => ArrowShape(side: side ?? this.side);
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
+    switch (side.style) {
+      case BorderStyle.none:
+        break;
+      case BorderStyle.solid:
+        canvas.drawPath(
+          getInnerPath(rect),
+          side.toPaint(),
+        );
+    }
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType != runtimeType) {
+      return false;
+    }
+    return other is ArrowShape && other.side == side;
+  }
+
+  @override
+  int get hashCode => side.hashCode;
 }
