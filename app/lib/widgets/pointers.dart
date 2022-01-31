@@ -105,7 +105,7 @@ class Pointer extends HookWidget {
           color: HexColor(pointer.settings.colorHex),
           shape: pointer.settings.shape == PointerDisplayShape.circle
               ? const CircleBorder(side: BorderSide())
-              : const ArrowShape(side: BorderSide()),
+              : const _ArrowShape(side: BorderSide()),
         ),
       ),
     );
@@ -118,11 +118,11 @@ class Pointer extends HookWidget {
       );
 }
 
-class ArrowShape extends OutlinedBorder {
+class _ArrowShape extends OutlinedBorder {
   /// Create an arrow border.
   ///
   /// The [side] argument must not be null.
-  const ArrowShape({BorderSide side = BorderSide.none}) : super(side: side);
+  const _ArrowShape({BorderSide side = BorderSide.none}) : super(side: side);
 
   @override
   EdgeInsetsGeometry get dimensions {
@@ -130,17 +130,17 @@ class ArrowShape extends OutlinedBorder {
   }
 
   @override
-  ShapeBorder scale(double t) => ArrowShape(side: side.scale(t));
+  ShapeBorder scale(double t) => _ArrowShape(side: side.scale(t));
 
   @override
   ShapeBorder? lerpFrom(ShapeBorder? a, double t) {
-    if (a is ArrowShape) return ArrowShape(side: BorderSide.lerp(a.side, side, t));
+    if (a is _ArrowShape) return _ArrowShape(side: BorderSide.lerp(a.side, side, t));
     return super.lerpFrom(a, t);
   }
 
   @override
   ShapeBorder? lerpTo(ShapeBorder? b, double t) {
-    if (b is ArrowShape) return ArrowShape(side: BorderSide.lerp(side, b.side, t));
+    if (b is _ArrowShape) return _ArrowShape(side: BorderSide.lerp(side, b.side, t));
     return super.lerpTo(b, t);
   }
 
@@ -171,7 +171,7 @@ class ArrowShape extends OutlinedBorder {
   }
 
   @override
-  ArrowShape copyWith({BorderSide? side}) => ArrowShape(side: side ?? this.side);
+  _ArrowShape copyWith({BorderSide? side}) => _ArrowShape(side: side ?? this.side);
 
   @override
   void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
@@ -191,7 +191,7 @@ class ArrowShape extends OutlinedBorder {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is ArrowShape && other.side == side;
+    return other is _ArrowShape && other.side == side;
   }
 
   @override
