@@ -1,6 +1,6 @@
 extension ListEx<T> on List<T> {
   List<T> addOrReplace(bool Function(T element) comparator, T newValue) {
-    final index = this.firstWhere(comparator);
+    final index = indexWhere(comparator);
     if (index == -1) {
       add(newValue);
       return this;
