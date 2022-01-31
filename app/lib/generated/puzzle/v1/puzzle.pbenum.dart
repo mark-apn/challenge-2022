@@ -26,3 +26,20 @@ class PuzzleMessage_PuzzleStatus extends $pb.ProtobufEnum {
   const PuzzleMessage_PuzzleStatus._($core.int v, $core.String n) : super(v, n);
 }
 
+class PointerSettingsMessage_PointerShape extends $pb.ProtobufEnum {
+  static const PointerSettingsMessage_PointerShape POINTER_SHAPE_UNSPECIFIED = PointerSettingsMessage_PointerShape._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_UNSPECIFIED');
+  static const PointerSettingsMessage_PointerShape POINTER_SHAPE_CIRCLE = PointerSettingsMessage_PointerShape._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_CIRCLE');
+  static const PointerSettingsMessage_PointerShape POINTER_SHAPE_ARROW = PointerSettingsMessage_PointerShape._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_ARROW');
+
+  static const $core.List<PointerSettingsMessage_PointerShape> values = <PointerSettingsMessage_PointerShape> [
+    POINTER_SHAPE_UNSPECIFIED,
+    POINTER_SHAPE_CIRCLE,
+    POINTER_SHAPE_ARROW,
+  ];
+
+  static final $core.Map<$core.int, PointerSettingsMessage_PointerShape> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static PointerSettingsMessage_PointerShape? valueOf($core.int value) => _byValue[value];
+
+  const PointerSettingsMessage_PointerShape._($core.int v, $core.String n) : super(v, n);
+}
+

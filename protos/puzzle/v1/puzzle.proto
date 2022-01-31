@@ -5,9 +5,11 @@ package puzzle.v1;
 service PuzzleV1Service {
     rpc SubscribeToPuzzle (SubscribeToPuzzleRequest) returns (stream SubscribeToPuzzleResponse);
     rpc VoteForTile (VoteForTileRequest) returns (VoteForTileResponse);
-    rpc UpdateMousePosition (UpdateMousePositionRequest) returns (UpdateMousePositionResponse);
+    rpc UpdatePointerPosition (UpdatePointerPositionRequest) returns (UpdatePointerPositionResponse);
+    rpc UpdatePointerSettings (UpdatePointerSettingsRequest) returns (UpdatePointerSettingsResponse);
 }
 
+// SubscribeToPuzzle request and response
 message SubscribeToPuzzleRequest {
     string user_id = 1;
 }
@@ -16,6 +18,7 @@ message SubscribeToPuzzleResponse {
     PuzzleMessage puzzle = 1;
 }
 
+// VoteForTile request and response
 message VoteForTileRequest {
     string user_id = 1;
     int32 tile_value = 3;
@@ -23,13 +26,23 @@ message VoteForTileRequest {
 
 message VoteForTileResponse {}
 
-message UpdateMousePositionRequest {
+// UpdatePointerPosition request and response
+message UpdatePointerPositionRequest {
     string user_id = 1;
-    MousePositionMessage position = 3;
+    PointerPositionMessage position = 2;
 }
 
-message UpdateMousePositionResponse {}
+message UpdatePointerPositionResponse {}
 
+// UpdatePointerSettings request and response
+message UpdatePointerSettingsRequest {
+    string user_id = 1;
+    PointerSettingsMessage settings = 2;
+}
+
+message UpdatePointerSettingsResponse {}
+
+// Proto message models
 message PuzzleMessage {
     string id = 1;
     int64 created_at = 2;
@@ -57,7 +70,7 @@ message TileMessage {
 
 message ParticipantMessage {
     string user_id = 1;
-    MousePositionMessage mouse_position = 2;
+    PointerMessage pointer = 2;
     int64 last_active = 3;
 }
 
@@ -66,8 +79,23 @@ message PositionMessage{
     int32 y = 2;
 }
 
+message PointerMessage {
+    PointerPositionMessage position = 1;
+    PointerSettingsMessage settings = 2;
+}
 
-message MousePositionMessage{
+message PointerPositionMessage{
     float x = 1;
     float y = 2;
+}
+
+message PointerSettingsMessage {
+    string color_hex = 1;
+    float size = 2;
+    enum PointerShape {
+        POINTER_SHAPE_UNSPECIFIED = 0;
+        POINTER_SHAPE_CIRCLE = 1;
+        POINTER_SHAPE_ARROW = 2;
+    }
+    PointerShape shape = 3;
 }

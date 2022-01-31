@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/state/timer_providers.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class InfoPanelRow extends StatelessWidget {
@@ -12,9 +13,9 @@ class InfoPanelRow extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: const [
         ParticipantsInfoPanel(),
-        SizedBox(width: 24),
+        Gap(24),
         NumMovesInfoPanel(),
-        SizedBox(width: 24),
+        Gap(24),
         CreatedAtPanel(),
       ],
     );
@@ -90,7 +91,7 @@ class _BaseInfoPanel extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, color: Colors.white),
-          const SizedBox(width: 4),
+          const Gap(4),
           Text(label, style: const TextStyle(color: Colors.white)),
         ],
       ),

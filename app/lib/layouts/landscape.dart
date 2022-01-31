@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/widgets/info_panels.dart';
+import 'package:flutter_challenge/widgets/pointer_settings.dart';
 import 'package:flutter_challenge/widgets/puzzle_board.dart';
+import 'package:gap/gap.dart';
 
 class LandScapeLayout extends StatelessWidget {
   const LandScapeLayout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
-        Expanded(
-          child: Center(
-            child: InfoPanelRow(),
+    return Column(
+      children: [
+        const Gap(16),
+        Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              InfoPanelRow(),
+              Gap(16),
+              PointerSettings(),
+            ],
           ),
         ),
-        Expanded(
+        const Gap(16),
+        const Expanded(
           child: Center(child: PuzzleBoardLoader()),
         ),
       ],

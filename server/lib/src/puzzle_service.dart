@@ -50,9 +50,24 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
   }
 
   @override
-  Future<UpdateMousePositionResponse> updateMousePosition(ServiceCall call, UpdateMousePositionRequest request) async {
-    puzzleRepo.updateMousePosition(request.userId, request.position);
-    return UpdateMousePositionResponse();
+  Future<UpdatePointerPositionResponse> updatePointerPosition(
+    ServiceCall call,
+    UpdatePointerPositionRequest request,
+  ) async {
+    puzzleRepo.updatePointerPosition(
+      request.userId,
+      request.position,
+    );
+    return UpdatePointerPositionResponse();
+  }
+
+  @override
+  Future<UpdatePointerSettingsResponse> updatePointerSettings(
+    ServiceCall call,
+    UpdatePointerSettingsRequest request,
+  ) async {
+    puzzleRepo.updatePointerSettings(request.userId, request.settings);
+    return UpdatePointerSettingsResponse();
   }
 }
 
@@ -84,7 +99,7 @@ ParticipantMessage _toParticipantMessage(Participant participant) {
   return ParticipantMessage(
     userId: participant.userId,
     lastActive: Int64(participant.lastActive.millisecondsSinceEpoch),
-    mousePosition: participant.position != null ? _toMousePositionMessage(participant.position!) : null,
+    pointer: _toPointerMessage(participant.pointer),
   );
 }
 
@@ -94,9 +109,21 @@ PositionMessage _toPositionMessage(Position position) {
     y: position.y,
   );
 }
-MousePositionMessage _toMousePositionMessage(MousePosition position) {
-  return MousePositionMessage(
-    x: position.x,
-    y: position.y,
+
+PointerMessage _toPointerMessage(ParticipantPointer pointer) {
+  return PointerMessage(
+    position: pointer.position != null
+        ? PointerPositionMessage(
+            x: pointer.position!.x,
+            y: pointer.position!.y,
+          )
+        : null,
+    settings: PointerSettingsMessage(
+      colorHex: pointer.settings.colorHex,
+      shape: PointerSettingsMessage_PointerShape.valueOf(
+        pointer.settings.shape.index + 1,
+      ), // 0 is reserved for UNSPECIFIED
+      size: pointer.settings.size,
+    ),
   );
 }
