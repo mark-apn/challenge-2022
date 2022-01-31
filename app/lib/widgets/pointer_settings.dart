@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/extensions.dart';
+import 'package:flutter_challenge/hooks/use_throttle.dart';
 import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
-import 'package:flutter_challenge/utils/use_throttle.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared/models/models.dart';
 
@@ -53,8 +54,24 @@ class PointerSettings extends HookConsumerWidget {
             },
           ),
 
+          // Shape
+          ToggleButtons(
+            children: const [
+              Text('Circle'),
+              Text('Arrow'),
+            ],
+            onPressed: (index) {
+              isUpdated.value = true;
+              shape.value = index;
+            },
+            isSelected: [
+              shape.value == 0,
+              shape.value == 1,
+            ],
+          ),
+          const Gap(8),
           // Change cursor color
-          TextButton.icon(
+          ElevatedButton(
             onPressed: () {
               showDialog(
                 context: context,
@@ -76,24 +93,9 @@ class PointerSettings extends HookConsumerWidget {
                 ),
               );
             },
-            icon: const Icon(Icons.color_lens),
-            label: const Text('Cursor color'),
+            child: const Text('Cursor color'),
           ),
-
-          ToggleButtons(
-            children: const [
-              Text('Circle'),
-              Text('Arrow'),
-            ],
-            onPressed: (index) {
-              isUpdated.value = true;
-              shape.value = index;
-            },
-            isSelected: [
-              shape.value == 0,
-              shape.value == 1,
-            ],
-          ),
+          const Gap(8),
         ],
       ),
     );

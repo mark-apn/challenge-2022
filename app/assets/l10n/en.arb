@@ -1,4 +1,8 @@
 {
     "@@locale": "en",
-    "appName": "SlideIt"
+    "appName": "SlideIt",
+    "numMovesTooltip": "Number of moves",
+    "numParticipantsTooltip": "Participant count",
+    "numTimeRunningTooltip": "Running time",
+    "numTimeWinTooltip": "Time to complete the puzzle"
 }

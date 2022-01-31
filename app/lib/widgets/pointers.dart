@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/extensions.dart';
+import 'package:flutter_challenge/hooks/use_throttle.dart';
 import 'package:flutter_challenge/prefs.dart';
 import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
-import 'package:flutter_challenge/utils/use_throttle.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared/shared.dart';
@@ -69,6 +69,10 @@ class Pointers extends HookConsumerWidget {
         );
         isUpdated.value = true;
       },
+      onExit: (_) {
+        mousePosition.value = const Offset(-100, -100);
+        isUpdated.value = true;
+      },
       child: Stack(
         children: [
           ...otherPointers.map((p) => Pointer(pointer: p)).toList(),
@@ -103,6 +107,9 @@ class Pointer extends HookWidget {
         height: pointer.settings.size,
         decoration: ShapeDecoration(
           color: HexColor(pointer.settings.colorHex),
+          shadows: const [
+            BoxShadow(color: Colors.black45, blurRadius: 4.0, offset: Offset(2, 2)),
+          ],
           shape: pointer.settings.shape == PointerDisplayShape.circle
               ? const CircleBorder(side: BorderSide())
               : const _ArrowShape(side: BorderSide()),
@@ -125,24 +132,10 @@ class _ArrowShape extends OutlinedBorder {
   const _ArrowShape({BorderSide side = BorderSide.none}) : super(side: side);
 
   @override
-  EdgeInsetsGeometry get dimensions {
-    return EdgeInsets.all(side.width);
-  }
+  EdgeInsetsGeometry get dimensions => EdgeInsets.all(side.width);
 
   @override
   ShapeBorder scale(double t) => _ArrowShape(side: side.scale(t));
-
-  @override
-  ShapeBorder? lerpFrom(ShapeBorder? a, double t) {
-    if (a is _ArrowShape) return _ArrowShape(side: BorderSide.lerp(a.side, side, t));
-    return super.lerpFrom(a, t);
-  }
-
-  @override
-  ShapeBorder? lerpTo(ShapeBorder? b, double t) {
-    if (b is _ArrowShape) return _ArrowShape(side: BorderSide.lerp(side, b.side, t));
-    return super.lerpTo(b, t);
-  }
 
   @override
   Path getInnerPath(Rect rect, {TextDirection? textDirection}) {

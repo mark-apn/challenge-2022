@@ -33,6 +33,7 @@ class PuzzleTile extends ConsumerWidget {
         child: _TileHover(child: child),
       );
     }
+
     return _AnimatedTile(
       position: tile.currentPosition,
       child: child,

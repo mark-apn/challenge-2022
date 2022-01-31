@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_challenge/widgets/info_panels.dart';
 import 'package:flutter_challenge/widgets/pointer_settings.dart';
 import 'package:flutter_challenge/widgets/puzzle_board.dart';
+import 'package:flutter_challenge/widgets/win_dialog.dart';
 import 'package:gap/gap.dart';
 
 class LandScapeLayout extends StatelessWidget {
@@ -15,10 +16,14 @@ class LandScapeLayout extends StatelessWidget {
         Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
-              InfoPanelRow(),
-              Gap(16),
-              PointerSettings(),
+            children: [
+              const InfoPanelRow(),
+              const Gap(16),
+              const PointerSettings(),
+              ElevatedButton(
+                onPressed: () => showWinDialog(context),
+                child: const Text('Show win dialog'),
+              ),
             ],
           ),
         ),
