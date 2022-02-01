@@ -22,12 +22,7 @@ class FinishedPuzzleInfoPanelRow extends ConsumerWidget {
 
     final timeToFinish = DateTime.now().difference(puzzle.createdAt);
 
-    final asColumn = getValueForScreenType(
-      context: context,
-      mobile: true,
-      tablet: false,
-      desktop: false,
-    );
+    final asColumn = MediaQuery.of(context).orientation == Orientation.portrait;
 
     final gap = getValueForScreenType<double>(
       context: context,
@@ -35,6 +30,7 @@ class FinishedPuzzleInfoPanelRow extends ConsumerWidget {
       tablet: asColumn ? 4 : 32,
       desktop: asColumn ? 4 : 40,
     );
+
     final children = [
       ParticipantsInfoPanel(numParticipants: numParticipants),
       Gap(gap),

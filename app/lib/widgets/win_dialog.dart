@@ -29,39 +29,48 @@ class _WinDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final orientation = MediaQuery.of(context).orientation;
+    final aspectRatio = orientation == Orientation.portrait ? 9 / 16 : 16 / 9;
+
     return FractionallySizedBox(
       widthFactor: 0.8,
       heightFactor: 0.8,
-      child: Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(32),
-        clipBehavior: Clip.hardEdge,
-        child: Stack(
-          children: [
-            const _Background(),
-            const _CloseButton(),
-            OrientationBuilder(builder: (context, orientation) {
-              if (orientation == Orientation.landscape) {
-                return Row(children: const [
-                  Expanded(flex: 3, child: _Content()),
-                  // Empty space to not block the background
-                  Expanded(flex: 2, child: SizedBox.expand()),
-                ]);
-              } else {
-                return Column(
-                  children: const [_Content()],
-                );
-              }
-            }),
-            const _ConfettiCannon(
-              align: Alignment.topLeft,
-              blastDirectionAngle: 0,
+      child: Center(
+        child: AspectRatio(
+          aspectRatio: aspectRatio,
+          child: Material(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(32),
+            clipBehavior: Clip.hardEdge,
+            child: Stack(
+              children: [
+                const _Background(),
+                const _CloseButton(),
+                OrientationBuilder(builder: (context, orientation) {
+                  if (orientation == Orientation.landscape) {
+                    return Row(children: const [
+                      Expanded(flex: 4, child: SingleChildScrollView(child: _Content())),
+                      // Empty space to not block the background
+                      Expanded(flex: 2, child: SizedBox.expand()),
+                    ]);
+                  } else {
+                    return SingleChildScrollView(
+                      child: Column(children: const [_Content()]),
+                    );
+                  }
+                }),
+                const _ConfettiCannon(
+                  align: Alignment.topLeft,
+                  blastDirectionAngle: 0,
+                ),
+                const _ConfettiCannon(
+                  align: Alignment.topRight,
+                  blastDirectionAngle: 180,
+                ),
+              ],
             ),
-            const _ConfettiCannon(
-              align: Alignment.topRight,
-              blastDirectionAngle: 180,
-            ),
-          ],
+          ),
         ),
       ),
     );

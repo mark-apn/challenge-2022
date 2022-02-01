@@ -7,15 +7,19 @@ import 'package:grpc/grpc.dart';
 import 'package:shared/shared.dart';
 
 class PuzzleV1Service extends PuzzleV1ServiceBase {
-  // ignore: close_sinks
-  final streamController = StreamController<Puzzle>.broadcast();
   final puzzleRepo = PuzzleRepository();
 
   @override
   Stream<SubscribeToPuzzleResponse> subscribeToPuzzle(ServiceCall call, SubscribeToPuzzleRequest request) {
+    StreamSubscription? streamSubscription;
+
+    final streamController = StreamController<Puzzle>();
+
     print('Recieved subscribe to puzzle request');
     puzzleRepo.subscribeToLatestPuzzle().then((feed) {
       if (feed == null) throw Exception('No active puzzle');
+
+      print('New subscription to puzzle ${feed.hashCode}');
 
       puzzleRepo.getLatestPuzzle().then((value) {
         if (value != null) {
@@ -23,11 +27,13 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
         }
       });
 
-      StreamSubscription? streamSubscription;
       streamSubscription = feed.listen((updated) {
-        if (call.isCanceled) {
+        if (call.isCanceled || call.isTimedOut) {
+          print('Cancelled subscription to puzzle ${feed.hashCode}');
           streamSubscription?.cancel();
+          streamController.close();
         } else {
+          print('Broadcast update in feed: ${feed.hashCode}');
           final data = (updated as Map)['new_val'] as Map<String, dynamic>;
           final newPuzzle = Puzzle.fromMap(data);
           streamController.sink.add(newPuzzle);
