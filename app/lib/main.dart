@@ -3,7 +3,9 @@ import 'package:flutter_challenge/grpc/client.dart';
 import 'package:flutter_challenge/l10n.dart';
 import 'package:flutter_challenge/layouts/landscape.dart';
 import 'package:flutter_challenge/prefs.dart';
+import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/styles.dart';
+import 'package:flutter_challenge/widgets/info_panels.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -44,8 +46,22 @@ class App extends StatelessWidget {
       supportedLocales: L10n.supportedLocales,
       home: const Scaffold(
         backgroundColor: kPrimaryColor,
+        // body: IntroScreen(),
         body: LandScapeLayout(),
       ),
+    );
+  }
+}
+
+class IntroScreen extends HookConsumerWidget {
+  const IntroScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(puzzleProvider);
+    return Container(
+      color: kPrimaryColor,
+      child: const Center(child: InfoPanelRow()),
     );
   }
 }

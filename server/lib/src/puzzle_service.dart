@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_challenge_server/generated/puzzle/v1/puzzle.pbgrpc.dart';
 import 'package:flutter_challenge_server/src/puzzle_repository.dart';
+import 'package:flutter_challenge_server/utils/throttler.dart';
 import 'package:grpc/grpc.dart';
 import 'package:shared/shared.dart';
 
@@ -11,6 +12,7 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
 
   @override
   Stream<SubscribeToPuzzleResponse> subscribeToPuzzle(ServiceCall call, SubscribeToPuzzleRequest request) {
+    final throttler = Throttler();
     StreamSubscription? streamSubscription;
 
     final streamController = StreamController<Puzzle>();
@@ -29,14 +31,14 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
 
       streamSubscription = feed.listen((updated) {
         if (call.isCanceled || call.isTimedOut) {
-          print('Cancelled subscription to puzzle ${feed.hashCode}');
           streamSubscription?.cancel();
           streamController.close();
         } else {
-          print('Broadcast update in feed: ${feed.hashCode}');
           final data = (updated as Map)['new_val'] as Map<String, dynamic>;
           final newPuzzle = Puzzle.fromMap(data);
-          streamController.sink.add(newPuzzle);
+
+          //throttle events over the sink to max 24 per second (40ms)
+          throttler.run(() => streamController.sink.add(newPuzzle));
         }
       });
     });
@@ -47,12 +49,12 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
   }
 
   @override
-  Future<VoteForTileResponse> voteForTile(ServiceCall call, VoteForTileRequest request) {
-    print('Recieved vote for tile request');
-
-    return puzzleRepo.voteForMoveOnLatestGame(request.userId, request.tileValue).then((_) {
-      return VoteForTileResponse();
-    });
+  Future<VoteForTileResponse> voteForTile(ServiceCall call, VoteForTileRequest request) async {
+    puzzleRepo.voteForMoveOnLatestGame(
+      request.userId,
+      request.tileValue,
+    );
+    return VoteForTileResponse();
   }
 
   @override
@@ -72,7 +74,10 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
     ServiceCall call,
     UpdatePointerSettingsRequest request,
   ) async {
-    puzzleRepo.updatePointerSettings(request.userId, request.settings);
+    puzzleRepo.updatePointerSettings(
+      request.userId,
+      request.settings,
+    );
     return UpdatePointerSettingsResponse();
   }
 }
