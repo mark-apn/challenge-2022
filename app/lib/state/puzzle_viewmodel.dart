@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/grpc/client.dart';
+import 'package:flutter_challenge/utils/tracker.dart';
 import 'package:shared/shared.dart';
 
 class PuzzleVm {
@@ -11,6 +12,7 @@ class PuzzleVm {
 
   // * Send vote to server via client
   Future<void> tileTapped(Tile tappedTile) async {
+    Tracker.trackEvent('vote');
     await GrpcClient.instance.voteOnTile(tappedTile.value);
   }
 
@@ -19,6 +21,7 @@ class PuzzleVm {
   }
 
   Future<void> updatePointerSettings({required PointerDisplaySettings settings}) async {
+    Tracker.trackEvent('update_pointer_settings');
     GrpcClient.instance.updatePointerSettings(settings);
   }
 }
