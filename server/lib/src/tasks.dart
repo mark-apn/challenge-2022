@@ -23,13 +23,12 @@ class UpdatePuzzle extends Task {
       puzzle.tiles.sort((a, b) => b.numVotes.compareTo(a.numVotes));
       final tilesWithVotes = puzzle.tiles.where((tile) => tile.numVotes > 0 && puzzle.isTileMovable(tile));
 
+      // * If vote count is greater than 0, move the tile
       if (tilesWithVotes.isEmpty) {
         log('No tiles with votes');
       } else {
         final tile = tilesWithVotes.first;
         log('Tile with most votes: ${tile.value} (${tile.numVotes} votes)');
-
-        // * If vote count is greater than 0, move the tile
 
         log('Moving tile');
         final result = await puzzleRepo.moveTile(puzzle, tile);

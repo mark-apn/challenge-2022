@@ -10,6 +10,11 @@ class PuzzleVm {
 
   PuzzleVm._internal();
 
+  Future<void> puzzleCompleted() async {
+    Tracker.trackEvent('puzzle_completed');
+    GrpcClient.instance.subscribeToPuzzle();
+  }
+
   // * Send vote to server via client
   Future<void> tileTapped(Tile tappedTile) async {
     Tracker.trackEvent('vote');

@@ -9,27 +9,25 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vector_math/vector_math.dart' as math;
 
-Future<void> showWinDialog(BuildContext context) async {
-  showGeneralDialog(
-    context: context,
-    pageBuilder: (_, __, ___) => const _WinDialog(),
-    barrierDismissible: true,
-    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    transitionBuilder: (_, animation, __, child) {
-      return Transform.rotate(
-        angle: math.radians(animation.value * 360),
-        child: Transform.scale(scale: animation.value, child: child),
-      );
-    },
-  );
-}
+Future<void> showWinDialog(BuildContext context) => showGeneralDialog(
+      context: context,
+      pageBuilder: (_, __, ___) => const _WinDialog(),
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      transitionDuration: const Duration(seconds: 1), // Dramatically slow on purpose :-)
+      transitionBuilder: (_, animation, __, child) {
+        return Transform.rotate(
+          angle: math.radians(animation.value * 360),
+          child: Transform.scale(scale: animation.value, child: child),
+        );
+      },
+    );
 
 class _WinDialog extends StatelessWidget {
   const _WinDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     final orientation = MediaQuery.of(context).orientation;
     final aspectRatio = orientation == Orientation.portrait ? 9 / 16 : 16 / 9;
 

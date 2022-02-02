@@ -18,7 +18,7 @@ Future<void> main(List<String> args) async {
     ],
     // * Interceptors
     [
-      logInterceptor,
+      // logInterceptor,
     ],
     CodecRegistry(codecs: const [GzipCodec()]),
   );

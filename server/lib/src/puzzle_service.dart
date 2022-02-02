@@ -38,7 +38,17 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
           final newPuzzle = Puzzle.fromMap(data);
 
           //throttle events over the sink to max 24 per second (40ms)
-          throttler.run(() => streamController.sink.add(newPuzzle));
+          throttler.run(() {
+            streamController.sink.add(newPuzzle);
+
+            if (newPuzzle.isFinished) {
+              print('New puzzle created, stopping stream to old puzzel');
+              puzzleRepo.createNewPuzzle().then((_) {
+                streamSubscription?.cancel();
+                streamController.close();
+              });
+            }
+          });
         }
       });
     });

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/state/puzzle_providers.dart';
+import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
 import 'package:flutter_challenge/styles.dart';
 import 'package:flutter_challenge/widgets/puzzle_tile.dart';
+import 'package:flutter_challenge/widgets/win_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared/shared.dart';
 import 'package:shimmer/shimmer.dart';
@@ -93,6 +95,17 @@ class _PuzzleBoard extends ConsumerWidget {
       );
     }
 
+    ref.listen(
+      puzzleProvider.select((value) => value.puzzle.isFinished),
+      (previous, next) {
+        if (next == true) {
+          showWinDialog(context).then((value) {
+            PuzzleVm.instance.puzzleCompleted();
+          });
+        }
+      },
+    );
+
     final tileSize = boardSize / numDimensions;
 
     final whiteSpaceTile = tiles.firstWhere((tile) => tile.isWhitespace);
@@ -113,7 +126,7 @@ class _PuzzleBoard extends ConsumerWidget {
       },
     );
 
-    children.add( Pointers(boardSize: boardSize));
+    children.add(Pointers(boardSize: boardSize));
 
     return Container(
       constraints: BoxConstraints.tight(Size(boardSize, boardSize)),

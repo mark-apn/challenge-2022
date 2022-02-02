@@ -26,7 +26,7 @@ class Pointers extends HookConsumerWidget {
     // * Only send max 10 position updates per second
     useThrottle(
       isActive: isUpdated,
-      duration: const Duration(milliseconds: 1),
+      duration: const Duration(milliseconds: 100),
       callback: () {
         PuzzleVm.instance.updatePointerPosition(mousePosition.value!);
         isUpdated.value = false;
