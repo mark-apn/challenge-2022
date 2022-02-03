@@ -9,24 +9,18 @@ class LandScapeLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        const Gap(16),
-        Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              Gap(16),
-               InfoPanelRow(),
-              // const PointerSettings(),
-              // ElevatedButton(
-              //   onPressed: () => showWinDialog(context),
-              //   child: const Text('Show win dialog'),
-              // ),
-            ],
-          ),
-        ),
-        const Gap(16),
-        const Expanded(
+      children: const [
+         Gap(32),
+
+        InfoPanelRow(),
+        // const PointerSettings(),
+        // ElevatedButton(
+        //   onPressed: () => showWinDialog(context),
+        //   child: const Text('Show win dialog'),
+        // ),
+
+        Gap(16),
+        Expanded(
           child: Center(child: PuzzleBoardLoader()),
         ),
       ],

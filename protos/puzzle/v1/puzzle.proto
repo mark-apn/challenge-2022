@@ -96,6 +96,11 @@ message PointerSettingsMessage {
         POINTER_SHAPE_UNSPECIFIED = 0;
         POINTER_SHAPE_CIRCLE = 1;
         POINTER_SHAPE_ARROW = 2;
+        POINTER_SHAPE_PEACE = 3;
+        POINTER_SHAPE_WAVE = 4;
+        POINTER_SHAPE_ANDROID = 5;
+        POINTER_SHAPE_FLUTTER = 6;
+        POINTER_SHAPE_AMONGUS = 7;
     }
     PointerShape shape = 3;
 }

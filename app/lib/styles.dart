@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const kPrimaryColor = Color(0xFF172D4F);
 const kPrimaryLightColor = Color(0xFF224377);
+const kGrey = Color(0xFFF2F2F6);
 
 const kImgAssetWinDash = 'assets/img/win_dash.png';
 
-const kWinTitle = TextStyle(
+const appTextTheme = GoogleFonts.spaceGroteskTextTheme;
+const appTextStyle = GoogleFonts.spaceGrotesk;
+
+final kWinTitle = appTextStyle(
   fontSize: 64,
   fontWeight: FontWeight.w800,
   color: Colors.black,
 );
 
-const kWinSubTitle = TextStyle(
+final kWinSubTitle = appTextStyle(
   fontSize: 24,
   fontWeight: FontWeight.w600,
   color: kPrimaryLightColor,

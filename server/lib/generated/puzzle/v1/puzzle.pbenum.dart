@@ -30,11 +30,21 @@ class PointerSettingsMessage_PointerShape extends $pb.ProtobufEnum {
   static const PointerSettingsMessage_PointerShape POINTER_SHAPE_UNSPECIFIED = PointerSettingsMessage_PointerShape._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_UNSPECIFIED');
   static const PointerSettingsMessage_PointerShape POINTER_SHAPE_CIRCLE = PointerSettingsMessage_PointerShape._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_CIRCLE');
   static const PointerSettingsMessage_PointerShape POINTER_SHAPE_ARROW = PointerSettingsMessage_PointerShape._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_ARROW');
+  static const PointerSettingsMessage_PointerShape POINTER_SHAPE_PEACE = PointerSettingsMessage_PointerShape._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_PEACE');
+  static const PointerSettingsMessage_PointerShape POINTER_SHAPE_WAVE = PointerSettingsMessage_PointerShape._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_WAVE');
+  static const PointerSettingsMessage_PointerShape POINTER_SHAPE_ANDROID = PointerSettingsMessage_PointerShape._(5, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_ANDROID');
+  static const PointerSettingsMessage_PointerShape POINTER_SHAPE_FLUTTER = PointerSettingsMessage_PointerShape._(6, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_FLUTTER');
+  static const PointerSettingsMessage_PointerShape POINTER_SHAPE_AMONGUS = PointerSettingsMessage_PointerShape._(7, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'POINTER_SHAPE_AMONGUS');
 
   static const $core.List<PointerSettingsMessage_PointerShape> values = <PointerSettingsMessage_PointerShape> [
     POINTER_SHAPE_UNSPECIFIED,
     POINTER_SHAPE_CIRCLE,
     POINTER_SHAPE_ARROW,
+    POINTER_SHAPE_PEACE,
+    POINTER_SHAPE_WAVE,
+    POINTER_SHAPE_ANDROID,
+    POINTER_SHAPE_FLUTTER,
+    POINTER_SHAPE_AMONGUS,
   ];
 
   static final $core.Map<$core.int, PointerSettingsMessage_PointerShape> _byValue = $pb.ProtobufEnum.initByValue(values);

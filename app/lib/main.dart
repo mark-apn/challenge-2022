@@ -1,15 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/grpc/client.dart';
 import 'package:flutter_challenge/l10n.dart';
 import 'package:flutter_challenge/layouts/landscape.dart';
 import 'package:flutter_challenge/prefs.dart';
-import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/styles.dart';
-import 'package:flutter_challenge/widgets/info_panels.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -44,10 +42,7 @@ class App extends StatelessWidget {
         L10n.init(context);
         return L10n.translate.appName;
       },
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.spaceGroteskTextTheme(),
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, textTheme: appTextTheme()),
       localizationsDelegates: L10n.localizationsDelegates,
       supportedLocales: L10n.supportedLocales,
       home: const Scaffold(
@@ -55,19 +50,6 @@ class App extends StatelessWidget {
         // body: IntroScreen(),
         body: LandScapeLayout(),
       ),
-    );
-  }
-}
-
-class IntroScreen extends HookConsumerWidget {
-  const IntroScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(puzzleProvider);
-    return Container(
-      color: kPrimaryColor,
-      child: const Center(child: InfoPanelRow()),
     );
   }
 }

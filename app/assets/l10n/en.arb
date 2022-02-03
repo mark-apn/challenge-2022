@@ -1,8 +1,11 @@
 {
     "@@locale": "en",
     "appName": "SlideIt",
-    "numMovesTooltip": "Number of moves",
-    "numParticipantsTooltip": "Participant count",
-    "numTimeRunningTooltip": "Running time",
-    "numTimeWinTooltip": "Time to complete the puzzle"
+    "numMovesTooltip": "moves made",
+    "numParticipantsTooltip": "now playing",
+    "numTimeRunningTooltip": "time elapsed",
+    "numTimeWinTooltip": "Time to complete the puzzle",
+    "pickACursor": "Pick a cursor",
+    "setYourSize": "Set your size",
+    "pickAColor": "Pick a color"
 }

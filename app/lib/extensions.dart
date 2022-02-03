@@ -53,4 +53,13 @@ extension ColorEx on Color {
   String toHexString() {
     return "#" + value.toRadixString(16).toUpperCase();
   }
+
+  Color darken([int amount = 20]) {
+    return Color.fromARGB(
+      alpha,
+      (red - amount).clamp(0, 255),
+      (green - amount).clamp(0, 255),
+      (blue - amount).clamp(0, 255),
+    );
+  }
 }
