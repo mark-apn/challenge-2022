@@ -15,7 +15,7 @@ import 'package:flutter/foundation.dart'
 /// );
 /// ```
 class DefaultFirebaseOptions {
-  static FirebaseOptions get currentPlatform {
+  static FirebaseOptions? get currentPlatform {
     if (kIsWeb) {
       return web;
     }
@@ -29,9 +29,7 @@ class DefaultFirebaseOptions {
         return macos;
     }
 
-    throw UnsupportedError(
-      'DefaultFirebaseOptions are not supported for this platform.',
-    );
+    return null;
   }
 
   static const FirebaseOptions web = FirebaseOptions(

@@ -1,3 +1,4 @@
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/grpc/client.dart';
@@ -14,9 +15,10 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  final options = DefaultFirebaseOptions.currentPlatform;
+  if (options != null) {
+    await Firebase.initializeApp(options: options);
+  }
 
   // Fetch saved values before first paint
   await Prefs.instance.init();
