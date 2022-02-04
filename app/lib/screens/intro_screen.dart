@@ -169,7 +169,7 @@ class _PointerSettingsPanel extends StatelessWidget {
   }
 }
 
-class _IntroScreenPanel extends StatelessWidget {
+class _IntroScreenPanel extends HookWidget {
   const _IntroScreenPanel({
     Key? key,
     required this.child,
@@ -184,6 +184,7 @@ class _IntroScreenPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalHeight = MediaQuery.of(context).size.height;
+    final controller = useScrollController();
 
     final padding = getValueForScreenType(
       context: context,
@@ -192,7 +193,9 @@ class _IntroScreenPanel extends StatelessWidget {
     );
 
     return SingleChildScrollView(
+      controller: controller,
       child: Scrollbar(
+        controller: controller,
         child: DefaultTextStyle(
           style: textStyle ?? appTextStyle(),
           child: Container(

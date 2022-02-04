@@ -5,26 +5,35 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run app",
+      "name": "Run app [production]",
       "cwd": "app",
       "type": "dart",
       "request": "launch",
       "program": "lib/main.dart"
     },
     {
-      "name": "Start worker",
+      "name": "Run app [local]",
+      "cwd": "app",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": ["--dart-define", "env=local"]
+    },
+    {
+      "name": "Start worker [local]",
       "cwd": "server",
       "request": "launch",
       "program": "bin/worker.dart",
-      "type": "dart"
+      "type": "dart",
+      "args": ["--dart-define", "env=local"]
     },
     {
-      "name": "Start server",
+      "name": "Start server [local]",
       "type": "dart",
       "request": "launch",
       "cwd": "server",
       "program": "bin/server.dart",
-      "args": ["--port", "50000"]
+      "args": ["--port", "50000", "--dart-define", "env=local"]
     }
   ]
 }

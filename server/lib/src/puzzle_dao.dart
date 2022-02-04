@@ -8,7 +8,7 @@ import 'package:rethink_db_ns/rethink_db_ns.dart';
 
 typedef DbRow = Map<String, dynamic>;
 
-const _local = true;
+const _local = String.fromEnvironment('env', defaultValue: 'production') == 'local';
 
 class PuzzleDao {
   final _r = RethinkDb();
