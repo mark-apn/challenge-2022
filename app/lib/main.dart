@@ -2,8 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/grpc/client.dart';
 import 'package:flutter_challenge/l10n.dart';
-import 'package:flutter_challenge/layouts/landscape.dart';
 import 'package:flutter_challenge/prefs.dart';
+import 'package:flutter_challenge/screens/intro_screen.dart';
+import 'package:flutter_challenge/screens/puzzle_screen.dart';
 import 'package:flutter_challenge/styles.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -45,11 +46,10 @@ class App extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue, textTheme: appTextTheme()),
       localizationsDelegates: L10n.localizationsDelegates,
       supportedLocales: L10n.supportedLocales,
-      home: const Scaffold(
-        backgroundColor: kPrimaryColor,
-        // body: IntroScreen(),
-        body: LandScapeLayout(),
-      ),
+      routes: {
+        '/': (_) => const IntroScreen(),
+        '/active-puzzle': (_) => const PuzzleScreen(),
+      },
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/extensions.dart';
 import 'package:flutter_challenge/l10n.dart';
@@ -72,8 +73,8 @@ class IntroInfoPanelRow extends StatelessWidget {
       showToolTipAsLabel: true,
       direction: Axis.vertical,
       panelGap: 20,
-      textStyle: appTextStyle(fontSize: 30),
-      iconThemeData: const IconThemeData(size: 36),
+      textStyle: appTextStyle(fontSize: 24),
+      iconThemeData: const IconThemeData(size: 28),
     );
   }
 }
@@ -100,7 +101,7 @@ class InfoPanelRow extends HookConsumerWidget {
     final numParticipants = ref.watch(puzzleProvider.select((value) => value.puzzle.participants.length));
 
     return DefaultTextStyle(
-      style: appTextStyle(color: Colors.white).merge(textStyle),
+      style: appTextStyle(color: Colors.white, fontSize: 18).merge(textStyle),
       child: IconTheme(
         data: const IconThemeData(color: Colors.white).merge(iconThemeData),
         child: Flex(
@@ -240,10 +241,9 @@ class _BaseInfoPanel extends StatelessWidget {
           Expanded(
             child: Opacity(
               opacity: 0.4,
-              child: Text(
+              child: AutoSizeText(
                 tooltip,
                 maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),

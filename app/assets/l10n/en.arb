@@ -7,5 +7,11 @@
     "numTimeWinTooltip": "Time to complete the puzzle",
     "pickACursor": "Pick a cursor",
     "setYourSize": "Set your size",
-    "pickAColor": "Pick a color"
+    "pickAColor": "Pick a color",
+    "massive": "Massive",
+    "multiplayer": "Multiplayer",
+    "puzzle": "Puzzle",
+    "introParagraph": "Join the fun on the Massive Multiplayer Puzzle. Puzzle together and set the best time on the leaderboard.",
+    "nextButtonText": "Next >",
+    "joinThePuzzle": "Join the puzzle"
 }
