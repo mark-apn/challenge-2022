@@ -162,7 +162,7 @@ class _PointerSettingsPanel extends StatelessWidget {
       textStyle: appTextStyle(color: kPrimaryColor),
       child: Center(
         child: PointerSettings(
-          onButtonTap: () => Navigator.of(context).pushNamed('/active-puzzle'),
+          onButtonTap: () => Navigator.of(context).pushReplacementNamed('/active-puzzle'),
         ),
       ),
     );
@@ -204,7 +204,7 @@ class _IntroScreenPanel extends HookWidget {
               minHeight: totalHeight,
             ),
             padding: EdgeInsets.all(padding),
-            child: child,
+            child: SafeArea(child: child),
           ),
         ),
       ),

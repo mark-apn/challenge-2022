@@ -1,4 +1,4 @@
-package com.example.flutter_challenge_2022_clean
+package com.example.app
 
 import io.flutter.embedding.android.FlutterActivity
 

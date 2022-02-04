@@ -23,7 +23,6 @@ class GrpcClient {
 
   StreamSubscription<SubscribeToPuzzleResponse>? listener;
   DateTime? lastDataReceived;
-  bool _isReconnecting = false;
 
   ClientChannelBase? _cachedChannel;
   ClientChannelBase get _newChannel => GrpcChannelBuilder().build;
@@ -42,16 +41,9 @@ class GrpcClient {
   void fetchNewPuzzle() => _reconnectToPuzzle();
 
   // Incremental backoff will start at 400ms and doubles every pass
-  // TODO(mark): Add max retries
   Future<void> _reconnectToPuzzle([int incrementalBackoffDelay = 0]) async {
-    if (_isReconnecting) {
-      debugPrint('Already reconnecting, skipping');
-      return;
-    }
-
     debugPrint('Reconnecting to puzzle stream with clean channel');
     _cachedChannel = null;
-    _isReconnecting = true;
     listener?.cancel();
 
     await Future.delayed(
@@ -60,14 +52,12 @@ class GrpcClient {
 
     listener = client.subscribeToPuzzle(SubscribeToPuzzleRequest(userId: userId)).listen(
       (event) {
-        _isReconnecting = false;
         lastDataReceived = DateTime.now();
         _puzzleStreamController.sink.add(toPuzzle(event.puzzle));
       },
     )
       ..onDone(_reconnectToPuzzle)
       ..onError((error, stackTrace) {
-        _isReconnecting = false;
         debugPrint('Error: $error');
         // Delete previous channel, and reconnect if we can
         if (error is GrpcError && _shouldTryReconnecting(error)) {

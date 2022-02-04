@@ -11,15 +11,17 @@ class PuzzleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimaryColor,
-      body: Column(
-        children: const [
-          Gap(32),
-          InfoPanelRow(),
-          Gap(16),
-          Expanded(
-            child: Center(child: PuzzleBoardLoader()),
-          ),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: const [
+            Gap(32),
+            InfoPanelRow(),
+            Gap(16),
+            Expanded(
+              child: Center(child: PuzzleBoardLoader()),
+            ),
+          ],
+        ),
       ),
     );
   }
