@@ -83,7 +83,7 @@ class PointerDisplaySettings extends Equatable {
   });
 
   factory PointerDisplaySettings.initial() => PointerDisplaySettings(
-        colorHex: "#FFFFFF",
+        colorHex: "#4B4B4B",
         shape: PointerDisplayShape.arrow,
         size: 16,
       );
@@ -127,4 +127,9 @@ class PointerDisplaySettings extends Equatable {
 enum PointerDisplayShape {
   circle,
   arrow,
+  amongus,
+  peace,
+  wave,
+  android,
+  flutter,
 }

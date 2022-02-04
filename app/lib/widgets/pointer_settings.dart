@@ -1,25 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/extensions.dart';
 import 'package:flutter_challenge/hooks/use_throttle.dart';
+import 'package:flutter_challenge/l10n.dart';
 import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_challenge/styles.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared/models/models.dart';
 
 class PointerSettings extends HookConsumerWidget {
-  const PointerSettings({Key? key}) : super(key: key);
+  const PointerSettings({
+    Key? key,
+    required this.onButtonTap,
+  }) : super(key: key);
+
+  final VoidCallback onButtonTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final myPointerSettings = ref.read(myPointerSettingsProvider);
+    final myPointerSettings = ref.watch(myPointerSettingsProvider);
 
     // * Convert to state variables
     final size = useState(myPointerSettings.size);
     final color = useState(myPointerSettings.colorHex);
     final shape = useState(myPointerSettings.shape.index);
+
+    useEffect(() {
+      size.value = myPointerSettings.size;
+      color.value = myPointerSettings.colorHex;
+      shape.value = myPointerSettings.shape.index;
+      return null;
+    }, [myPointerSettings.hashCode]);
 
     final isUpdated = useState(false);
 
@@ -39,64 +53,292 @@ class PointerSettings extends HookConsumerWidget {
       },
     );
 
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 250),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 350),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Shape
+          _SettingsPanel(
+            index: 1,
+            label: L10n.translate.pickACursor,
+            child: _CursorShapeSelector(
+              shapes: PointerDisplayShape.values,
+              selectedShape: PointerDisplayShape.values[shape.value],
+              cursorSize: size.value,
+              iconColor: HexColor(myPointerSettings.colorHex),
+              onChanged: (PointerDisplayShape newShape) {
+                shape.value = newShape.index;
+                isUpdated.value = true;
+              },
+            ),
+          ),
+          const _Divider(),
+
+          const Gap(20),
           // Size slider
-          Slider(
-            value: size.value,
-            min: 8,
-            max: 32,
-            onChanged: (value) {
-              isUpdated.value = true;
-              size.value = value;
-            },
+          _SettingsPanel(
+            index: 2,
+            label: L10n.translate.setYourSize,
+            childPadding: EdgeInsets.zero,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 250),
+              child: Slider(
+                value: size.value,
+                min: 12,
+                max: 40,
+                activeColor: kGrey,
+                inactiveColor: kGrey,
+                thumbColor: kPrimaryColor,
+                onChanged: (value) {
+                  isUpdated.value = true;
+                  size.value = value;
+                },
+              ),
+            ),
           ),
 
-          // Shape
-          ToggleButtons(
-            children: const [
-              Text('Circle'),
-              Text('Arrow'),
-            ],
-            onPressed: (index) {
-              isUpdated.value = true;
-              shape.value = index;
-            },
-            isSelected: [
-              shape.value == 0,
-              shape.value == 1,
-            ],
+          const _Divider(),
+
+          const Gap(20),
+          _SettingsPanel(
+            index: 3,
+            label: L10n.translate.pickAColor,
+            child: _ColorPicker(
+              color: HexColor(color.value),
+              onChanged: (newColor) {
+                isUpdated.value = true;
+                color.value = newColor.toHexString();
+              },
+            ),
           ),
-          const Gap(8),
-          // Change cursor color
-          ElevatedButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  actions: [
-                    TextButton(
-                      child: const Text('Close'),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                  content: BlockPicker(
-                    pickerColor: HexColor(color.value),
-                    useInShowDialog: true,
-                    onColorChanged: (Color value) {
-                      isUpdated.value = true;
-                      color.value = value.toHexString();
-                    },
-                  ),
+
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: ElevatedButton(
+              onPressed: onButtonTap,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateColor.resolveWith((states) {
+                  return states.contains(MaterialState.disabled) ? kGrey : kPrimaryColor;
+                }),
+                padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                 ),
-              );
-            },
-            child: const Text('Cursor color'),
+              ),
+              child: Text(L10n.translate.joinThePuzzle),
+            ),
           ),
-          const Gap(8),
         ],
+      ),
+    );
+  }
+}
+
+class _SettingsPanel extends StatelessWidget {
+  const _SettingsPanel({
+    Key? key,
+    required this.index,
+    required this.label,
+    required this.child,
+    this.headerPadding = const EdgeInsets.symmetric(horizontal: 20),
+    this.childPadding = const EdgeInsets.symmetric(horizontal: 20),
+  }) : super(key: key);
+
+  final int index;
+  final String label;
+  final Widget child;
+  final EdgeInsets headerPadding;
+  final EdgeInsets childPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Gap(headerPadding.left),
+            Container(
+              padding: const EdgeInsets.all(9),
+              decoration: const ShapeDecoration(
+                shape: CircleBorder(),
+                color: kPrimaryColor,
+              ),
+              child: Text(
+                '$index',
+                style: appTextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const Gap(8),
+            Expanded(
+              child: Text(
+                label,
+                style: appTextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 2,
+              ),
+            ),
+            Gap(headerPadding.right),
+          ],
+        ),
+        Padding(
+          padding: childPadding,
+          child: child,
+        ),
+      ],
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  const _Divider({
+    Key? key,
+    this.indent = 20,
+    this.height,
+  }) : super(key: key);
+
+  final double indent;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      thickness: 0.0,
+      indent: indent,
+      endIndent: indent,
+      color: kGrey,
+      height: height,
+    );
+  }
+}
+
+class _CursorShapeSelector extends StatelessWidget {
+  const _CursorShapeSelector({
+    Key? key,
+    required this.shapes,
+    required this.cursorSize,
+    required this.selectedShape,
+    required this.onChanged,
+    required this.iconColor,
+  }) : super(key: key);
+
+  final List<PointerDisplayShape> shapes;
+  final double cursorSize;
+  final PointerDisplayShape selectedShape;
+  final ValueSetter<PointerDisplayShape> onChanged;
+  final Color iconColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 4,
+      shrinkWrap: true,
+      mainAxisSpacing: 4,
+      crossAxisSpacing: 4,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      children: shapes.map((shape) {
+        return GestureDetector(
+          onTap: () => onChanged(shape),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: shape == selectedShape ? iconColor : kGrey),
+              borderRadius: BorderRadius.circular(8),
+              color: shape == selectedShape ? iconColor.withOpacity(0.06) : null,
+            ),
+            child: Center(
+              child: SvgPicture.asset(
+                shape.assetPath,
+                color: iconColor,
+                width: cursorSize,
+                height: cursorSize,
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+}
+
+class _ColorPicker extends StatelessWidget {
+  const _ColorPicker({
+    Key? key,
+    required this.color,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final Color color;
+  final ValueSetter<Color> onChanged;
+
+  static const _colorList = [
+    Color(0xFFFF4343),
+    Color(0xFFFF8743),
+    Color(0xFFFFCE21),
+    Color(0xFF47D266),
+    Color(0xFF13B9FD),
+    Color(0xFFC343FF),
+    Color(0xFF4B4B4B),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 4,
+      shrinkWrap: true,
+      mainAxisSpacing: 20,
+      crossAxisSpacing: 10,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      children: _colorList
+          .map(
+            (item) => _ColorItem(
+              color: item,
+              onTap: () => onChanged(item),
+              isSelected: color.toHexString() == item.toHexString(),
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
+class _ColorItem extends StatelessWidget {
+  const _ColorItem({
+    Key? key,
+    required this.color,
+    required this.onTap,
+    required this.isSelected,
+  }) : super(key: key);
+
+  final Color color;
+  final VoidCallback onTap;
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.transparent,
+          border: Border.all(color: color.withOpacity(isSelected ? 0.3 : 0), width: 4),
+        ),
+        padding: const EdgeInsets.all(4),
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: color,
+            border: Border.all(color: color.darken(50), width: 1),
+          ),
+        ),
       ),
     );
   }

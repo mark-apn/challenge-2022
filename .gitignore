@@ -7,3 +7,4 @@ server/bin/server
 build/macos
 build/ios
 build/
+**/flutter_sdk

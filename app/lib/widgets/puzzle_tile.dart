@@ -22,6 +22,7 @@ class PuzzleTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final puzzleStatus = ref.watch(puzzleStatusProvider);
     final isMoveable = tile.isTileMovable(whiteSpaceTile) && puzzleStatus != PUZZLE_STATUS_COMPLETE;
+
     Widget child = SizedBox.square(
       dimension: size,
       child: _TileContent(tile: tile, isMoveable: isMoveable),

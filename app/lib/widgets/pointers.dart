@@ -6,8 +6,10 @@ import 'package:flutter_challenge/prefs.dart';
 import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared/shared.dart';
+import 'package:simple_shadow/simple_shadow.dart';
 
 class Pointers extends HookConsumerWidget {
   const Pointers({
@@ -103,17 +105,13 @@ class Pointer extends HookWidget {
     return AnimatedAlign(
       duration: duration,
       alignment: alignment,
-      child: Container(
-        width: pointer.settings.size,
-        height: pointer.settings.size,
-        decoration: ShapeDecoration(
+      child: SimpleShadow(
+        color: Colors.white,
+        child: SvgPicture.asset(
+          pointer.settings.shape.assetPath,
+          width: pointer.settings.size,
+          height: pointer.settings.size,
           color: HexColor(pointer.settings.colorHex),
-          shadows: const [
-            BoxShadow(color: Colors.black45, blurRadius: 4.0, offset: Offset(2, 2)),
-          ],
-          shape: pointer.settings.shape == PointerDisplayShape.circle
-              ? const CircleBorder(side: BorderSide())
-              : const _ArrowShape(side: BorderSide()),
         ),
       ),
     );
@@ -124,70 +122,4 @@ class Pointer extends HookWidget {
         (pointer.position!.x * 2) - 1,
         (pointer.position!.y * 2) - 1,
       );
-}
-
-class _ArrowShape extends OutlinedBorder {
-  /// Create an arrow border.
-  ///
-  /// The [side] argument must not be null.
-  const _ArrowShape({BorderSide side = BorderSide.none}) : super(side: side);
-
-  @override
-  EdgeInsetsGeometry get dimensions => EdgeInsets.all(side.width);
-
-  @override
-  ShapeBorder scale(double t) => _ArrowShape(side: side.scale(t));
-
-  @override
-  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
-    final path = Path();
-    final size = rect.size;
-    path.moveTo(size.width * 0.40, size.height * 0.94);
-    path.lineTo(size.width * 0.05, size.height * 0.05);
-    path.lineTo(size.width * 0.94, size.height * 0.51);
-    path.lineTo(size.width * 0.58, size.height * 0.64);
-    path.close();
-
-    return path.shift(rect.topLeft);
-  }
-
-  @override
-  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    final path = Path();
-    final size = rect.size;
-    path.moveTo(size.width * 0.40, size.height * 0.94);
-    path.lineTo(size.width * 0.05, size.height * 0.05);
-    path.lineTo(size.width * 0.94, size.height * 0.51);
-    path.lineTo(size.width * 0.58, size.height * 0.64);
-    path.close();
-
-    return path.shift(rect.topLeft);
-  }
-
-  @override
-  _ArrowShape copyWith({BorderSide? side}) => _ArrowShape(side: side ?? this.side);
-
-  @override
-  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
-    switch (side.style) {
-      case BorderStyle.none:
-        break;
-      case BorderStyle.solid:
-        canvas.drawPath(
-          getInnerPath(rect),
-          side.toPaint(),
-        );
-    }
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType) {
-      return false;
-    }
-    return other is _ArrowShape && other.side == side;
-  }
-
-  @override
-  int get hashCode => side.hashCode;
 }

@@ -140,11 +140,11 @@ class _Content extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           AutoSizeText('Whoohoo!', style: kWinTitle, maxLines: 1),
           AutoSizeText('Solved the puzzle! Teamwork makes the dream work.', style: kWinSubTitle, maxLines: 3),
-          Gap(32),
-          FinishedPuzzleInfoPanelRow(),
+          const Gap(32),
+          const FinishedPuzzleInfoPanelRow(),
         ],
       ),
     );

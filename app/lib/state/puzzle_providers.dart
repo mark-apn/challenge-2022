@@ -11,7 +11,7 @@ import 'package:shared/shared.dart';
 import '../prefs.dart';
 
 // Inital puzzle state
-final puzzleProvider = StateProvider.autoDispose((ref) {
+final puzzleProvider = Provider.autoDispose((ref) {
   // * Convert data to state
   PuzzleState _mapData(AsyncData<Puzzle> puzzle) {
     return PuzzleState(
