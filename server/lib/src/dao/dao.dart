@@ -1,3 +1,4 @@
+import 'package:flutter_challenge_server/env.dart';
 import 'package:rethink_db_ns/rethink_db_ns.dart';
 
 // * Is responsible for the connection to the database.
@@ -7,17 +8,16 @@ import 'package:rethink_db_ns/rethink_db_ns.dart';
 typedef Inserter = Insert Function(dynamic records, [dynamic options]);
 typedef DbRow = Map<String, dynamic>;
 
-const _local = String.fromEnvironment('env', defaultValue: 'production') == 'local';
-
 abstract class Dao {
   final _r = RethinkDb();
+  String get hostName => Env.instance.isLocal ? 'localhost' : 'rethinkdb';
 
   Connection? _connectionCache;
 
   Future<Connection> get _connection async {
     return _connectionCache ??= await _r.connect(
       db: 'puzzles',
-      host: _local ? 'localhost' : 'rethinkdb',
+      host: hostName,
     );
   }
 
