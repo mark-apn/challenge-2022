@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_challenge/screens/screen_base.dart';
 import 'package:flutter_challenge/styles.dart';
 import 'package:flutter_challenge/widgets/info_panels.dart';
 import 'package:flutter_challenge/widgets/puzzle_board.dart';
@@ -9,9 +10,9 @@ class PuzzleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimaryColor,
-      body: SafeArea(
+    return ScreenBase(
+      color: kPrimaryColor,
+      child: SafeArea(
         child: Column(
           children: const [
             Gap(32),

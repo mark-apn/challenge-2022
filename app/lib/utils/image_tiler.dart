@@ -36,6 +36,20 @@ class ImageTiler {
     return tiles;
   }
 
+  Future<ui.Image> croppedImage(int rowIndex, int columnIndex) async {
+    final offset = Offset(
+      columnIndex * _bitmapSize.width / _columns,
+      rowIndex * _bitmapSize.height / _rows,
+    );
+
+    final size = Size(
+      _bitmapSize.width / _columns,
+      _bitmapSize.height / _rows,
+    );
+
+    return _croppedBitmap(offset, size);
+  }
+
   Future<ui.Image> _croppedBitmap(Offset offset, Size size) async {
     final pictureRecorder = ui.PictureRecorder();
     Canvas(pictureRecorder).drawImageRect(
@@ -51,36 +65,24 @@ class ImageTiler {
         );
   }
 
-  Future<ui.Image> croppedImage(int rowIndex, int columnIndex) async {
-    final offset = Offset(
-      columnIndex * _bitmapSize.width / _columns,
-      rowIndex * _bitmapSize.height / _rows,
-    );
-
-    final size = Size(
-      _bitmapSize.width / _columns,
-      _bitmapSize.height / _rows,
-    );
-
-    return _croppedBitmap(offset, size);
-  }
-
   Future<List<ui.Image>> tile(Image uiImage) async {
     final completer = Completer<List<ui.Image>>();
     final config = uiImage.image.resolve(const ImageConfiguration());
 
-    config.addListener(ImageStreamListener(
-      (ImageInfo info, __) {
-        image = info.image;
+    config.addListener(
+      ImageStreamListener(
+        (ImageInfo info, __) {
+          image = info.image;
 
-        getTiles().then((tiles) {
-          if (!completer.isCompleted) {
-            completer.complete(tiles);
-          }
-        });
-      },
-      onError: completer.completeError,
-    ));
+          getTiles().then((tiles) {
+            if (!completer.isCompleted) {
+              completer.complete(tiles);
+            }
+          });
+        },
+        onError: completer.completeError,
+      ),
+    );
 
     return completer.future;
   }

@@ -41,12 +41,14 @@ Download the build setup tool from the releases tab on GitHub
 Link: add invite link
 
 # How to setup locally
+
 ## Setup database
 
 - Clone the repo
 - Make sure you have `docker` and `docker-compose` installed (https://docs.docker.com/get-docker/)
 - Navigate to the root of the project
-- Build all containers `docker-compose build`
+- Build all containers `docker-compose build` and after that bring them all up `docker-compose up`
+- Now all containers are made we can stop them with ctrl+c
 - For local you only need the puzzle_db container. Bring it up with this command `docker start puzzle_db`.
 - Navigate to http://localhost:50001
 - Here you should see the RethinkDB management interface.
@@ -76,4 +78,10 @@ The background worker is responsible for moving the tiles. Its a simple dart scr
 
 ## Run the app
 
+Run `./bin/setup` to run `flutter pub get` in all 3 subprojects (app, shared, server)
+
 Use your favorite IDE to run the app, or use the `flutter run` command. You do need to specify the local env to make sure you dont connect to the live server (thats the default). You can do so with this argument `--dart-define env=local`
+
+### Enable desktop builds
+
+You may want to enable desktop builds with the `flutter config --enable-XXX-desktop` commands to enable linux / windows / macos.
