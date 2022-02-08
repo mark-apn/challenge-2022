@@ -85,7 +85,7 @@ class PointerDisplaySettings extends Equatable {
   factory PointerDisplaySettings.initial() => PointerDisplaySettings(
         colorHex: "#4B4B4B",
         shape: PointerDisplayShape.arrow,
-        size: 16,
+        size: 30,
       );
 
   final PointerDisplayShape shape;

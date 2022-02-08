@@ -87,7 +87,7 @@ class PointerSettings extends HookConsumerWidget {
               child: Slider(
                 value: size.value,
                 min: 12,
-                max: 40,
+                max: 60,
                 activeColor: kGrey,
                 inactiveColor: kGrey,
                 thumbColor: kPrimaryColor,
