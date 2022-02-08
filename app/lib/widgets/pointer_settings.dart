@@ -15,9 +15,11 @@ class PointerSettings extends HookConsumerWidget {
   const PointerSettings({
     Key? key,
     required this.onButtonTap,
+    required this.buttonLabel,
   }) : super(key: key);
 
   final VoidCallback onButtonTap;
+  final String buttonLabel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -126,7 +128,7 @@ class PointerSettings extends HookConsumerWidget {
                   const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                 ),
               ),
-              child: Text(L10n.translate.joinThePuzzle),
+              child: Text(buttonLabel),
             ),
           ),
         ],

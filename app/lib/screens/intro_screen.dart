@@ -8,6 +8,7 @@ import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/styles.dart';
 import 'package:flutter_challenge/widgets/info_panels.dart';
 import 'package:flutter_challenge/widgets/pointer_settings.dart';
+import 'package:flutter_challenge/widgets/screen_panel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -105,7 +106,7 @@ class _ActivePuzzelInfoPanel extends StatelessWidget {
       tablet: totalHeight - 550,
     );
 
-    return _IntroScreenPanel(
+    return ScreenPanel(
       color: kPrimaryColor,
       textStyle: appTextStyle(color: Colors.white),
       child: Column(
@@ -159,55 +160,13 @@ class _PointerSettingsPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _IntroScreenPanel(
+    return ScreenPanel(
       color: Colors.white,
       textStyle: appTextStyle(color: kPrimaryColor),
       child: Center(
         child: PointerSettings(
+          buttonLabel: L10n.translate.joinThePuzzle,
           onButtonTap: () => context.go('/active-puzzle'),
-        ),
-      ),
-    );
-  }
-}
-
-class _IntroScreenPanel extends HookWidget {
-  const _IntroScreenPanel({
-    Key? key,
-    required this.child,
-    this.textStyle,
-    this.color = Colors.white,
-  }) : super(key: key);
-
-  final Widget child;
-  final Color color;
-  final TextStyle? textStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    final totalHeight = MediaQuery.of(context).size.height;
-    final controller = useScrollController();
-
-    final padding = getValueForScreenType(
-      context: context,
-      mobile: 28.0,
-      tablet: 80.0,
-    );
-
-    return SingleChildScrollView(
-      controller: controller,
-      child: Scrollbar(
-        controller: controller,
-        child: DefaultTextStyle(
-          style: textStyle ?? appTextStyle(),
-          child: Container(
-            color: color,
-            constraints: BoxConstraints(
-              minHeight: totalHeight,
-            ),
-            padding: EdgeInsets.all(padding),
-            child: SafeArea(child: child),
-          ),
         ),
       ),
     );

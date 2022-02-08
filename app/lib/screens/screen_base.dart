@@ -5,16 +5,19 @@ class ScreenBase extends StatelessWidget {
   const ScreenBase({
     Key? key,
     required this.child,
+    this.endDrawer,
     this.color,
   }) : super(key: key);
 
   final Widget child;
+  final Widget? endDrawer;
   final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: color,
+      endDrawer: endDrawer,
       body: Stack(
         children: [
           child,
