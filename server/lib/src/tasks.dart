@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter_challenge_server/src/repository/puzzle_repository.dart';
+import 'package:flutter_challenge_server/src/repository/puzzle_repo.dart';
 import 'package:intl/intl.dart';
 import 'package:shared/shared.dart';
 
 class UpdatePuzzle extends Task {
   @override
   Future<void> handle() async {
-    final puzzleRepo = PuzzleRepository();
+    final puzzleRepo = PuzzleRepo();
 
     final puzzle = await puzzleRepo.getLatestPuzzle();
 

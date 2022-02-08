@@ -7,7 +7,7 @@ class PuzzleGenerator {
 
   final int size;
 
-  Puzzle generate() {
+  Puzzle generate([int? seed]) {
     final correctPositions = <Position>[];
     final currentPositions = <Position>[];
     final whitespacePosition = Position(x: size, y: size);
@@ -26,7 +26,7 @@ class PuzzleGenerator {
       }
     }
 
-    final random = Random();
+    final random = Random(seed);
 
     // Randomize only the current tile positions.
     currentPositions.shuffle(random);

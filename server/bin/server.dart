@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_challenge_server/env.dart';
-import 'package:flutter_challenge_server/main.dart';
+import 'package:flutter_challenge_server/src/puzzle_service.dart';
 import 'package:grpc/grpc.dart';
 
 Future<void> main(List<String> args) async {
@@ -11,13 +11,10 @@ Future<void> main(List<String> args) async {
   // * Setup gRPC server
   final server = Server(
     // * Services
-    [
-      PuzzleV1Service(),
-    ],
+    [PuzzleV1Service()],
     // * Interceptors
-    [
-      // logInterceptor,
-    ],
+    const [],
+    // * Codecs
     CodecRegistry(codecs: const [GzipCodec()]),
   );
 

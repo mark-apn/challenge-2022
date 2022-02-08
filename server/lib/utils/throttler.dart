@@ -13,6 +13,7 @@ class Throttler {
   Throttler({this.duration = const Duration(milliseconds: 40)});
 
   void run(VoidCallback action) {
+    // * Make sure we always run the latest action
     actionToRun = action;
 
     // * Timer active - cancelling, but update action to execute to the latest action.

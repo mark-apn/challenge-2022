@@ -1,37 +1,14 @@
+import 'package:flutter_challenge_server/di.dart';
 import 'package:flutter_challenge_server/generated/puzzle/v1/puzzle.pb.dart';
 import 'package:flutter_challenge_server/src/dao/puzzle_dao.dart';
 import 'package:flutter_challenge_server/src/puzzle_generator.dart';
+import 'package:flutter_challenge_server/src/repository/participant_repo.dart';
+import 'package:flutter_challenge_server/src/repository/repository.dart';
 import 'package:rethink_db_ns/rethink_db_ns.dart';
 import 'package:shared/shared.dart';
 
-class PuzzleRepository {
-  final dao = PuzzleDao();
-
-  Future<bool> voteForMoveOnLatestGame(String userId, int tileValue) async {
-    final puzzle = await getLatestPuzzle();
-    if (puzzle == null) return false;
-
-    final participant = puzzle.getParticipantByUserId(userId);
-    final participants = puzzle.participants.addOrReplace(
-      (participant) => participant.userId == userId,
-      participant.copyWith(), // copyWith will update the last active date
-    );
-
-    final updated = puzzle.copyWith(
-        participants: participants,
-        totalVotes: puzzle.totalVotes + 1,
-        tiles: puzzle.tiles.map((t) {
-          if (t.value == tileValue) {
-            return t.copyWith(numVotes: t.numVotes + 1);
-          }
-          return t;
-        }).toList());
-
-    print('Voting for move on puzzle with id ${puzzle.id}');
-    await dao.update(puzzle.id, updated.toMap());
-
-    return true;
-  }
+class PuzzleRepo extends Repository<IPuzzleDao> {
+  static PuzzleRepo get instance => DI.inject();
 
   Future<Puzzle?> getLatestPuzzle() async {
     final latest = await dao.latest();
@@ -42,10 +19,42 @@ class PuzzleRepository {
     return Puzzle.fromMap(latest);
   }
 
-  Future<AtomFeed?> subscribeToLatestPuzzle() async {
+  Future<bool> voteForMoveOnLatestGame(String userId, int tileValue) async {
     final puzzle = await getLatestPuzzle();
+    if (puzzle == null) return false;
 
+    final tiles = puzzle.tiles.map((t) {
+      if (t.value == tileValue) {
+        return t.copyWith(numVotes: t.numVotes + 1);
+      }
+      return t;
+    });
+
+    print('Voting for move on puzzle with id ${puzzle.id}');
+    await dao.merge(puzzle.id, {
+      'tiles': tiles.map((e) => e.toMap()).toList(),
+      'total_votes': puzzle.totalVotes + 1,
+    });
+
+    return true;
+  }
+
+  Future<AtomFeed?> subscribeToLatestPuzzle(String userId) async {
+    final puzzle = await getLatestPuzzle();
     if (puzzle == null) return null;
+
+    // * Check if we played before and have saved pointer settings in the participants table
+    if (puzzle.getParticipantByUserId(userId).newUser) {
+      final cachedParticipant = await ParticipantRepo.instance.getParticipant(userId);
+      final updatedParticipants = puzzle.participants
+          .addOrReplace(
+            (participant) => participant.userId == userId,
+            cachedParticipant,
+          )
+          .map((e) => e.toMap())
+          .toList();
+      await dao.merge(puzzle.id, {'participants': updatedParticipants});
+    }
 
     return await dao.readFeed(puzzle.id);
   }
@@ -72,12 +81,17 @@ class PuzzleRepository {
       }
 
       // * Reset all votes!
-      updated = updated.copyWith(
+      final updatedMap = updated.copyWith(
         tiles: updated.tiles.map((t) => t.copyWith(numVotes: 0)).toList(),
-      );
+      ).sorted().toMap();
 
       // * Save to DB
-      await dao.update(puzzle.id, updated.sorted().toMap());
+      await dao.merge(puzzle.id, {
+        'num_moves': puzzle.numMoves + 1,
+        'tiles': updatedMap['tiles'],
+        'status': updatedMap['status'],
+        'ends_at': updatedMap['ends_at'],
+      });
 
       return updated;
     } else {
@@ -99,10 +113,9 @@ class PuzzleRepository {
       ),
     );
 
-    final result = await dao.update(
-      puzzle.id,
-      puzzle.copyWith(participants: participants).toMap(),
-    );
+    final result = await dao.merge(puzzle.id, {
+      'participants': participants.map((p) => p.toMap()).toList(),
+    });
 
     return result['replaced'] == 1;
   }
@@ -111,6 +124,9 @@ class PuzzleRepository {
     final puzzle = await getLatestPuzzle();
     if (puzzle == null) return false;
 
+    // Also update the participant table
+    ParticipantRepo.instance.updatePointerSettings(userId, settings);
+
     final pointerSettings = PointerDisplaySettings(
       colorHex: settings.colorHex,
       size: settings.size,
@@ -118,18 +134,16 @@ class PuzzleRepository {
     );
 
     final participant = puzzle.getParticipantByUserId(userId);
-    final updated = participant.copyWith(
-      pointer: participant.pointer.copyWith(settings: pointerSettings),
-    );
     final participants = [...puzzle.participants].addOrReplace(
       (participant) => participant.userId == userId,
-      updated,
+      participant.copyWith(
+        pointer: participant.pointer.copyWith(settings: pointerSettings),
+      ),
     );
 
-    final result = await dao.update(
-      puzzle.id,
-      puzzle.copyWith(participants: participants).toMap(),
-    );
+    final result = await dao.merge(puzzle.id, {
+      'participants': participants.map((p) => p.toMap()).toList(),
+    });
 
     return result['replaced'] == 1;
   }

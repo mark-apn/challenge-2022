@@ -99,6 +99,8 @@ class Puzzle extends Equatable {
         orElse: () => Participant(userId: userId),
       );
 
+
+
   /// Get the dimension of a puzzle given its tile arrangement.
   ///
   /// Ex: A 4x4 puzzle has a dimension of 4.

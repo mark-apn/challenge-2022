@@ -2,28 +2,27 @@ import 'dart:async';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_challenge_server/generated/puzzle/v1/puzzle.pbgrpc.dart';
-import 'package:flutter_challenge_server/src/repository/puzzle_repository.dart';
+import 'package:flutter_challenge_server/src/repository/puzzle_repo.dart';
 import 'package:flutter_challenge_server/utils/throttler.dart';
 import 'package:grpc/grpc.dart';
 import 'package:shared/shared.dart';
 
 class PuzzleV1Service extends PuzzleV1ServiceBase {
-  final puzzleRepo = PuzzleRepository();
-
   @override
   Stream<SubscribeToPuzzleResponse> subscribeToPuzzle(ServiceCall call, SubscribeToPuzzleRequest request) {
     final throttler = Throttler();
-    StreamSubscription? streamSubscription;
-
+    final repo = PuzzleRepo.instance;
     final streamController = StreamController<Puzzle>();
 
+    StreamSubscription? streamSubscription;
+
     print('Recieved subscribe to puzzle request');
-    puzzleRepo.subscribeToLatestPuzzle().then((feed) {
+    repo.subscribeToLatestPuzzle(request.userId).then((feed) {
       if (feed == null) throw Exception('No active puzzle');
 
       print('New subscription to puzzle ${feed.hashCode}');
 
-      puzzleRepo.getLatestPuzzle().then((value) {
+      repo.getLatestPuzzle().then((value) {
         if (value != null) {
           streamController.sink.add(value);
         }
@@ -58,7 +57,7 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
 
   @override
   Future<VoteForTileResponse> voteForTile(ServiceCall call, VoteForTileRequest request) async {
-    puzzleRepo.voteForMoveOnLatestGame(
+    PuzzleRepo.instance.voteForMoveOnLatestGame(
       request.userId,
       request.tileValue,
     );
@@ -70,7 +69,7 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
     ServiceCall call,
     UpdatePointerPositionRequest request,
   ) async {
-    puzzleRepo.updatePointerPosition(
+    PuzzleRepo.instance.updatePointerPosition(
       request.userId,
       request.position,
     );
@@ -82,7 +81,7 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
     ServiceCall call,
     UpdatePointerSettingsRequest request,
   ) async {
-    puzzleRepo.updatePointerSettings(
+    PuzzleRepo.instance.updatePointerSettings(
       request.userId,
       request.settings,
     );

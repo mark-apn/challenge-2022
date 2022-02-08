@@ -1,6 +1,8 @@
 import 'package:flutter_challenge_server/src/dao/dao.dart';
 
-class ParticipantDao extends Dao {
+abstract class IParticipantDao extends IDao {}
+
+class ParticipantDao extends Dao implements IParticipantDao {
   @override
-  String get tableName => 'participant';
+  String get tableName => 'participants';
 }
