@@ -1,4 +1,4 @@
-FROM cirrusci/flutter:2.8.1 AS build
+FROM cirrusci/flutter:2.10.0 AS build
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY ./app ./
 RUN flutter pub get --offline
 
 # We need canvaskit for the image tiler to work properly on mobile web
-RUN flutter build web --web-renderer canvaskit --release
+RUN flutter build web --release
 
 FROM nginx:alpine
 

@@ -1,4 +1,4 @@
-FROM dart:2.15.1 AS build
+FROM dart:2.16.0 AS build
 
 WORKDIR /server
 
