@@ -246,12 +246,13 @@ class _CursorShapeSelector extends StatelessWidget {
       children: shapes.map((shape) {
         return GestureDetector(
           onTap: () => onChanged(shape),
-          child: Container(
+          child: AnimatedContainer(
             decoration: BoxDecoration(
               border: Border.all(color: shape == selectedShape ? iconColor : kGrey),
               borderRadius: BorderRadius.circular(8),
               color: shape == selectedShape ? iconColor.withOpacity(0.06) : null,
             ),
+            duration: const Duration(milliseconds: 300),
             child: Center(
               child: SvgPicture.asset(
                 shape.assetPath,

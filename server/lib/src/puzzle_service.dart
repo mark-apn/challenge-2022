@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_challenge_server/generated/puzzle/v1/puzzle.pbgrpc.dart';
-import 'package:flutter_challenge_server/src/puzzle_repository.dart';
+import 'package:flutter_challenge_server/src/repository/puzzle_repository.dart';
 import 'package:flutter_challenge_server/utils/throttler.dart';
 import 'package:grpc/grpc.dart';
 import 'package:shared/shared.dart';
@@ -42,11 +42,9 @@ class PuzzleV1Service extends PuzzleV1ServiceBase {
             streamController.sink.add(newPuzzle);
 
             if (newPuzzle.isFinished) {
-              print('New puzzle created, stopping stream to old puzzel');
-              puzzleRepo.createNewPuzzle().then((_) {
-                streamSubscription?.cancel();
-                streamController.close();
-              });
+              print('Stopping stream to old puzzle');
+              streamSubscription?.cancel();
+              streamController.close();
             }
           });
         }

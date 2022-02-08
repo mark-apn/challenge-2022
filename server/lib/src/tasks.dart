@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_challenge_server/src/puzzle_repository.dart';
+import 'package:flutter_challenge_server/src/repository/puzzle_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:shared/shared.dart';
 
@@ -32,18 +32,12 @@ class UpdatePuzzle extends Task {
 
         log('Moving tile');
         final result = await puzzleRepo.moveTile(puzzle, tile);
-        log('Move tile result: ${result ? 'success' : 'failure'}');
+        final isSaved = result != puzzle;
+        log('Move tile result: ${isSaved ? 'success' : 'failure'}');
       }
     } else if (puzzle.status == PUZZLE_STATUS_COMPLETE) {
-      log('Puzzle is complete! Checking if it is time to create a new puzzle');
-
-      // * Check last updated time (keep last completed puzzle active for a while)
-      /// TODO(mark): add solvedAt field to puzzle and add delay after puzzle is solved
-
-      // * If last updated time is greater than a certain time, create a new puzzle
+      log('Puzzle is complete!Lets create a new one!');
       await puzzleRepo.createNewPuzzle();
-
-      // * save to DB
     }
   }
 }

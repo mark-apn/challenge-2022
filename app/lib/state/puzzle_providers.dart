@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart' hide ImageCache;
 import 'package:flutter_challenge/grpc/client.dart';
@@ -59,10 +58,7 @@ final tileImagesProvider = FutureProvider.autoDispose((ref) async {
   int i = 0;
   final cache = ImageCache.instance;
   for (final image in tiles) {
-    final byteData = await image.toByteData(format: ImageByteFormat.png);
-    final uint8List = byteData?.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
-
-    cache.store(i, uint8List);
+    cache.store(i, image);
     i++;
   }
 });

@@ -1,5 +1,5 @@
 import 'package:flutter_challenge_server/generated/puzzle/v1/puzzle.pb.dart';
-import 'package:flutter_challenge_server/src/puzzle_dao.dart';
+import 'package:flutter_challenge_server/src/dao/puzzle_dao.dart';
 import 'package:flutter_challenge_server/src/puzzle_generator.dart';
 import 'package:rethink_db_ns/rethink_db_ns.dart';
 import 'package:shared/shared.dart';
@@ -58,14 +58,17 @@ class PuzzleRepository {
     return puzzle;
   }
 
-  Future<bool> moveTile(Puzzle puzzle, Tile tile) async {
+  Future<Puzzle> moveTile(Puzzle puzzle, Tile tile) async {
     if (puzzle.isTileMovable(tile)) {
       // * Update tiles
       Puzzle updated = puzzle.moveTiles(tile, []);
 
       // * Set completed if needed
       if (updated.isComplete()) {
-        updated = updated.copyWith(status: PUZZLE_STATUS_COMPLETE);
+        updated = updated.copyWith(
+          status: PUZZLE_STATUS_COMPLETE,
+          endsAt: DateTime.now(),
+        );
       }
 
       // * Reset all votes!
@@ -74,11 +77,11 @@ class PuzzleRepository {
       );
 
       // * Save to DB
-      final result = await dao.update(puzzle.id, updated.sorted().toMap());
+      await dao.update(puzzle.id, updated.sorted().toMap());
 
-      return result['replaced'] == 1;
+      return updated;
     } else {
-      return false;
+      return puzzle;
     }
   }
 

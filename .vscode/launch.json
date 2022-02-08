@@ -25,7 +25,7 @@
       "request": "launch",
       "program": "bin/worker.dart",
       "type": "dart",
-      "args": ["--dart-define", "env=local"]
+      "args": ["--env", "local"]
     },
     {
       "name": "Start server [local]",
@@ -33,7 +33,7 @@
       "request": "launch",
       "cwd": "server",
       "program": "bin/server.dart",
-      "args": ["--port", "50000", "--dart-define", "env=local"]
+      "args": ["--port", "50000", "--env", "local"]
     }
   ]
 }

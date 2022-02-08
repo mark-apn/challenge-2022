@@ -1,0 +1,10 @@
+#!/bin/bash
+
+## Get packages for shared
+cd shared && flutter pub get && cd ..
+
+## Get packages for app
+cd app && flutter pub get && cd ..
+
+## Get packages for server
+cd server && flutter pub get && cd ..

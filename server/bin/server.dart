@@ -1,14 +1,12 @@
 import 'dart:async';
 
-import 'package:args/args.dart';
+import 'package:flutter_challenge_server/env.dart';
 import 'package:flutter_challenge_server/main.dart';
 import 'package:grpc/grpc.dart';
 
 Future<void> main(List<String> args) async {
-  // * Parse options
-  final parser = ArgParser();
-  parser.addOption('port', abbr: 'p', defaultsTo: '80');
-  final arguments = parser.parse(args);
+  // Instantiate environment variables from arguments.
+  Env.instance.init(args);
 
   // * Setup gRPC server
   final server = Server(
@@ -24,7 +22,7 @@ Future<void> main(List<String> args) async {
   );
 
   // * Serve
-  await server.serve(port: int.parse(arguments['port'] as String));
+  await server.serve(port: Env.instance.serverPort);
 
   print('Server listening on port ${server.port}...');
 }

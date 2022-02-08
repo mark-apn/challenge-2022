@@ -3,12 +3,14 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/l10n.dart';
+import 'package:flutter_challenge/screens/screen_base.dart';
 import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/styles.dart';
 import 'package:flutter_challenge/widgets/info_panels.dart';
 import 'package:flutter_challenge/widgets/pointer_settings.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -25,7 +27,7 @@ class IntroScreen extends HookConsumerWidget {
 
     final body = isPortrait ? const _IntroScreenFlow() : const _IntroScreenDuoPane();
 
-    return Scaffold(body: body);
+    return ScreenBase(child: body);
   }
 }
 
@@ -162,7 +164,7 @@ class _PointerSettingsPanel extends StatelessWidget {
       textStyle: appTextStyle(color: kPrimaryColor),
       child: Center(
         child: PointerSettings(
-          onButtonTap: () => Navigator.of(context).pushNamed('/active-puzzle'),
+          onButtonTap: () => context.go('/active-puzzle'),
         ),
       ),
     );
@@ -204,7 +206,7 @@ class _IntroScreenPanel extends HookWidget {
               minHeight: totalHeight,
             ),
             padding: EdgeInsets.all(padding),
-            child: child,
+            child: SafeArea(child: child),
           ),
         ),
       ),
