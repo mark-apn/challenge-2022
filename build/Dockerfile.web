@@ -13,7 +13,7 @@ COPY ./app ./
 RUN flutter pub get --offline
 
 # We need canvaskit for the image tiler to work properly on mobile web
-RUN flutter build web --release
+RUN flutter build web --web-renderer canvaskit --release
 
 FROM nginx:alpine
 
