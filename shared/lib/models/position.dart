@@ -7,7 +7,6 @@ import 'package:equatable/equatable.dart';
 /// Also used for user mouse position (And is treated as alignment)
 /// {@endtemplate}
 class Position extends Equatable implements Comparable<Position> {
-
   /// {@macro position}
   const Position({required this.x, required this.y});
 

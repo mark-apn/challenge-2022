@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart' hide ImageCache;
 import 'package:flutter_challenge/grpc/client.dart';
 import 'package:flutter_challenge/state/puzzle_state.dart';
@@ -91,9 +90,5 @@ final puzzleStatusProvider = Provider.autoDispose((ref) {
 
 final myPointerSettingsProvider = Provider.autoDispose((ref) {
   final myUserId = Prefs.instance.getString(kUserId)!;
-  return ref
-      .watch(
-        puzzleProvider.select((value) => value.puzzle.getParticipantByUserId(myUserId).pointer),
-      )
-      .settings;
+  return ref.watch(puzzleProvider.select((value) => value.puzzle.getParticipantByUserId(myUserId).pointer.settings));
 });

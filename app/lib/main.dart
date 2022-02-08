@@ -59,10 +59,7 @@ class App extends StatelessWidget {
       ),
       GoRoute(
         path: '/active-puzzle',
-        pageBuilder: (context, state) => NoTransitionPage<void>(
-          key: state.pageKey,
-          child: const PuzzleScreen(),
-        ),
+        builder: (context, state) => const PuzzleScreen(),
       ),
     ],
     errorBuilder: (context, state) => const ErrorScreen(),

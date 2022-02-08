@@ -12,4 +12,3 @@ const _grpcPort = 50000;
 class GrpcChannelBuilder {
   ClientChannelBase get build => createNewGrpcChannel(_local, _secure, _grpcHost, _grpcPort);
 }
-
