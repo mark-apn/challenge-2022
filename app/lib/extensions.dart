@@ -62,4 +62,13 @@ extension ColorEx on Color {
       (blue - amount).clamp(0, 255),
     );
   }
+
+  Color lighten([int amount = 20]) {
+    return Color.fromARGB(
+      alpha,
+      (red + amount).clamp(0, 255),
+      (green + amount).clamp(0, 255),
+      (blue + amount).clamp(0, 255),
+    );
+  }
 }

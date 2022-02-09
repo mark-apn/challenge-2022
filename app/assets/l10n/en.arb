@@ -14,5 +14,7 @@
     "introParagraph": "Join the fun on the Massive Multiplayer Puzzle. Puzzle together and set the best time on the leaderboard.",
     "nextButtonText": "Next >",
     "joinThePuzzle": "Join the puzzle",
-"close": "Close"
+    "close": "Close",
+    "winTitle": "Whoohoo!",
+    "winParagraph": "Solved the puzzle! Teamwork makes the dream work."
 }

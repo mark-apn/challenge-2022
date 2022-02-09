@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/hooks/use_confetti_controller.dart';
+import 'package:flutter_challenge/l10n.dart';
 import 'package:flutter_challenge/styles.dart';
 import 'package:flutter_challenge/widgets/info_panels.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -144,8 +145,16 @@ class _Content extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AutoSizeText('Whoohoo!', style: kWinTitle, maxLines: 1),
-          AutoSizeText('Solved the puzzle! Teamwork makes the dream work.', style: kWinSubTitle, maxLines: 3),
+          AutoSizeText(
+            L10n.translate.winTitle,
+            style: kWinTitle,
+            maxLines: 1,
+          ),
+          AutoSizeText(
+            L10n.translate.winParagraph,
+            style: kWinSubTitle,
+            maxLines: 3,
+          ),
           const Gap(32),
           const FinishedPuzzleInfoPanelRow(),
         ],
