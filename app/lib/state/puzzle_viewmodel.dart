@@ -1,8 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_challenge/extensions.dart';
 import 'package:flutter_challenge/grpc/client.dart';
+import 'package:flutter_challenge/state/konami_state.dart';
+import 'package:flutter_challenge/state/puzzle_providers.dart';
+import 'package:flutter_challenge/utils/tile_finder.dart';
 import 'package:flutter_challenge/utils/tracker.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:shared/shared.dart';
 
@@ -37,5 +43,34 @@ class PuzzleVm {
 
   void _log(String message) {
     debugPrint('${DateFormat.Hms().format(DateTime.now())} PuzzleVM: $message');
+  }
+
+  void onKeyPressed(Reader read, LogicalKeyboardKey key) {
+    final Tile? tileToTap;
+    final tiles = read(puzzleProvider).puzzle.tiles;
+    final finder = TileFinder(tiles);
+
+    if (key == LogicalKeyboardKey.arrowDown) {
+      tileToTap = finder.votableAboveWhitespace();
+    } else if (key == LogicalKeyboardKey.arrowUp) {
+      tileToTap = finder.votableBelowWhitespace();
+    } else if (key == LogicalKeyboardKey.arrowLeft) {
+      tileToTap = finder.votableRightFromWhitespace();
+    } else if (key == LogicalKeyboardKey.arrowRight) {
+      tileToTap = finder.votableLeftFromWhitespace();
+    } else {
+      tileToTap = null;
+    }
+
+    if (tileToTap != null) {
+      tileTapped(tileToTap);
+    }
+
+    // * Add the new char, if invalid empty the list
+    final konamiChar = key.toKonami;
+    read(konamiCodeProvider.state).update((state) {
+      final updated = [...state, konamiChar];
+      return updated.isValid ? updated : [];
+    });
   }
 }

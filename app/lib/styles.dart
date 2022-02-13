@@ -11,6 +11,7 @@ const kPrimaryLightColor = Color(0xFF224377);
 const kIndicatorTrackColor = Color(0xFF244975);
 const kIndicatorLineColor = Color(0xFF5383CE);
 const kGrey = Color(0xFFF2F2F6);
+const kGoldColor = Color(0xFFD4AF37);
 
 const kImgAssetWinDash = 'assets/img/win_dash.png';
 

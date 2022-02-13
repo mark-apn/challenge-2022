@@ -16,11 +16,14 @@ class ScreenBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: color,
       endDrawer: endDrawer,
       body: Stack(
         children: [
-          child,
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            color: color,
+            child: child,
+          ),
           WindowTitleBarBox(
             child: Row(
               children: [

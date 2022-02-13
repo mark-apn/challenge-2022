@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_challenge/extensions.dart';
 import 'package:flutter_challenge/hooks/use_throttle.dart';
 import 'package:flutter_challenge/l10n.dart';
+import 'package:flutter_challenge/state/konami_state.dart';
 import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
 import 'package:flutter_challenge/styles.dart';
@@ -43,6 +44,9 @@ class PointerSettings extends HookConsumerWidget {
       isActive: isUpdated,
       duration: const Duration(milliseconds: 500),
       callback: () {
+        // * Reset the cheat code enabled
+        ref.read(konamiModeEnabledProvider.state).update((_) => false);
+
         final myPointerSettings = ref.read(myPointerSettingsProvider);
         PuzzleVm.instance.updatePointerSettings(
           settings: myPointerSettings.copyWith(

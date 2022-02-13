@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_challenge/extensions.dart';
 import 'package:flutter_challenge/hooks/use_throttle.dart';
 import 'package:flutter_challenge/prefs.dart';
+import 'package:flutter_challenge/state/konami_state.dart';
 import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -21,6 +22,7 @@ class Pointers extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final cheatEnabled = ref.watch(konamiModeEnabledProvider);
     final pointerSettings = ref.watch(myPointerSettingsProvider);
     final mousePosition = useState<Offset?>(null);
     final isUpdated = useState(false);
@@ -53,7 +55,9 @@ class Pointers extends HookConsumerWidget {
           x: mousePosition.value!.dx,
           y: mousePosition.value!.dy,
         ),
-        settings: pointerSettings,
+        settings: pointerSettings.copyWith(
+          size: cheatEnabled ? 200 : null,
+        ),
       );
     } else {
       myPointer = null;

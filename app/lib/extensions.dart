@@ -1,4 +1,6 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_challenge/state/konami_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared/models/position.dart';
 
@@ -70,5 +72,29 @@ extension ColorEx on Color {
       (green + amount).clamp(0, 255),
       (blue + amount).clamp(0, 255),
     );
+  }
+}
+
+extension LogicalKeyboardKeyKonamiConverter on LogicalKeyboardKey {
+  KonamiChar get toKonami {
+    if (this == LogicalKeyboardKey.arrowDown) {
+      return KonamiChar.down;
+    }
+    if (this == LogicalKeyboardKey.arrowUp) {
+      return KonamiChar.up;
+    }
+    if (this == LogicalKeyboardKey.arrowLeft) {
+      return KonamiChar.left;
+    }
+    if (this == LogicalKeyboardKey.arrowRight) {
+      return KonamiChar.right;
+    }
+    if (this == LogicalKeyboardKey.keyA) {
+      return KonamiChar.a;
+    }
+    if (this == LogicalKeyboardKey.keyB) {
+      return KonamiChar.b;
+    }
+    return KonamiChar.invalid;
   }
 }
