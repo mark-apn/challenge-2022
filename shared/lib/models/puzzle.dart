@@ -109,8 +109,10 @@ class Puzzle extends Equatable {
   }
 
   /// Get the single whitespace tile object in the puzzle.
-  Tile getWhitespaceTile() {
-    return tiles.singleWhere((tile) => tile.isWhitespace);
+  Tile? getWhitespaceTile() {
+    final matches = tiles.where((tile) => tile.isWhitespace);
+    if(matches.isEmpty) return null;
+    return matches.first;
   }
 
   /// Gets the number of tiles that are currently in their correct position.
@@ -136,6 +138,8 @@ class Puzzle extends Equatable {
   /// tile.
   bool isTileMovable(Tile tile) {
     final whitespaceTile = getWhitespaceTile();
+    if(whitespaceTile == null) return false;
+
     return tile.isTileMovable(whitespaceTile);
   }
 
@@ -146,7 +150,7 @@ class Puzzle extends Equatable {
   // list to _swapTiles to individually swap them.
   Puzzle moveTiles(Tile currentTile, List<Tile> tilesToSwap) {
     final tile = currentTile.copyWith();
-    final whitespaceTile = getWhitespaceTile();
+    final whitespaceTile = getWhitespaceTile()!;
     final deltaX = whitespaceTile.currentPosition.x - tile.currentPosition.x;
     final deltaY = whitespaceTile.currentPosition.y - tile.currentPosition.y;
 
@@ -170,7 +174,7 @@ class Puzzle extends Equatable {
     for (final tileToSwap in tilesToSwap.reversed) {
       final tileIndex = tiles.indexWhere((tile) => tile.value == tileToSwap.value);
       final tile = tiles[tileIndex];
-      final whitespaceTile = getWhitespaceTile();
+      final whitespaceTile = getWhitespaceTile()!;
       final whitespaceTileIndex = tiles.indexOf(whitespaceTile);
 
       // Swap current board positions of the moving tile and the whitespace.
