@@ -24,8 +24,6 @@ class DefaultFirebaseOptions {
         return android;
       case TargetPlatform.iOS:
         return ios;
-      case TargetPlatform.macOS:
-        return macos;
     }
 
     return null;
@@ -50,16 +48,6 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDoE-TU7Uz3eCTP7otKwWvSqYgp3-c-034',
-    appId: '1:195855149817:ios:8d7713acef615702131028',
-    messagingSenderId: '195855149817',
-    projectId: 'flutter-puzzle-hack-35f89',
-    storageBucket: 'flutter-puzzle-hack-35f89.appspot.com',
-    iosClientId: '195855149817-6g6eokoj7a5iq1j3qtjvv8cqjla7bpl0.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterChallenge2022Clean',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDoE-TU7Uz3eCTP7otKwWvSqYgp3-c-034',
     appId: '1:195855149817:ios:8d7713acef615702131028',
     messagingSenderId: '195855149817',

@@ -18,27 +18,15 @@ Link: https://app.nicepants.dev.
 ## Android 🤖
 Join the Firebase test distribution via this invite link and Play along.
 
-Link: add invite link
+Join here => https://appdistribution.firebase.dev/i/ab7b670ebf749413
 
 ## iOS 🍏
 Join the Firebase test distribution via this invite link and Play along.
 
-Link: add invite link
+Join here => https://appdistribution.firebase.dev/i/ccb24b98ef9d8bd7
 
-## Mac 🍎
-Download the build app from the releases tab on Github
-
-Link: add invite link
-
-## Windows 🪟
-Download the build setup tool from the releases tab on GitHub
-
-Link: add invite link
-
-## Linux 🐧
-Download the build setup tool from the releases tab on GitHub
-
-Link: add invite link
+## Mac 🍎 /  Windows 🪟 / Linux 🐧
+Clone the app locally and build the corresponding app while connecting to production. Could not get packages out due to time constraints
 
 # How to setup locally
 

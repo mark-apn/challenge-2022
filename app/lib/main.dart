@@ -1,5 +1,4 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge/grpc/client.dart';
 import 'package:flutter_challenge/l10n.dart';
@@ -8,19 +7,15 @@ import 'package:flutter_challenge/screens/error_screen.dart';
 import 'package:flutter_challenge/screens/intro_screen.dart';
 import 'package:flutter_challenge/screens/puzzle_screen.dart';
 import 'package:flutter_challenge/styles.dart';
+import 'package:flutter_challenge/utils/tracker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-import 'firebase_options.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final options = DefaultFirebaseOptions.currentPlatform;
-  if (options != null) {
-    await Firebase.initializeApp(options: options);
-  }
+  Tracker.initialise();
 
   // Fetch saved values before first paint
   await Prefs.instance.init();
