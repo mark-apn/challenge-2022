@@ -7,7 +7,6 @@ import 'package:flutter_challenge/state/puzzle_providers.dart';
 import 'package:flutter_challenge/state/puzzle_viewmodel.dart';
 import 'package:flutter_challenge/styles.dart';
 import 'package:flutter_challenge/utils/tracker.dart';
-import 'package:flutter_challenge/widgets/graphs.dart';
 import 'package:flutter_challenge/widgets/info_panels.dart';
 import 'package:flutter_challenge/widgets/pointer_settings.dart';
 import 'package:flutter_challenge/widgets/puzzle_board.dart';
@@ -76,31 +75,16 @@ class _PuzzleContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        const Gap(32),
-        const InfoPanelRow(),
-        const Gap(16),
+      children: const [
+        Gap(32),
+        InfoPanelRow(),
+        Gap(16),
         Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children:  [
-              SizedBox(
-                width: 200,
-                child: Column(
-                  children: const [
-                    VoteCountGraph(),
-                    PuzzleUpdateGraph(),
-                  ],
-                ),
-              ),
-              const Center(child: PuzzleBoardLoader()),
-              const SizedBox(width: 200),
-            ],
-          ),
+          child: Center(child: PuzzleBoardLoader()),
         ),
-        const Gap(16),
-        const _CompletedTilesIndicator(),
-        const Gap(32),
+        Gap(16),
+        _CompletedTilesIndicator(),
+        Gap(32),
       ],
     );
   }
