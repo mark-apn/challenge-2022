@@ -1,5 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_challenge/styles.dart';
 
 class ScreenBase extends StatelessWidget {
   const ScreenBase({
@@ -24,14 +25,15 @@ class ScreenBase extends StatelessWidget {
             color: color,
             child: child,
           ),
-          WindowTitleBarBox(
-            child: Row(
-              children: [
-                Expanded(child: MoveWindow()),
-                const WindowButtons(),
-              ],
+          if (isDesktop)
+            WindowTitleBarBox(
+              child: Row(
+                children: [
+                  Expanded(child: MoveWindow()),
+                  const WindowButtons(),
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );
